@@ -14,7 +14,7 @@
       enable = true;
       plugins = [
         "fzf"
-        "osx"
+        "macos"
         "z"
         "git"
       ];
