@@ -8,7 +8,6 @@
     btop
     cmake
     colordiff
-    discord
     file
     fzf
     gawk
@@ -19,7 +18,6 @@
     htop-vim
     hugo
     iterm2
-    jetbrains.clion
     jq
     mtr
     ninja
@@ -28,7 +26,6 @@
     parallel
     ripgrep
     rsync
-    slack
     sshuttle
     texlive.combined.scheme-full
     tmux
@@ -41,7 +38,6 @@
     xz
     yq-go
     zip
-    zoom-us
     zsh
     zsh-autocomplete
     zsh-completions
