@@ -31,7 +31,6 @@
     tmux
     tree
     unzip
-    vscode
     which
     wireguard-go
     wireguard-tools
