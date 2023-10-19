@@ -7,7 +7,9 @@
     bat
     btop
     cmake
+    colima
     colordiff
+    docker-client
     file
     fzf
     gawk
