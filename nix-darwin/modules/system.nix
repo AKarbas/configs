@@ -45,7 +45,7 @@
         "com.apple.sound.beep.feedback" = 0;
         AppleInterfaceStyle = "Dark";
         #AppleKeyboardUIMode = 3;
-        ApplePressAndHoldEnabled = true;
+        ApplePressAndHoldEnabled = false;
         InitialKeyRepeat = 15;  # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
         KeyRepeat = 2;  # normal minimum is 2 (30 ms), maximum is 120 (1800 ms)
         NSAutomaticCapitalizationEnabled = false;
