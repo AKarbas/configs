@@ -43,6 +43,7 @@
       NSGlobalDomain = {
         "com.apple.swipescrolldirection" = true;
         "com.apple.sound.beep.feedback" = 0;
+        "com.apple.sound.beep.volume" = 0.5;
         AppleInterfaceStyle = "Dark";
         #AppleKeyboardUIMode = 3;
         ApplePressAndHoldEnabled = false;
