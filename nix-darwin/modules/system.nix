@@ -65,6 +65,7 @@
       CustomUserPreferences = {
         ".GlobalPreferences" = {
           AppleSpacesSwitchOnActivate = true;
+          AppleActionOnDoubleClick = "Minimize";
         };
         NSGlobalDomain = {
           WebKitDeveloperExtras = true;
