@@ -17,15 +17,15 @@
     defaults = {
       menuExtraClock.Show24Hour = true;
       dock = {
-        autohide = true;
         appswitcher-all-displays = true;
-        largesize = 64;
+        autohide = true;
+        largesize = 80;
         magnification = true;
         minimize-to-application = true;
         mru-spaces = false;
         show-process-indicators = true;
         show-recents = false;
-        tilesize = 32;
+        tilesize = 64;
       };
       finder = {
         _FXShowPosixPathInTitle = true;
