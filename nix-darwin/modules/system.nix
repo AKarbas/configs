@@ -1,21 +1,25 @@
-{ pkgs, ... }:
-  ###################################################################################
-  #
-  #  macOS's System configuration
-  #
-  #  All the configuration options are documented here:
-  #    https://daiderd.com/nix-darwin/manual/index.html#sec-options
-  #  and see the source code of this project to get more undocumented options:
-  #    https://github.com/rgcr/m-cli
-  #
-  ###################################################################################
+{pkgs, ...}:
+###################################################################################
+#
+#  macOS's System configuration
+#
+#  All the configuration options are documented here:
+#    https://daiderd.com/nix-darwin/manual/index.html#sec-options
+#  and see the source code of this project to get more undocumented options:
+#    https://github.com/rgcr/m-cli
+#
+###################################################################################
 {
   system = {
     activationScripts.postUserActivation.text = ''
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     '';
     defaults = {
-      menuExtraClock.Show24Hour = true;
+      menuExtraClock = {
+        ShowDate = 0; # true
+        ShowSeconds = true;
+        Show24Hour = true;
+      };
       dock = {
         appswitcher-all-displays = true;
         autohide = true;
@@ -23,14 +27,20 @@
         magnification = true;
         minimize-to-application = true;
         mru-spaces = false;
+        orientation = "right";
         show-process-indicators = true;
         show-recents = false;
         tilesize = 64;
+        expose-animation-duration = 0.0;
+        expose-group-by-app = true;
+        launchanim = false;
       };
       finder = {
         _FXShowPosixPathInTitle = true;
         AppleShowAllExtensions = true;
+        AppleShowAllFiles = true;
         FXEnableExtensionChangeWarning = false;
+        FXPreferredViewStyle = "Nlsv";
         QuitMenuItem = true;
         ShowPathbar = true;
         ShowStatusBar = true;
@@ -44,12 +54,13 @@
         "com.apple.swipescrolldirection" = true;
         "com.apple.sound.beep.feedback" = 0;
         "com.apple.sound.beep.volume" = 0.5;
+        "com.apple.springing.enabled" = true;
         AppleICUForce24HourTime = true;
         AppleInterfaceStyle = "Dark";
         #AppleKeyboardUIMode = 3;
         ApplePressAndHoldEnabled = false;
-        InitialKeyRepeat = 15;  # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
-        KeyRepeat = 2;  # normal minimum is 2 (30 ms), maximum is 120 (1800 ms)
+        InitialKeyRepeat = 15; # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
+        KeyRepeat = 2; # normal minimum is 2 (30 ms), maximum is 120 (1800 ms)
         NSAutomaticCapitalizationEnabled = false;
         NSAutomaticDashSubstitutionEnabled = false;
         NSAutomaticPeriodSubstitutionEnabled = false;
@@ -57,11 +68,12 @@
         NSAutomaticSpellingCorrectionEnabled = false;
         NSNavPanelExpandedStateForSaveMode = true;
         NSNavPanelExpandedStateForSaveMode2 = true;
+        NSWindowResizeTime = 0.0;
       };
       # Customize settings that not supported by nix-darwin directly
       # see the source code of this project to get more undocumented options:
       #    https://github.com/rgcr/m-cli
-      # 
+      #
       # All custom entries can be found by running `defaults read` command.
       # or `defaults read xxx` to read a specific domain.
       CustomUserPreferences = {
@@ -108,19 +120,12 @@
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToControl = false;
-      remapCapsLockToEscape  = true;
-      swapLeftCommandAndLeftAlt = false;  
+      remapCapsLockToEscape = true;
     };
   };
-  security.pam.enableSudoTouchIdAuth = true;
-  programs.zsh.enable = true;
   environment.shells = [
     pkgs.zsh
   ];
-  # Set your time zone.
-  # comment this due to the issue:
-  #   https://github.com/LnL7/nix-darwin/issues/359
-  # time.timeZone = "Asia/shanghai";
   fonts = {
     fontDir.enable = true;
     fonts = with pkgs; [
@@ -129,10 +134,14 @@
       (nerdfonts.override {
         fonts = [
           "FiraCode"
-          "JetBrainsMono"
-          "Iosevka"
         ];
       })
     ];
   };
+  programs.zsh.enable = true;
+  security.pam.enableSudoTouchIdAuth = true;
+  # Set your time zone.
+  # comment this due to the issue:
+  #   https://github.com/LnL7/nix-darwin/issues/359
+  # time.timeZone = "Asia/shanghai";
 }

@@ -1,7 +1,7 @@
 {
   description = "Nix for macOS configuration";
   nixConfig = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = ["nix-command" "flakes"];
   };
   inputs = {
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
@@ -14,7 +14,13 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
   };
-  outputs = inputs@{ self, nixpkgs, darwin, home-manager, ... } : {
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    darwin,
+    home-manager,
+    ...
+  }: {
     darwinConfigurations.UNiCORN = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
@@ -31,7 +37,6 @@
         }
       ];
     };
-#    # nix codee formmater
-#    formatter.x86_64-darwin = nixpkgs.legacyPackages.x86_64-darwin.alejandra;
+    formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
   };
 }
