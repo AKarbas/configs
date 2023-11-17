@@ -8,6 +8,7 @@
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
+    enableSyntaxHighlighting = true;
     autocd = true;
     shellAliases = {
       l = "ls -ahl";

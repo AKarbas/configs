@@ -3,10 +3,12 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      #      character = {
-      #        success_symbol = "[›](bold green)";
-      #        error_symbol = "[›](bold red)";
-      #      };
+      time = {
+        disabled = false;
+        utc_time_offset = "0";
+        time_format = "%T%.3f";
+        format = "[$time]($style)";
+      };
     };
   };
 }

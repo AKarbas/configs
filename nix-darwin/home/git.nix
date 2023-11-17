@@ -29,9 +29,9 @@
     };
     delta = {
       enable = true;
-      #      options = {
-      #        features = "side-by-side";
-      #      };
+      options = {
+        features = "side-by-side";
+      };
     };
   };
 }

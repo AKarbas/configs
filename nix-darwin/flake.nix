@@ -24,9 +24,10 @@
     ...
   }: let
     eachSystem = nixpkgs.lib.genAttrs (import systems);
+    system = "aarch64-darwin";
   in {
     darwinConfigurations.UNiCORN = darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
+      inherit system;
       modules = [
         ./modules/nix-core.nix
         ./modules/system.nix
