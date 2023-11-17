@@ -13,14 +13,18 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
+    systems.url = "github:nix-systems/default";
   };
   outputs = inputs @ {
     self,
     nixpkgs,
     darwin,
+    systems,
     home-manager,
     ...
-  }: {
+  }: let
+    eachSystem = nixpkgs.lib.genAttrs (import systems);
+  in {
     darwinConfigurations.UNiCORN = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
@@ -37,6 +41,6 @@
         }
       ];
     };
-    formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
+    formatter = eachSystem (system: nixpkgs.legacyPackages.${system}.alejandra);
   };
 }

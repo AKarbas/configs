@@ -118,8 +118,7 @@
     };
     keyboard = {
       enableKeyMapping = true;
-      remapCapsLockToControl = false;
-      remapCapsLockToEscape = true;
+      remapCapsLockToControl = true;
     };
   };
   environment.shells = [

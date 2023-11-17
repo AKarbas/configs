@@ -24,6 +24,7 @@
     nix-index
     p7zip
     parallel
+    restic
     ripgrep
     rsync
     sshuttle
