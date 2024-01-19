@@ -18,6 +18,8 @@
     htop-vim
     hugo
     iterm2
+    jetbrains.idea-ultimate
+    jdk
     jq
     mtr
     ninja
@@ -27,6 +29,7 @@
     restic
     ripgrep
     rsync
+    sbt
     sshuttle
     texlive.combined.scheme-full
     tmux
