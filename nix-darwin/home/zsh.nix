@@ -8,14 +8,12 @@
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     autocd = true;
     shellAliases = {
       l = "ls -ahl";
     };
-    history = {
-      extended = true;
-    };
+    history.extended = true;
     oh-my-zsh = {
       enable = true;
       plugins = [
