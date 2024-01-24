@@ -18,7 +18,6 @@
     htop-vim
     hugo
     iterm2
-    jetbrains.idea-ultimate
     jdk
     jq
     mtr
