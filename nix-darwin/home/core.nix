@@ -7,10 +7,12 @@
     cmake
     colima
     colordiff
+    direnv
     docker-client
     file
     fzf
     gawk
+    gnumake
     gnupg
     gnused
     gnutar
