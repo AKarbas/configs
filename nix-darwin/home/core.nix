@@ -32,7 +32,7 @@
     sshuttle
     texlive.combined.scheme-full
     tmux
-    tree
+    tre-command
     unzip
     which
     wireguard-go
