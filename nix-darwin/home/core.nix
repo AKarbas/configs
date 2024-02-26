@@ -3,6 +3,8 @@
     age
     axel
     bat
+    bazel_7
+    bazel-buildtools
     btop
     cmake
     colima
@@ -34,7 +36,7 @@
     sshuttle
     texlive.combined.scheme-full
     tmux
-    tre-command
+    tree
     unzip
     which
     wireguard-go
