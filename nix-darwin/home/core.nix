@@ -49,7 +49,6 @@
     zsh-completions
     zsh-fast-syntax-highlighting
     zsh-fzf-tab
-    zsh-you-should-use
     zsh-z
     zstd
   ];

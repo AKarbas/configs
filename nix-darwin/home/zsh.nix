@@ -5,6 +5,10 @@
   ...
 }: {
   programs.direnv.enable = true;
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+  };
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
@@ -14,7 +18,6 @@
     shellAliases = {
       l = "ls -ahl";
     };
-    history.extended = true;
     oh-my-zsh = {
       enable = true;
       plugins = [
