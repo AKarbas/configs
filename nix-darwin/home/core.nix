@@ -14,6 +14,7 @@
     file
     fzf
     gawk
+    gh
     gnumake
     gnupg
     gnused

@@ -3,8 +3,10 @@
   environment.systemPackages = with pkgs; [
     neovim
     git
+    tailscale
   ];
   environment.variables.EDITOR = "nvim";
+  services.tailscale.enable = true;
 
   # No homebrew unless absolutely necessary.
   #  # TODO To make this work, homebrew need to be installed manually, see https://brew.sh
