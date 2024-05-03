@@ -33,6 +33,7 @@
     restic
     ripgrep
     rsync
+    rustup
     sbt
     sshuttle
     texlive.combined.scheme-full
