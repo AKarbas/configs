@@ -61,17 +61,17 @@
       enable = true;
       defaultEditor = true;
       vimAlias = true;
+      extraConfig = ''
+	set number
+      '';
     };
-
     # A modern replacement for ‘ls’
     # useful in bash/zsh prompt, not in nushell.
     eza = {
       enable = true;
-      enableAliases = true;
+      enableZshIntegration = true;
       git = true;
-      icons = true;
     };
-
     # skim provides a single executable: sk.
     # Basically anywhere you would want to use grep, try sk instead.
     skim = {
