@@ -15,7 +15,7 @@
     enable = true;
     lfs.enable = true;
     userName = "Amin Karbas";
-    userEmail = "mkarbasf@ucsc.edu";
+    userEmail = "6280244+AKarbas@users.noreply.github.com";
     #    includes = [
     #      {
     #        # use diffrent email & name for work
@@ -26,9 +26,6 @@
     extraConfig = {
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
-    };
-    delta = {
-      enable = true;
     };
   };
 }

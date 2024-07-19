@@ -11,6 +11,5 @@
   nix.settings.auto-optimise-store = true;
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
-  programs.nix-index.enable = true;
   services.nix-daemon.enable = true;
 }

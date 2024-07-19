@@ -22,9 +22,13 @@
     shellAliases = {
       l = "ls -ahl";
     };
+    profileExtra = ''
+      export PATH=\"$PATH:/opt/homebrew/bin/\"
+    '';
     oh-my-zsh = {
       enable = true;
       plugins = [
+        "docker"
         "fzf"
         "macos"
         "z"

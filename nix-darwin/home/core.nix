@@ -27,6 +27,7 @@
     jq
     mtr
     ninja
+    nix
     nix-index
     p7zip
     parallel
@@ -40,6 +41,7 @@
     tmux
     tree
     unzip
+    watch
     which
     wireguard-go
     wireguard-tools
@@ -62,7 +64,7 @@
       defaultEditor = true;
       vimAlias = true;
       extraConfig = ''
-	set number
+        set number
       '';
     };
     # A modern replacement for ‘ls’
