@@ -125,8 +125,7 @@
     pkgs.zsh
   ];
   fonts = {
-    fontDir.enable = true;
-    fonts = with pkgs; [
+    packages = with pkgs; [
       material-design-icons
       font-awesome
       (nerdfonts.override {
