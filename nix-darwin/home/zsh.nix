@@ -23,13 +23,18 @@
       l = "ls -ahl";
     };
     profileExtra = ''
-      export PATH=\"$PATH:/opt/homebrew/bin/\"
+      export PATH="$PATH:/opt/homebrew/bin/"
+      export KUBECONFIG=~/.kube/config
     '';
     oh-my-zsh = {
       enable = true;
       plugins = [
+        "aws"
         "docker"
         "fzf"
+	"kubectl"
+	"kubectx"
+	"kube-ps1"
         "macos"
         "z"
         "git"

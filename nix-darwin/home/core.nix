@@ -2,10 +2,12 @@
   home.packages = with pkgs; [
     age
     axel
+    awscli2
     bat
     bazel_7
     bazel-buildtools
     btop
+    clang-tools
     cmake
     colima
     colordiff
@@ -25,23 +27,39 @@
     iterm2
     jdk
     jq
+    k6
+    kns
+    krew
+    kubectl
+    kubectl-explore
+    kubectl-tree
+    kubernetes-helm
+    kubie
     mtr
     ninja
     nix
     nix-index
+    nodejs
+    nodePackages.nodemon
     p7zip
     parallel
+    postgresql
     restic
     ripgrep
     rsync
     rustup
     sbt
+    skaffold
     sshuttle
+    terraform
+    terragrunt
     texlive.combined.scheme-full
     tmux
     tree
     unzip
+    uutils-coreutils
     watch
+    wget
     which
     wireguard-go
     wireguard-tools
