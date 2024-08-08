@@ -24,7 +24,6 @@
     go
     htop-vim
     hugo
-    iterm2
     jdk
     jq
     k6

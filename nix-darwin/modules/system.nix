@@ -41,6 +41,7 @@
         AppleShowAllFiles = true;
         FXEnableExtensionChangeWarning = false;
         FXPreferredViewStyle = "Nlsv";
+        QuitMenuItem = true;
         ShowPathbar = true;
         ShowStatusBar = true;
       };
@@ -54,9 +55,8 @@
         "com.apple.sound.beep.feedback" = 0;
         "com.apple.sound.beep.volume" = 0.5;
         "com.apple.springing.enabled" = true;
+        AppleInterfaceStyleSwitchesAutomatically = true;
         AppleICUForce24HourTime = true;
-        AppleInterfaceStyle = "Dark";
-        #AppleKeyboardUIMode = 3;
         ApplePressAndHoldEnabled = false;
         InitialKeyRepeat = 15; # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
         KeyRepeat = 2; # normal minimum is 2 (30 ms), maximum is 120 (1800 ms)

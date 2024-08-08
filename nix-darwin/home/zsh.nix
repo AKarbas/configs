@@ -9,10 +9,6 @@
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
-  programs.atuin = {
-    enable = true;
-    enableZshIntegration = true;
-  };
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -32,9 +28,9 @@
         "aws"
         "docker"
         "fzf"
-	"kubectl"
-	"kubectx"
-	"kube-ps1"
+        "kubectl"
+        "kubectx"
+        "kube-ps1"
         "macos"
         "z"
         "git"
