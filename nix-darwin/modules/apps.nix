@@ -51,6 +51,7 @@
       "raycast"
       "rectangle"
       "visual-studio-code"
+      "zed"
       "zoom"
     ];
   };
