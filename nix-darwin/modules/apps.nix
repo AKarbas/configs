@@ -39,6 +39,7 @@
       "clipy"
       "docker"
       "firefox"
+      "github"
       "google-chrome"
       "iglance"
       "iterm2"
