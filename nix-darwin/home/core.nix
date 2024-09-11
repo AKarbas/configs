@@ -27,12 +27,13 @@
     jdk
     jq
     k6
+    k9s
     kns
     krew
     kubectl
     kubectl-explore
-    kubectl-tree
     kubernetes-helm
+    kubernetes-helmPlugins.helm-diff
     kubie
     mtr
     ninja
@@ -63,6 +64,7 @@
     wireguard-go
     wireguard-tools
     xz
+    yamllint
     yq-go
     zip
     zsh
