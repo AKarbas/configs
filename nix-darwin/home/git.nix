@@ -26,6 +26,7 @@
     extraConfig = {
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
+      advice.detachedHead = false;
     };
   };
 }
