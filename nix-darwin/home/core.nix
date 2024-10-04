@@ -41,8 +41,10 @@
     nix-index
     nodejs
     nodePackages.nodemon
+    nodePackages.ts-node
     p7zip
     parallel
+    poetry
     postgresql
     restic
     ripgrep
@@ -56,6 +58,7 @@
     texlive.combined.scheme-full
     tmux
     tree
+    typescript
     unzip
     uutils-coreutils
     watch
