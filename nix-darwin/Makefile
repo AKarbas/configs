@@ -6,7 +6,7 @@ darwin:
 	./result/sw/bin/darwin-rebuild switch --flake .#UNiCORN
 
 .PHONY: darwin-debug
-darwin-debug: darwin-set-proxy
+darwin-debug:
 	nix build .#darwinConfigurations.UNiCORN.system --show-trace --verbose \
 		--extra-experimental-features 'nix-command flakes'
 

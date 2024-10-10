@@ -31,7 +31,7 @@
       "homebrew/services"
     ];
     brews = [
-      "qmk/qmk/qmk"
+      "robusta-dev/homebrew-holmesgpt/holmesgpt"
     ];
     casks = [
       "aws-vpn-client"
