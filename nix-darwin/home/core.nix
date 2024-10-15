@@ -46,6 +46,7 @@
     parallel
     poetry
     postgresql
+    python312
     restic
     ripgrep
     rsync
