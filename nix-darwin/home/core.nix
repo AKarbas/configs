@@ -7,6 +7,7 @@
     bazel_7
     bazel-buildtools
     btop
+    buf-language-server
     clang-tools
     cmake
     colima
