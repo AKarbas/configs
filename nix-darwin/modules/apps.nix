@@ -29,9 +29,12 @@
     };
     taps = [
       "homebrew/services"
+      "robusta-dev/homebrew-holmesgpt"
+      "withgraphite/tap"
     ];
     brews = [
-      "robusta-dev/homebrew-holmesgpt/holmesgpt"
+      "graphite"
+      "holmesgpt"
     ];
     casks = [
       "aws-vpn-client"
