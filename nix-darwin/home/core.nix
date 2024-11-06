@@ -12,6 +12,7 @@
     cmake
     colima
     colordiff
+    deno
     direnv
     docker-client
     file
