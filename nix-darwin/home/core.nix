@@ -48,7 +48,7 @@
     parallel
     poetry
     postgresql
-    python312
+    python313
     restic
     ripgrep
     rsync
@@ -119,7 +119,7 @@
       fi
 
       # Perform interactive rebase with the selected or provided commit
-      GIT_SEQUENCE_EDITOR="perl -i -pe 's/^(pick $commit_hash.*)$/$1\\nexec $spr_command --cherry-pick /'" git rebase -i $merge_base
+      GIT_SEQUENCE_EDITOR="perl -i -pe 's/^(pick $commit_hash.*)$/\$1\\nexec $spr_command --cherry-pick /'" git rebase -i $merge_base
     '')
     (pkgs.writeShellScriptBin "git-vimdiff" ''
       #!/bin/bash
