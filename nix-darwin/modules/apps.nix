@@ -33,8 +33,10 @@
       "withgraphite/tap"
     ];
     brews = [
+      "clang-format"
       "graphite"
       "holmesgpt"
+      "zstd"
     ];
     casks = [
       "aws-vpn-client"
