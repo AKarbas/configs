@@ -7,6 +7,7 @@
   home = {
     sessionPath = [
       "/opt/homebrew/bin/"
+      "${config.home.homeDirectory}/go/bin/"
     ];
     sessionVariables = {
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
