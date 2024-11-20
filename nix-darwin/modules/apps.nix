@@ -36,6 +36,8 @@
       "clang-format"
       "graphite"
       "holmesgpt"
+      "minikube"
+      "tilt"
       "zstd"
     ];
     casks = [
