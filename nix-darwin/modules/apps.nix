@@ -34,6 +34,7 @@
     ];
     brews = [
       "clang-format"
+      "duckdb"
       "graphite"
       "holmesgpt"
       "minikube"

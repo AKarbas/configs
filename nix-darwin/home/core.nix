@@ -66,6 +66,7 @@
     unzip
     uutils-coreutils
     watch
+    watchman
     wget
     which
     wireguard-go
