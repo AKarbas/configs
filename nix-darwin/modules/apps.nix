@@ -37,6 +37,7 @@
       "duckdb"
       "graphite"
       "holmesgpt"
+      "llm"
       "minikube"
       "tilt"
       "zstd"
