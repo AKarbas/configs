@@ -45,7 +45,6 @@
     casks = [
       "aws-vpn-client"
       "chatgpt"
-      "clipy"
       "docker"
       "firefox"
       "github"
@@ -56,6 +55,7 @@
       "karabiner-elements"
       "keymapp"
       "linear-linear"
+      "maccy"
       "openinterminal-lite"
       "postman"
       "raycast"
