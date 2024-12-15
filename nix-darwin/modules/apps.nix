@@ -36,6 +36,7 @@
       "clang-format"
       "duckdb"
       "graphite"
+      "headlamp"
       "holmesgpt"
       "llm"
       "minikube"
