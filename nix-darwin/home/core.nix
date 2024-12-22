@@ -1,11 +1,11 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     age
-    axel
     awscli2
+    axel
     bat
-    bazel_7
     bazel-buildtools
+    bazel_7
     btop
     buf-language-server
     clang-tools
@@ -41,9 +41,9 @@
     ninja
     nix
     nix-index
-    nodejs
     nodePackages.nodemon
     nodePackages.ts-node
+    nodejs
     p7zip
     parallel
     poetry

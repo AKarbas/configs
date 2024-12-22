@@ -1,8 +1,8 @@
 {pkgs, ...}: {
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
   environment.systemPackages = with pkgs; [
-    neovim
     git
+    neovim
     tailscale
   ];
   environment.variables.EDITOR = "nvim";
@@ -29,6 +29,7 @@
     };
     taps = [
       "homebrew/services"
+      "ngrok/ngrok"
       "robusta-dev/homebrew-holmesgpt"
       "withgraphite/tap"
     ];
@@ -57,6 +58,7 @@
       "keymapp"
       "linear-linear"
       "maccy"
+      "ngrok"
       "openinterminal-lite"
       "postman"
       "raycast"
