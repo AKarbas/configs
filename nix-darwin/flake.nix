@@ -1,10 +1,15 @@
 {
-  nixConfig.experimental-features = ["nix-command" "flakes"];
+  nixConfig = {
+    extra-trusted-substituters = ["https://cache.flox.dev"];
+    extra-trusted-public-keys = ["flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="];
+    experimental-features = ["nix-command" "flakes"];
+  };
+
   inputs = {
-    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
+    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
     nixpkgs.follows = "nixpkgs-darwin";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
     darwin = {
@@ -16,14 +21,8 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
   };
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    home-manager,
-    darwin,
-    flox,
-    ...
-  }: {
+
+  outputs = inputs @ { self, nixpkgs, home-manager, darwin, flox, ... }: {
     darwinConfigurations.UNiCORN = darwin.lib.darwinSystem {
       specialArgs.flox = flox;
       system = "aarch64-darwin";

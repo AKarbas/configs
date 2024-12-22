@@ -1,7 +1,7 @@
 {pkgs, flox, ...}: {
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
   environment.systemPackages = with pkgs; [
-    flox
+    flox.packages.aarch64-darwin.default
     git
     neovim
     tailscale

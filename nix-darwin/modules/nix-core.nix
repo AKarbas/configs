@@ -8,7 +8,7 @@
     options = lib.mkDefault "--delete-older-than 1w";
   };
   nix.package = pkgs.nixVersions.latest;
-  nix.settings.auto-optimise-store = true;
+  nix.optimise.automatic = true;
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
   services.nix-daemon.enable = true;
