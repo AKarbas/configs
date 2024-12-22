@@ -121,18 +121,12 @@
       remapCapsLockToControl = true;
     };
   };
-  environment.shells = [
-    pkgs.zsh
-  ];
+  environment.shells = with pkgs; [ zsh ];
   fonts = {
     packages = with pkgs; [
       material-design-icons
       font-awesome
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-        ];
-      })
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
   };
   programs.zsh.enable = true;
