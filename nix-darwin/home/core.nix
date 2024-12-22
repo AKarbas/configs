@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, flox, ...}: {
   home.packages = with pkgs; [
     age
     awscli2
@@ -16,6 +16,7 @@
     direnv
     docker-client
     file
+    flox
     fzf
     gawk
     gh
