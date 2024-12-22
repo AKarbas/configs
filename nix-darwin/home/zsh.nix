@@ -16,7 +16,7 @@
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
-    enter_accept = false;
+    settings = { enter_accept = false; };
   };
   programs.direnv = {
     enable = true;
