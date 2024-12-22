@@ -11,6 +11,7 @@
 ###################################################################################
 {
   system = {
+    stateVersion = 5;
     activationScripts.postUserActivation.text = ''
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     '';
@@ -32,7 +33,7 @@
         show-recents = false;
         tilesize = 64;
         expose-animation-duration = 0.0;
-        expose-group-by-app = true;
+        expose-group-apps = false; # used to be true - testing
         launchanim = false;
       };
       finder = {

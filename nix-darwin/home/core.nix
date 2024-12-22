@@ -7,16 +7,15 @@
     bazel-buildtools
     bazel_7
     btop
-    buf-language-server
+    buf
     clang-tools
     cmake
-    colima
     colordiff
     deno
     direnv
     docker-client
     file
-    flox
+    flox.packages.aarch64-darwin.default # not from pkgs
     fzf
     gawk
     gh
@@ -42,6 +41,7 @@
     ninja
     nix
     nix-index
+    nixd
     nodePackages.nodemon
     nodePackages.ts-node
     nodejs
@@ -60,7 +60,6 @@
     sshuttle
     terraform
     terragrunt
-    texlive.combined.scheme-full
     tmux
     tree
     typescript
