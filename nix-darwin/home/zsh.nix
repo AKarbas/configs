@@ -16,7 +16,9 @@
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
-    settings = { enter_accept = false; };
+    # This does not work if a config for atuin already exists
+    # https://github.com/nix-community/home-manager/issues/5734
+    settings.enter_accept = false;
   };
   programs.direnv = {
     enable = true;
