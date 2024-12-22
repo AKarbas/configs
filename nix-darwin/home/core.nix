@@ -1,4 +1,9 @@
-{pkgs, flox, ...}: {
+{
+  pkgs,
+  flox,
+  ...
+}:
+{
   home.packages = with pkgs; [
     age
     awscli2

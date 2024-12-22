@@ -1,4 +1,9 @@
-{pkgs, flox, ...}: {
+{
+  pkgs,
+  flox,
+  ...
+}:
+{
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
   environment.systemPackages = with pkgs; [
     flox.packages.aarch64-darwin.default
