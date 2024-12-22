@@ -11,16 +11,21 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
-    systems.url = "github:nix-systems/default";
+    flox = {
+      url = "github:flox/flox";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
   };
   outputs = inputs @ {
     self,
     nixpkgs,
     home-manager,
     darwin,
+    flox,
     ...
   }: {
     darwinConfigurations.UNiCORN = darwin.lib.darwinSystem {
+      specialArgs.flox = flox;
       system = "aarch64-darwin";
       modules = [
         ./modules/nix-core.nix
