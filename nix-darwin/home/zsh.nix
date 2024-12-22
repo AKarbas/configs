@@ -13,6 +13,11 @@
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
     };
   };
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    enter_accept = false;
+  };
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
