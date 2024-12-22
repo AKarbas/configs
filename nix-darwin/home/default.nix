@@ -1,6 +1,8 @@
-{...}: let
+{ ... }:
+let
   username = "amin";
-in {
+in
+{
   imports = [
     ./core.nix
     ./git.nix

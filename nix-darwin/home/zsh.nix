@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   home = {
     sessionPath = [
       "/opt/homebrew/bin/"
