@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -102,13 +103,19 @@
         "aws"
         "docker"
         "fzf"
+        "git"
+        "kube-ps1"
         "kubectl"
         "kubectx"
-        "kube-ps1"
         "macos"
         "z"
-        "git"
       ];
     };
+    plugins = [
+      {
+        name = "zsh-vi-mode";
+        src = "${pkgs.zsh-vi-mode}/share/zsh-vi-mode";
+      }
+    ];
   };
 }

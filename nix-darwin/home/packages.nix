@@ -95,6 +95,7 @@ let
     zsh-completions
     zsh-fast-syntax-highlighting
     zsh-fzf-tab
+    zsh-vi-mode
     zsh-z
   ];
 
