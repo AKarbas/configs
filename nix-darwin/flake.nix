@@ -26,8 +26,7 @@
   };
 
   outputs =
-    inputs@{
-      self,
+    {
       nixpkgs,
       home-manager,
       darwin,
@@ -47,8 +46,15 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = inputs;
-            home-manager.users.amin = import ./home;
+            home-manager.extraSpecialArgs = { inherit flox; };
+            home-manager.users.amin =
+              { ... }:
+              {
+                imports = [
+                  ./home/configs.nix
+                  ./home/packages.nix
+                ];
+              };
           }
         ];
       };

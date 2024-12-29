@@ -1,12 +1,10 @@
 {
   pkgs,
-  flox,
   ...
 }:
 {
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
   environment.systemPackages = with pkgs; [
-    flox.packages.aarch64-darwin.default
     git
     neovim
     tailscale
@@ -24,6 +22,7 @@
     onActivation = {
       autoUpdate = true;
       # 'zap': uninstalls all formulae(and related files) not listed here.
+      # Disable if you want to keep ad-hoc installed formulae.
       cleanup = "zap";
     };
 
@@ -37,17 +36,8 @@
       "homebrew/services"
       "ngrok/ngrok"
       "robusta-dev/homebrew-holmesgpt"
-      "withgraphite/tap"
     ];
     brews = [
-      "clang-format"
-      "duckdb"
-      "graphite"
-      "holmesgpt"
-      "llm"
-      "minikube"
-      "tilt"
-      "zstd"
     ];
     casks = [
       "aws-vpn-client"
