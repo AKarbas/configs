@@ -57,6 +57,7 @@ let
     p7zip
     parallel
     poetry
+    poetryPlugins.poetry-plugin-up
     postgresql
     python313
     restic

@@ -92,7 +92,6 @@
     autosuggestion.enable = true;
     enable = true;
     enableCompletion = true;
-    historySubstringSearch.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
       l = "ls -ahl";
@@ -110,11 +109,18 @@
         "macos"
         "z"
       ];
+      extraConfig = ''
+        DISABLE_FZF_KEY_BINDINGS="true"
+      '';
     };
     plugins = [
       {
         name = "zsh-vi-mode";
         src = "${pkgs.zsh-vi-mode}/share/zsh-vi-mode";
+      }
+      {
+        name = "fzf-tab";
+        src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
       }
     ];
   };
