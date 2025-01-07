@@ -106,7 +106,7 @@ let
   ];
 
   nonPkgsPackages = [
-    flox.packages.aarch64-darwin.default
+    flox.packages.${pkgs.system}.default
   ];
 in
 {
