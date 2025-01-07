@@ -5,12 +5,17 @@
 {
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
   environment.systemPackages = with pkgs; [
+    curl
     git
     neovim
+    tailscale
+    wget
+    zsh
     tailscale
   ];
   environment.variables.EDITOR = "nvim";
   services.tailscale.enable = true;
+  services.nix-daemon.enable = true;
 
   # TODO To make this work, homebrew need to be installed manually, see https://brew.sh
   #
