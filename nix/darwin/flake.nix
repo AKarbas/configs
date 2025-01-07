@@ -38,7 +38,7 @@
         specialArgs.flox = flox;
         system = "aarch64-darwin";
         modules = [
-          ./modules/nix-core.nix
+          ../common/modules/nix-core.nix
           ./modules/system.nix
           ./modules/apps.nix
           ./modules/host-users.nix
@@ -51,8 +51,8 @@
               { ... }:
               {
                 imports = [
-                  ./home/configs.nix
-                  ./home/packages.nix
+                  ../common/home/configs.nix
+                  ../common/home/packages.nix
                 ];
               };
           }
