@@ -22,6 +22,7 @@ let
     direnv
     docker-client
     duckdb
+    fd
     file
     fzf
     gawk
