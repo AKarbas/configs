@@ -43,6 +43,8 @@
       "robusta-dev/homebrew-holmesgpt"
     ];
     brews = [
+      "clang-format"
+      "zstd"
     ];
     casks = [
       "aws-vpn-client"
