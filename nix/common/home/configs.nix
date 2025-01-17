@@ -81,6 +81,8 @@
     # https://github.com/nix-community/home-manager/issues/5734
     settings = {
       enter_accept = false;
+      keymap_mode = "vim-normal";
+      search_mode = "fuzzy";
     };
   };
   programs.direnv = {
@@ -102,7 +104,6 @@
       plugins = [
         "aws"
         "docker"
-        "fzf"
         "git"
         "kube-ps1"
         "kubectl"
@@ -112,6 +113,8 @@
       ];
       extraConfig = ''
         DISABLE_FZF_KEY_BINDINGS="true"
+        export ZVM_INIT_MODE=sourcing
+        bindkey '^r' _atuin_search_widget
       '';
     };
     plugins = [
