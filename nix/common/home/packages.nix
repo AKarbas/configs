@@ -24,6 +24,7 @@ let
     duckdb
     fd
     file
+    fswatch
     fzf
     gawk
     gh
