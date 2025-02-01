@@ -81,7 +81,6 @@
     # https://github.com/nix-community/home-manager/issues/5734
     settings = {
       enter_accept = false;
-      keymap_mode = "vim-normal";
       search_mode = "fuzzy";
     };
   };
