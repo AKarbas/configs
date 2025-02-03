@@ -9,32 +9,25 @@
   };
 
   inputs = {
-    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
-    nixpkgs.follows = "nixpkgs-darwin";
-    home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
-      inputs.nixpkgs.follows = "nixpkgs-darwin";
-    };
-    darwin = {
-      url = "github:lnl7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs-darwin";
-    };
-    flox = {
-      url = "github:flox/flox";
-      inputs.nixpkgs.follows = "nixpkgs-darwin";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
+    nix-darwin.url = "github:lnl7/nix-darwin/nix-darwin-24.11";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    flox.url = "github:flox/flox";
+    flox.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
     {
       nixpkgs,
       home-manager,
-      darwin,
+      nix-darwin,
       flox,
       ...
     }:
     {
-      darwinConfigurations.UNiCORN = darwin.lib.darwinSystem {
+      darwinConfigurations.UNiCORN = nix-darwin.lib.darwinSystem {
         specialArgs.flox = flox;
         system = "aarch64-darwin";
         modules = [

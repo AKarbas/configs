@@ -15,26 +15,6 @@
         "type": "github"
       }
     },
-    "darwin": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-darwin"
-        ]
-      },
-      "locked": {
-        "lastModified": 1733570843,
-        "narHash": "sha256-sQJAxY1TYWD1UyibN/FnN97paTFuwBw3Vp3DNCyKsMk=",
-        "owner": "lnl7",
-        "repo": "nix-darwin",
-        "rev": "a35b08d09efda83625bef267eb24347b446c80b8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lnl7",
-        "repo": "nix-darwin",
-        "type": "github"
-      }
-    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -78,18 +58,17 @@
         "crane": "crane",
         "fenix": "fenix",
         "nixpkgs": [
-          "nixpkgs-darwin"
+          "nixpkgs"
         ],
         "pre-commit-hooks": "pre-commit-hooks",
-        "sqlite3pp": "sqlite3pp",
         "t3-src": "t3-src"
       },
       "locked": {
-        "lastModified": 1734711296,
-        "narHash": "sha256-1P2YTmLJU4WRNMlrZ9y/0EdDPqTXCcHdZy0mgXtaeuc=",
+        "lastModified": 1738368970,
+        "narHash": "sha256-GJudAKO8a65bhSPn8mYBiE7kzsjFSZPgHNXlK2Q8rvY=",
         "owner": "flox",
         "repo": "flox",
-        "rev": "8dab71553e2b9cccf38f777f88ab416438a748bc",
+        "rev": "4345ecd943d2e22afa1b40c57c6c183e015bb6fc",
         "type": "github"
       },
       "original": {
@@ -123,15 +102,15 @@
     "home-manager": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-darwin"
+          "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1734366194,
-        "narHash": "sha256-vykpJ1xsdkv0j8WOVXrRFHUAdp9NXHpxdnn1F4pYgSw=",
+        "lastModified": 1736373539,
+        "narHash": "sha256-dinzAqCjenWDxuy+MqUQq0I4zUSfaCvN9rzuCmgMZJY=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "80b0fdf483c5d1cb75aaad909bd390d48673857f",
+        "rev": "bd65bc3cde04c16755955630b344bc9e35272c56",
         "type": "github"
       },
       "original": {
@@ -141,13 +120,34 @@
         "type": "github"
       }
     },
-    "nixpkgs-darwin": {
+    "nix-darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1734761983,
-        "narHash": "sha256-U1kYa/N53vruy1E/E/n7NxsJDbTkVQmC7TCdTeNieSE=",
+        "lastModified": 1737421067,
+        "narHash": "sha256-/hgw8fDKDpko0XqOw1e9tX8lS2Hqecg7W/JsONun6Qc=",
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "rev": "cae8d1c4a3bd37be5887203fe3b0c3a860c53a07",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lnl7",
+        "ref": "nix-darwin-24.11",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1738148668,
+        "narHash": "sha256-arE53pUYTdPbQ0Ctrd1xtltngqKn2EzIOKGhA480DvY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d38b1bc9ef4bf6ca6726e0681895e1c3e8215a49",
+        "rev": "7dfcd13937964a3592766064a8bed6d2b9666eaa",
         "type": "github"
       },
       "original": {
@@ -199,13 +199,10 @@
     },
     "root": {
       "inputs": {
-        "darwin": "darwin",
         "flox": "flox",
         "home-manager": "home-manager",
-        "nixpkgs": [
-          "nixpkgs-darwin"
-        ],
-        "nixpkgs-darwin": "nixpkgs-darwin"
+        "nix-darwin": "nix-darwin",
+        "nixpkgs": "nixpkgs"
       }
     },
     "rust-analyzer-src": {
@@ -222,27 +219,6 @@
         "owner": "rust-lang",
         "ref": "nightly",
         "repo": "rust-analyzer",
-        "type": "github"
-      }
-    },
-    "sqlite3pp": {
-      "inputs": {
-        "nixpkgs": [
-          "flox",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1691154329,
-        "narHash": "sha256-nMtwh/G1/Zt70rl540jn+nFVJuju0NdXJwk2Y3pNB+k=",
-        "owner": "aakropotkin",
-        "repo": "sqlite3pp",
-        "rev": "775e48a6c7a63a51585cd628f6c9816ba634a246",
-        "type": "github"
-      },
-      "original": {
-        "owner": "aakropotkin",
-        "repo": "sqlite3pp",
         "type": "github"
       }
     },
