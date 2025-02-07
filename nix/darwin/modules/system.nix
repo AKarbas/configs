@@ -122,7 +122,10 @@
       remapCapsLockToControl = true;
     };
   };
-  environment.shells = with pkgs; [ zsh ];
+  environment.shells = with pkgs; [
+    nushell
+    zsh
+  ];
   fonts = {
     packages = with pkgs; [
       material-design-icons
