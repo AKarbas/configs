@@ -92,6 +92,14 @@ let
     zstd
   ];
 
+  nushellPackages = with pkgs; [
+    nushell
+    nushellPlugins.formats
+    nushellPlugins.gstat
+    nushellPlugins.net
+    nushellPlugins.units
+  ];
+
   zshPackages = with pkgs; [
     zsh
     zsh-autocomplete
@@ -112,5 +120,5 @@ let
   ];
 in
 {
-  home.packages = customScripts ++ nonPkgsPackages ++ zshPackages ++ standardPackages;
+  home.packages = customScripts ++ nonPkgsPackages ++ nushellPackages ++ zshPackages ++ standardPackages;
 }

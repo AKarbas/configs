@@ -8,10 +8,10 @@
     curl
     git
     neovim
+    nushell
     tailscale
     wget
     zsh
-    tailscale
   ];
   environment.variables.EDITOR = "nvim";
   services.tailscale.enable = true;

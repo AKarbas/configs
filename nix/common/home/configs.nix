@@ -76,6 +76,7 @@
   };
   programs.atuin = {
     enable = true;
+    enableNushellIntegration = true;
     enableZshIntegration = true;
     # This does not work if a config for atuin already exists
     # https://github.com/nix-community/home-manager/issues/5734
@@ -88,6 +89,9 @@
     enable = true;
     enableZshIntegration = true;
     nix-direnv.enable = true;
+  };
+  programs.nushell = {
+    enable = true;
   };
   programs.zsh = {
     autocd = true;
