@@ -66,6 +66,7 @@
       "postman"
       "raycast"
       "rectangle"
+      "thunderbird"
       "visual-studio-code"
       "zed"
       "zoom"
