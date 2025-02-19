@@ -56,6 +56,7 @@ let
     nodePackages.nodemon
     nodePackages.ts-node
     nodejs
+    ollama
     p7zip
     parallel
     poetry
