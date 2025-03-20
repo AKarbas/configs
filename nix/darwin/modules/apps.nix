@@ -49,6 +49,7 @@
     casks = [
       "aws-vpn-client"
       "chatgpt"
+      "cloudflare-warp"
       "docker"
       "firefox"
       "github"
@@ -66,6 +67,7 @@
       "postman"
       "raycast"
       "rectangle"
+      "thelowtechguys-cling"
       "thunderbird"
       "visual-studio-code"
       "zed"
