@@ -40,10 +40,11 @@
     taps = [
       "homebrew/services"
       "ngrok/ngrok"
-      "robusta-dev/homebrew-holmesgpt"
+      "robusta-dev/holmesgpt"
     ];
     brews = [
       "clang-format"
+      "holmesgpt"
       "zstd"
     ];
     casks = [

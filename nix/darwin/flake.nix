@@ -15,41 +15,50 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     flox.url = "github:flox/flox";
-    flox.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
     {
-      nixpkgs,
+      flox,
       home-manager,
       nix-darwin,
-      flox,
+      nixpkgs,
       ...
     }:
+    let
+      floxConfig =
+        { pkgs, ... }:
+        {
+          environment.systemPackages = [ flox.packages.${pkgs.system}.default ];
+          nix.settings = {
+            substituters = [ "https://cache.flox.dev" ];
+            trusted-public-keys = [ "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs=" ];
+          };
+        };
+      homeManagerConfig = {
+        home-manager.backupFileExtension = "bak";
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users.amin = {
+          imports = [
+            ../common/home/configs.nix
+            ../common/home/packages.nix
+          ];
+        };
+      };
+    in
     {
       darwinConfigurations.UNiCORN = nix-darwin.lib.darwinSystem {
         specialArgs.flox = flox;
         system = "aarch64-darwin";
         modules = [
+          floxConfig
           ../common/modules/nix-core.nix
           ./modules/system.nix
           ./modules/apps.nix
           ./modules/host-users.nix
           home-manager.darwinModules.home-manager
-          {
-            home-manager.backupFileExtension = "bak";
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit flox; };
-            home-manager.users.amin =
-              { ... }:
-              {
-                imports = [
-                  ../common/home/configs.nix
-                  ../common/home/packages.nix
-                ];
-              };
-          }
+          homeManagerConfig
         ];
       };
       formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
