@@ -1,8 +1,4 @@
-{
-  pkgs,
-  flox,
-  ...
-}:
+{ pkgs, ... }:
 let
   makeScript = name: script: pkgs.writeShellScriptBin name (builtins.readFile script);
 
@@ -62,6 +58,7 @@ let
     poetry
     poetryPlugins.poetry-plugin-up
     postgresql
+    procs
     python313
     restic
     ripgrep
@@ -115,11 +112,5 @@ let
     (makeScript "git-spr-single" ./scripts/git-spr-single.sh)
     (makeScript "git-vimdiff" ./scripts/git-vimdiff.sh)
   ];
-
-  nonPkgsPackages = [
-    flox.packages.${pkgs.system}.default
-  ];
 in
-{
-  home.packages = customScripts ++ nonPkgsPackages ++ nushellPackages ++ zshPackages ++ standardPackages;
-}
+{ home.packages = customScripts ++ nushellPackages ++ zshPackages ++ standardPackages; }
