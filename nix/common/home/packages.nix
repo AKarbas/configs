@@ -3,6 +3,7 @@ let
   makeScript = name: script: pkgs.writeShellScriptBin name (builtins.readFile script);
 
   standardPackages = with pkgs; [
+    act
     age
     awscli2
     axel
