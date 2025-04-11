@@ -36,9 +36,16 @@
           d_symbol = "[V](bold green) ";
         };
         cmd_duration = { min_time = 0; show_milliseconds = true; };
-        directory = { fish_style_pwd_dir_length = 1; };
-        direnv = { disabled = false; };
-        git_commit = { only_detached = false; tab_disabled = false; };
+        directory = { fish_style_pwd_dir_length = 3; };
+        direnv = {
+          disabled = false;
+          format = "[$symbol($loaded$allowed)](bold white) ";
+          allowed_msg = "✔";
+          denied_msg = "✗";
+          not_allowed_msg = "🔘";
+          loaded_msg = "";
+        };
+        git_commit = { only_detached = false; tag_disabled = false; };
         git_metrics = { disabled = false; };
         kubernetes = { disabled = false; };
         sudo = { disabled = false; };
