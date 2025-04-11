@@ -30,15 +30,24 @@
       enable = true;
       enableZshIntegration = true;
       settings = {
+        character = {
+          success_symbol = "[➜](bold green) ";
+          error_symbol = "[✗](bold red) ";
+          d_symbol = "[V](bold green) ";
+        };
+        cmd_duration = { min_time = 0; show_milliseconds = true; };
+        directory = { fish_style_pwd_dir_length = 1; };
+        direnv = { disabled = false; };
+        git_commit = { only_detached = false; tab_disabled = false; };
+        git_metrics = { disabled = false; };
+        kubernetes = { disabled = false; };
+        sudo = { disabled = false; };
         time = {
           disabled = false;
           utc_time_offset = "0";
           time_format = "%T%.3f";
           format = "[$time]($style)";
         };
-	kubernetes = {
-	  disabled = false;
-	};
       };
     };
     neovim = {
