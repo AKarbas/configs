@@ -36,6 +36,9 @@
           time_format = "%T%.3f";
           format = "[$time]($style)";
         };
+	kubernetes = {
+	  disabled = false;
+	};
       };
     };
     neovim = {
@@ -121,7 +124,6 @@
         "aws"
         "docker"
         "git"
-        "kube-ps1"
         "kubectl"
         "kubectx"
         "macos"
