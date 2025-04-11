@@ -30,11 +30,7 @@
       enable = true;
       enableZshIntegration = true;
       settings = {
-        character = {
-          success_symbol = "[➜](bold green) ";
-          error_symbol = "[✗](bold red) ";
-          d_symbol = "[V](bold green) ";
-        };
+        character = { error_symbol = "[✗](bold red)"; };
         cmd_duration = { min_time = 0; show_milliseconds = true; };
         directory = { fish_style_pwd_dir_length = 3; };
         direnv = {
