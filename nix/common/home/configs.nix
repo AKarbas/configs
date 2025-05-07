@@ -116,6 +116,9 @@
     syntaxHighlighting.enable = true;
     shellAliases = {
       l = "ls -ahl";
+      gsh = "git show --stat --patch";
+      sd = "git-spr-single diff";
+      sl = "git-spr-single land";
     };
     initExtra = ''
       function cling() {
