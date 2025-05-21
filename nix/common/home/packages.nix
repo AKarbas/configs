@@ -18,6 +18,7 @@ let
     deno
     direnv
     docker-client
+    docker-credential-helpers
     duckdb
     fd
     file
