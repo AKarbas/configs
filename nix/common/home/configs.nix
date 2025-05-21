@@ -119,6 +119,8 @@
       gsh = "git show --stat --patch";
       sd = "git-spr-single diff";
       sl = "git-spr-single land";
+      tf = "terraform";
+      tg = "terragrunt";
     };
     initExtra = ''
       function cling() {
