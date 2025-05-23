@@ -84,6 +84,7 @@
     sessionPath = [
       "/opt/homebrew/bin/"
       "${config.home.homeDirectory}/go/bin/"
+      "/Applications/Docker.app/Contents/Resources/bin"
     ];
     sessionVariables = {
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";

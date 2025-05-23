@@ -4,21 +4,16 @@ let
 
   standardPackages = with pkgs; [
     act
-    age
     awscli2
     axel
     bat
-    bazel-buildtools
-    bazel_7
     btop
     buf
     clang-tools
     cmake
     colordiff
-    deno
     direnv
     docker-client
-    docker-credential-helpers
     duckdb
     fd
     file
@@ -33,9 +28,7 @@ let
     go
     htop-vim
     hugo
-    jdk
     jq
-    k6
     k9s
     kns
     krew
@@ -43,18 +36,12 @@ let
     kubectl-explore
     kubernetes-helm
     kubernetes-helmPlugins.helm-diff
-    kubie
-    llm
     minikube
     mtr
     ninja
     nix
     nix-index
     nixd
-    nodePackages.nodemon
-    nodePackages.ts-node
-    nodejs
-    ollama
     p7zip
     parallel
     poetry
@@ -62,33 +49,22 @@ let
     postgresql
     procs
     python313
-    restic
     ripgrep
     rsync
-    rustup
-    sbt
     skaffold
     spr
-    sshuttle
     terraform
     terragrunt
-    tilt
     tmux
     tree
-    typescript
     unzip
     uutils-coreutils
     watch
-    watchman
     wget
     which
-    wireguard-go
-    wireguard-tools
     xz
-    yamllint
     yq-go
     zip
-    zstd
     zstd
   ];
 

@@ -44,6 +44,7 @@
     ];
     brews = [
       "clang-format"
+      "docker-credential-helper"
       "holmesgpt"
       "zstd"
     ];
