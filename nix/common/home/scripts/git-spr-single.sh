@@ -22,7 +22,7 @@ merge_base=$(git merge-base HEAD origin/main)
 if [[ $# -eq 2 ]]; then
   commit_hash=$(git rev-parse "$2")
 else
-  commit=$(git log --oneline $merge_base..HEAD | fzf --layout=reverse-list --height 80% --prompt "Select commit:" --preview "git show {1}")
+  commit=$(git log --oneline $merge_base..HEAD | fzf --layout=reverse-list --height 80% --prompt "Select commit:" --preview "git show --color=always {1}")
   [[ -n "$commit" ]]
   commit_hash=$(echo $commit | awk '{print $1}')
 fi
