@@ -85,9 +85,11 @@
       "/opt/homebrew/bin/"
       "${config.home.homeDirectory}/go/bin/"
       "/Applications/Docker.app/Contents/Resources/bin"
+      "${config.home.homeDirectory}/.npm-global/bin"
     ];
     sessionVariables = {
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
+      npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
     };
   };
   programs.atuin = {
