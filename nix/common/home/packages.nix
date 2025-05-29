@@ -42,6 +42,9 @@ let
     nix
     nix-index
     nixd
+    nodePackages.nodemon
+    nodePackages.ts-node
+    nodejs
     p7zip
     parallel
     poetry
@@ -57,6 +60,7 @@ let
     terragrunt
     tmux
     tree
+    typescript
     unzip
     uutils-coreutils
     watch
