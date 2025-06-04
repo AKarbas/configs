@@ -10,11 +10,11 @@
 #
 ###################################################################################
 {
+  # Fix for nixbld group GID mismatch
+  ids.gids.nixbld = 30000;
+
   system = {
     stateVersion = 5;
-    activationScripts.postUserActivation.text = ''
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    '';
     defaults = {
       menuExtraClock = {
         ShowDate = 0; # true
@@ -130,11 +130,11 @@
     packages = with pkgs; [
       material-design-icons
       font-awesome
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      nerd-fonts.fira-code
     ];
   };
   programs.zsh.enable = true;
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
   # Set your time zone.
   # comment this due to the issue:
   #   https://github.com/LnL7/nix-darwin/issues/359

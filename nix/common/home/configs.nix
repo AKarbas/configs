@@ -125,7 +125,7 @@
       tf = "terraform";
       tg = "terragrunt";
     };
-    initExtra = ''
+    initContent = ''
       function cling() {
         local folders=()
         for arg in "$@"; do

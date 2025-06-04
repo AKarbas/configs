@@ -11,7 +11,8 @@ in
   };
   nix.settings.trusted-users = [ username ];
   system.defaults.smb.NetBIOSName = hostname;
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with `passwd`.
+  system.primaryUser = username;
   users.users."${username}" = {
     home = "/Users/${username}";
     description = username;
