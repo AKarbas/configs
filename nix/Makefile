@@ -15,12 +15,12 @@ nixos-debug:
 darwin:
 	cd darwin && nix build .#darwinConfigurations.UNiCORN.system \
 		--extra-experimental-features 'nix-command flakes'
-	cd darwin && ./result/sw/bin/darwin-rebuild switch --flake .#UNiCORN
+	cd darwin && sudo ./result/sw/bin/darwin-rebuild switch --flake .#UNiCORN
 
 darwin-debug:
 	cd darwin && nix build .#darwinConfigurations.UNiCORN.system --show-trace --verbose \
 		--extra-experimental-features 'nix-command flakes'
-	cd darwin && ./result/sw/bin/darwin-rebuild switch --flake .#UNiCORN --show-trace --verbose
+	cd darwin && sudo ./result/sw/bin/darwin-rebuild switch --flake .#UNiCORN --show-trace --verbose
 
 # Common targets
 update:

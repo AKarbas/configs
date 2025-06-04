@@ -15,7 +15,6 @@
   ];
   environment.variables.EDITOR = "nvim";
   services.tailscale.enable = true;
-  services.nix-daemon.enable = true;
 
   # TODO To make this work, homebrew need to be installed manually, see https://brew.sh
   #
@@ -46,6 +45,7 @@
       "clang-format"
       "docker-credential-helper"
       "holmesgpt"
+      "spr" # more up-to-date than nixpkgs
       "zstd"
     ];
     casks = [

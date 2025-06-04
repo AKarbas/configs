@@ -55,7 +55,6 @@ let
     ripgrep
     rsync
     skaffold
-    spr
     terraform
     terragrunt
     tmux
