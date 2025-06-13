@@ -55,6 +55,10 @@ let
     ripgrep
     rsync
     skaffold
+    (pkgs.spr.overrideAttrs (oldAttrs: {
+      nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ pkgs.pkg-config ];
+      buildInputs = (oldAttrs.buildInputs or []) ++ [ pkgs.zlib ];
+    }))
     terraform
     terragrunt
     tmux
