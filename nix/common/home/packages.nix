@@ -3,6 +3,10 @@ let
   makeScript = name: script: pkgs.writeShellScriptBin name (builtins.readFile script);
 
   standardPackages = with pkgs; [
+    (pkgs.spr.overrideAttrs (oldAttrs: {
+      nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ pkgs.pkg-config ];
+      buildInputs = (oldAttrs.buildInputs or []) ++ [ pkgs.zlib ];
+    }))
     act
     awscli2
     axel
@@ -42,9 +46,6 @@ let
     nix
     nix-index
     nixd
-    nodePackages.nodemon
-    nodePackages.ts-node
-    nodejs
     p7zip
     parallel
     poetry
@@ -55,15 +56,10 @@ let
     ripgrep
     rsync
     skaffold
-    (pkgs.spr.overrideAttrs (oldAttrs: {
-      nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ pkgs.pkg-config ];
-      buildInputs = (oldAttrs.buildInputs or []) ++ [ pkgs.zlib ];
-    }))
     terraform
     terragrunt
     tmux
     tree
-    typescript
     unzip
     uutils-coreutils
     watch
