@@ -47,6 +47,8 @@
       "holmesgpt"
       #"spr" # more up-to-date than nixpkgs - currently broken (v1.3.6)
       "zstd"
+      "node"
+      "typescript"
     ];
     casks = [
       "aws-vpn-client"
