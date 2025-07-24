@@ -52,6 +52,7 @@
     ];
     casks = [
       "aws-vpn-client"
+      "brave-browser"
       "chatgpt"
       "cloudflare-warp"
       # docker-for-mac vesrion 4.42.0 is broken - manually installed 4.41.2 via DMG file.
@@ -69,7 +70,6 @@
       "keymapp"
       "linear-linear"
       "maccy"
-      "ngrok"
       "openinterminal-lite"
       "postman"
       "raycast"
