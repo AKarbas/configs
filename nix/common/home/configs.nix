@@ -30,9 +30,16 @@
       enable = true;
       enableZshIntegration = true;
       settings = {
-        character = { error_symbol = "[✗](bold red)"; };
-        cmd_duration = { min_time = 0; show_milliseconds = true; };
-        directory = { fish_style_pwd_dir_length = 3; };
+        character = {
+          error_symbol = "[✗](bold red)";
+        };
+        cmd_duration = {
+          min_time = 0;
+          show_milliseconds = true;
+        };
+        directory = {
+          fish_style_pwd_dir_length = 3;
+        };
         direnv = {
           disabled = false;
           format = "[$symbol($loaded$allowed)](bold white) ";
@@ -41,10 +48,19 @@
           not_allowed_msg = "🔘";
           loaded_msg = "";
         };
-        git_commit = { only_detached = false; tag_disabled = false; };
-        git_metrics = { disabled = false; };
-        kubernetes = { disabled = false; };
-        sudo = { disabled = false; };
+        git_commit = {
+          only_detached = false;
+          tag_disabled = false;
+        };
+        git_metrics = {
+          disabled = false;
+        };
+        kubernetes = {
+          disabled = false;
+        };
+        sudo = {
+          disabled = false;
+        };
         time = {
           disabled = false;
           utc_time_offset = "0";
@@ -67,6 +83,80 @@
       enable = true;
       enableZshIntegration = true;
       git = true;
+    };
+    atuin = {
+      enable = true;
+      enableNushellIntegration = true;
+      enableZshIntegration = true;
+      # This does not work if a config for atuin already exists
+      # https://github.com/nix-community/home-manager/issues/5734
+      settings = {
+        enter_accept = false;
+        search_mode = "fuzzy";
+      };
+    };
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
+    nushell = {
+      enable = true;
+    };
+    zsh = {
+      autocd = true;
+      autosuggestion.enable = true;
+      enable = true;
+      enableCompletion = true;
+      syntaxHighlighting.enable = true;
+      shellAliases = {
+        l = "ls -ahl";
+        gsh = "git show --stat --patch";
+        sd = "git-spr-single diff";
+        sl = "git-spr-single land";
+        tf = "terraform";
+        tg = "terragrunt";
+      };
+      initContent = ''
+        function cling() {
+          local folders=()
+          for arg in "$@"; do
+            if [ -d "$arg" ]; then
+              folders+=("$arg")
+            else [ -f "$arg" ]
+              folders+=("$(dirname "$arg")")
+            fi
+          done
+          open -a Cling "''${folders[@]}"
+        }
+      '';
+      oh-my-zsh = {
+        enable = true;
+        plugins = [
+          "aws"
+          "docker"
+          "git"
+          "kubectl"
+          "kubectx"
+          "macos"
+          "z"
+        ];
+        extraConfig = ''
+          DISABLE_FZF_KEY_BINDINGS="true"
+          export ZVM_INIT_MODE=sourcing
+          bindkey '^r' _atuin_search_widget
+        '';
+      };
+      plugins = [
+        {
+          name = "zsh-vi-mode";
+          src = "${pkgs.zsh-vi-mode}/share/zsh-vi-mode";
+        }
+        {
+          name = "fzf-tab";
+          src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+        }
+      ];
     };
   };
   home = {
@@ -91,79 +181,5 @@
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
     };
-  };
-  programs.atuin = {
-    enable = true;
-    enableNushellIntegration = true;
-    enableZshIntegration = true;
-    # This does not work if a config for atuin already exists
-    # https://github.com/nix-community/home-manager/issues/5734
-    settings = {
-      enter_accept = false;
-      search_mode = "fuzzy";
-    };
-  };
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
-  programs.nushell = {
-    enable = true;
-  };
-  programs.zsh = {
-    autocd = true;
-    autosuggestion.enable = true;
-    enable = true;
-    enableCompletion = true;
-    syntaxHighlighting.enable = true;
-    shellAliases = {
-      l = "ls -ahl";
-      gsh = "git show --stat --patch";
-      sd = "git-spr-single diff";
-      sl = "git-spr-single land";
-      tf = "terraform";
-      tg = "terragrunt";
-    };
-    initContent = ''
-      function cling() {
-        local folders=()
-        for arg in "$@"; do
-          if [ -d "$arg" ]; then
-            folders+=("$arg")
-          else [ -f "$arg" ]
-            folders+=("$(dirname "$arg")")
-          fi
-        done
-        open -a Cling "''${folders[@]}"
-      }
-    '';
-    oh-my-zsh = {
-      enable = true;
-      plugins = [
-        "aws"
-        "docker"
-        "git"
-        "kubectl"
-        "kubectx"
-        "macos"
-        "z"
-      ];
-      extraConfig = ''
-        DISABLE_FZF_KEY_BINDINGS="true"
-        export ZVM_INIT_MODE=sourcing
-        bindkey '^r' _atuin_search_widget
-      '';
-    };
-    plugins = [
-      {
-        name = "zsh-vi-mode";
-        src = "${pkgs.zsh-vi-mode}/share/zsh-vi-mode";
-      }
-      {
-        name = "fzf-tab";
-        src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
-      }
-    ];
   };
 }

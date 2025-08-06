@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
   environment.systemPackages = with pkgs; [
@@ -34,8 +31,7 @@
     # You need to install all these Apps manually first so that your apple account have records for them.
     # otherwise Apple Store will refuse to install them.
     # For details, see https://github.com/mas-cli/mas
-    masApps = {
-    };
+    masApps = { };
     taps = [
       "homebrew/services"
       "ngrok/ngrok"
@@ -60,6 +56,7 @@
       # https://desktop.docker.com/mac/main/arm64/191736/Docker.dmg
       #"docker"
       "firefox"
+      "ghostty"
       "github"
       "google-chrome"
       "headlamp"
@@ -74,6 +71,7 @@
       "postman"
       "raycast"
       "rectangle"
+      "superhuman"
       "thelowtechguys-cling"
       "thunderbird"
       "visual-studio-code"

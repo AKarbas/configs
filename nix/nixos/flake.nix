@@ -101,11 +101,7 @@
     in
     {
       nixosConfigurations = forAllSystems (system: {
-        nixos = mkNixosSystem system {
-          extraModules = [
-            ./modules/hardware-configuration.nix
-          ];
-        };
+        nixos = mkNixosSystem system { extraModules = [ ./modules/hardware-configuration.nix ]; };
       });
       packages = nixpkgs.lib.genAttrs supportedHostSystems mkIsoPackages;
       formatter = nixpkgs.lib.genAttrs supportedHostSystems (
