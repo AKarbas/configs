@@ -4,8 +4,8 @@ let
 
   standardPackages = with pkgs; [
     (pkgs.spr.overrideAttrs (oldAttrs: {
-      nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ pkgs.pkg-config ];
-      buildInputs = (oldAttrs.buildInputs or []) ++ [ pkgs.zlib ];
+      nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ pkgs.zlib ];
     }))
     act
     awscli2
@@ -42,10 +42,12 @@ let
     kubernetes-helmPlugins.helm-diff
     minikube
     mtr
+    nil
     ninja
     nix
     nix-index
     nixd
+    nixfmt-rfc-style
     p7zip
     parallel
     poetry
@@ -94,4 +96,6 @@ let
     (makeScript "git-vimdiff" ./scripts/git-vimdiff.sh)
   ];
 in
-{ home.packages = customScripts ++ nushellPackages ++ zshPackages ++ standardPackages; }
+{
+  home.packages = customScripts ++ nushellPackages ++ zshPackages ++ standardPackages;
+}
