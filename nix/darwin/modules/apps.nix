@@ -51,10 +51,7 @@
       "brave-browser"
       "chatgpt"
       "cloudflare-warp"
-      # docker-for-mac vesrion 4.42.0 is broken - manually installed 4.41.2 via DMG file.
-      # https://github.com/docker/for-mac/issues/7693
-      # https://desktop.docker.com/mac/main/arm64/191736/Docker.dmg
-      #"docker"
+      "docker"
       "firefox"
       "ghostty"
       "github"
