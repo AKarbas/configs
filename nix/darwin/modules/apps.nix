@@ -41,17 +41,16 @@
       "clang-format"
       "docker-credential-helper"
       "holmesgpt"
-      #"spr" # more up-to-date than nixpkgs - currently broken (v1.3.6)
-      "zstd"
       "node"
       "typescript"
+      "zstd"
     ];
     casks = [
       "aws-vpn-client"
       "brave-browser"
       "chatgpt"
       "cloudflare-warp"
-      "docker"
+      "docker-desktop"
       "firefox"
       "ghostty"
       "github"
@@ -65,6 +64,7 @@
       "linear-linear"
       "maccy"
       "openinterminal-lite"
+      "pgadmin4"
       "postman"
       "raycast"
       "rectangle"
