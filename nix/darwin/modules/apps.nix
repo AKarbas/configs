@@ -32,45 +32,35 @@
     # otherwise Apple Store will refuse to install them.
     # For details, see https://github.com/mas-cli/mas
     masApps = { };
-    taps = [
-      "homebrew/services"
-      "ngrok/ngrok"
-      "robusta-dev/holmesgpt"
-    ];
+    taps = [ ];
     brews = [
       "clang-format"
       "docker-credential-helper"
-      "holmesgpt"
+      "dust"
       "node"
       "typescript"
       "zstd"
     ];
     casks = [
       "aws-vpn-client"
-      "brave-browser"
       "chatgpt"
       "cloudflare-warp"
       "docker-desktop"
       "firefox"
       "ghostty"
-      "github"
       "google-chrome"
-      "headlamp"
       "iglance"
       "iterm2"
       "itermai"
+      "itermbrowserplugin"
       "karabiner-elements"
-      "keymapp"
       "linear-linear"
       "maccy"
-      "openinterminal-lite"
       "pgadmin4"
       "postman"
       "raycast"
       "rectangle"
       "superhuman"
-      "thelowtechguys-cling"
-      "thunderbird"
       "visual-studio-code"
       "zed"
       "zoom"
