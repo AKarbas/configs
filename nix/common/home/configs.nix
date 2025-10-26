@@ -24,6 +24,10 @@
         push.autoSetupRemote = true;
         advice.detachedHead = false;
         advice.skippedCherryPicks = false;
+        core.logallrefupdates = true;
+        core.autocrlf = false;
+        core.untrackedcache = true;
+        core.fsmonitor = true;
       };
     };
     starship = {
