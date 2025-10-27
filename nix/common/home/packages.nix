@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   makeScript = name: script: pkgs.writeShellScriptBin name (builtins.readFile script);
 
@@ -44,7 +44,6 @@ let
     mtr
     nil
     ninja
-    nix
     nix-index
     nixd
     nixfmt-rfc-style
@@ -95,7 +94,9 @@ let
     (makeScript "git-spr-single" ./scripts/git-spr-single.sh)
     (makeScript "git-vimdiff" ./scripts/git-vimdiff.sh)
   ];
+
+  maybeNix = if config.nix.enable then [ pkgs.nix ] else [ ];
 in
 {
-  home.packages = customScripts ++ nushellPackages ++ zshPackages ++ standardPackages;
+  home.packages = customScripts ++ nushellPackages ++ zshPackages ++ standardPackages ++ maybeNix;
 }
