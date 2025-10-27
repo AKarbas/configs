@@ -1,3 +1,5 @@
+# Intro
+
 I use the `nix/{darwin,nixos}` dirs to configure my machines. There's some
 stuff (eg my editor configuration) I've not put here as they aren't complicated
 anyway and I don't switch machines often enough to care. To try, replace all
@@ -9,3 +11,11 @@ Be warned, it'll remove all `brew` packages that aren't listed (see
 system configs.
 
 Use at your own risk yada yada.
+
+# Setup
+
+1. Install nix: [Determinate nix].
+1. run `cd nix && make`
+
+
+[Determinate nix]: https://docs.determinate.systems/determinate-nix/

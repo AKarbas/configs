@@ -122,6 +122,8 @@
       remapCapsLockToControl = true;
     };
   };
+  # Using Determinate's nix distribution doesn't allow NixDarwin to manage nix.
+  nix.enable = false;
   environment.shells = with pkgs; [
     nushell
     zsh
