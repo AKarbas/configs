@@ -28,6 +28,7 @@
         core.autocrlf = false;
         core.untrackedcache = true;
         core.fsmonitor = true;
+        http.postBuffer = 1024 * 1024 * 1024;
       };
     };
     starship = {
@@ -114,8 +115,9 @@
       enableCompletion = true;
       syntaxHighlighting.enable = true;
       shellAliases = {
-        l = "ls -ahl";
+        grboma = "git rebase origin/$(git_main_branch) --autosquash";
         gsh = "git show --stat --patch";
+        l = "ls -ahl";
         sd = "git-spr-single diff";
         sl = "git-spr-single land";
         tf = "terraform";
