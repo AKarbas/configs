@@ -30,8 +30,10 @@ let
     gnused
     gnutar
     go
+    helm-ls
     htop-vim
     hugo
+    jujutsu
     jq
     k9s
     kns

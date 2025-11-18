@@ -62,6 +62,7 @@
       "rectangle"
       "superhuman"
       "visual-studio-code"
+      "webstorm"
       "zed"
       "zoom"
     ];
