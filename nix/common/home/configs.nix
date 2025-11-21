@@ -122,6 +122,7 @@
         sl = "git-spr-single land";
         tf = "terraform";
         tg = "terragrunt";
+        jrbom = "jj git fetch && jj rebase -d main@origin";
       };
       initContent = ''
         function cling() {
