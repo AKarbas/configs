@@ -123,6 +123,13 @@
         tf = "terraform";
         tg = "terragrunt";
         jrbom = "jj git fetch && jj rebase -d main@origin";
+        jci = "jj commit -i";
+        jsi = "jj squash -i";
+        jst = "jj --no-pager status";
+        jd = "jj describe";
+        jd- = "jj describe @-";
+        jgp = "jj git push";
+        jgp- = "jj git push @-";
       };
       initContent = ''
         function cling() {
