@@ -117,19 +117,25 @@
       shellAliases = {
         grboma = "git rebase origin/$(git_main_branch) --autosquash";
         gsh = "git show --stat --patch";
+        "ja!" = "jj abandon";
+        jci = "jj commit -i";
+        jd = "jj diff";
+        jds = "jj describe";
+        jds- = "jj describe @-";
+        jl = "jj log";
+        jla = "jj log -r 'all()'";
+        jgp = "jj git push";
+        jgp- = "jj git push @-";
+        jrbom = "jj git fetch && jj rebase -d main@origin";
+        jsh = "jj show";
+        jsh- = "jj show @-";
+        jsi = "jj squash -i";
+        jst = "jj --no-pager status";
         l = "ls -ahl";
         sd = "git-spr-single diff";
         sl = "git-spr-single land";
         tf = "terraform";
         tg = "terragrunt";
-        jrbom = "jj git fetch && jj rebase -d main@origin";
-        jci = "jj commit -i";
-        jsi = "jj squash -i";
-        jst = "jj --no-pager status";
-        jd = "jj describe";
-        jd- = "jj describe @-";
-        jgp = "jj git push";
-        jgp- = "jj git push @-";
       };
       initContent = ''
         function cling() {
