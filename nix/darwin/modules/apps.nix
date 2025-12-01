@@ -34,6 +34,7 @@
     masApps = { };
     taps = [ ];
     brews = [
+      "acsandmann/tap/rift"
       "clang-format"
       "docker-credential-helper"
       "dust"

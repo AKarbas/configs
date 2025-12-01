@@ -125,8 +125,10 @@
         jl = "jj log";
         jla = "jj log -r 'all()'";
         jgp = "jj git push";
-        jgp- = "jj git push @-";
-        jrbom = "jj git fetch && jj rebase -d main@origin";
+        jgp- = "jj git push -c @-";
+        jrb = "jj rebase";
+        jrb- = "jj rebase -s @- -d";
+        jrbom = "jj git fetch && jj rebase --skip-emptied -d main@origin";
         jsh = "jj show";
         jsh- = "jj show @-";
         jsi = "jj squash -i";
