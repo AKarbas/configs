@@ -97,8 +97,14 @@ let
     (makeScript "git-vimdiff" ./scripts/git-vimdiff.sh)
   ];
 
+  customPackages = [
+    (builtins.getFlake "github:LucioFranco/jj-spr/f628b200dcd25e01df1d97677305dc828a396b24")
+    .packages.${pkgs.system}.default
+  ];
+
   maybeNix = if config.nix.enable then [ pkgs.nix ] else [ ];
 in
 {
-  home.packages = customScripts ++ nushellPackages ++ zshPackages ++ standardPackages ++ maybeNix;
+  home.packages =
+    customScripts ++ nushellPackages ++ zshPackages ++ standardPackages ++ customPackages ++ maybeNix;
 }
