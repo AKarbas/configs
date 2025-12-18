@@ -53,12 +53,22 @@
           not_allowed_msg = "🔘";
           loaded_msg = "";
         };
+        git_branch = {
+          disabled = true;
+        };
         git_commit = {
           only_detached = false;
           tag_disabled = false;
+          disabled = true;
+        };
+        git_state = {
+          disabled = true;
         };
         git_metrics = {
-          disabled = false;
+          disabled = true;
+        };
+        git_status = {
+          disabled = true;
         };
         kubernetes = {
           disabled = false;
