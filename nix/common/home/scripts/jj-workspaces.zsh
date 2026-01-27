@@ -53,6 +53,26 @@ jwgo() {
     jj st
 }
 
+# Print usage for all jj workspace functions
+jwh() {
+    cat <<'EOF'
+jwa <name> [rev]       Create workspace (default: @)
+jwaz <name> [rev]      Create workspace + open Zed
+jwd <name>             Delete workspace
+jwgo <name>            cd into workspace
+jwh                    Show this help
+jwpr <id> [branch]     Create pr-<id> workspace (fetches if branch given)
+jwzed <name>           Open workspace in Zed
+jwclean                Remove all non-default workspaces
+jwall                  Show all workspaces with current change
+jrbomw                 Rebase on main + update all workspaces
+
+Aliases (in shellAliases):
+jwl                    jj workspace list
+jwu                    jj workspace update-stale
+EOF
+}
+
 # Quick workspace for PR/bugbot
 jwpr() {
     local name="$1"
