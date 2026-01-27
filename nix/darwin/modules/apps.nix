@@ -51,6 +51,7 @@
       "ghostty"
       "google-chrome"
       "iglance"
+      "iina"
       "iterm2"
       "itermai"
       "itermbrowserplugin"
