@@ -149,6 +149,8 @@
         jsh- = "jj show @-";
         jsi = "jj squash -i";
         jst = "jj --no-pager status";
+        jwl = "jj workspace list";
+        jwu = "jj workspace update-stale";
         l = "ls -ahl";
         sd = "git-spr-single diff";
         sl = "git-spr-single land";
@@ -156,17 +158,7 @@
         tg = "terragrunt";
       };
       initContent = ''
-        function cling() {
-          local folders=()
-          for arg in "$@"; do
-            if [ -d "$arg" ]; then
-              folders+=("$arg")
-            else [ -f "$arg" ]
-              folders+=("$(dirname "$arg")")
-            fi
-          done
-          open -a Cling "''${folders[@]}"
-        }
+        source ${./scripts/jj-workspaces.zsh}
       '';
       oh-my-zsh = {
         enable = true;
