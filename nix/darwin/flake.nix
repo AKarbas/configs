@@ -12,7 +12,7 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    flox.url = "github:flox/flox";
+    flox.url = "github:flox/flox/latest";
   };
 
   outputs =
@@ -22,7 +22,7 @@
       nix-darwin,
       nixpkgs,
       ...
-    }:
+    }@inputs:
     let
       floxConfig =
         { pkgs, ... }:
@@ -47,7 +47,7 @@
     in
     {
       darwinConfigurations.UNiCORN = nix-darwin.lib.darwinSystem {
-        specialArgs.flox = flox;
+        specialArgs = { inherit inputs; };
         system = "aarch64-darwin";
         modules = [
           floxConfig
