@@ -140,7 +140,7 @@
         jgpa = "jj git push --all --deleted";
         jl = "jj log";
         jla = "jj log -r 'all()'";
-        jlm = "jj log -r 'mine()'";
+        jlm = "jj log -r 'mine() & ~(::remote_bookmarks(glob:\"*spr/*\"))'";
         jrb = "jj rebase";
         jrb- = "jj rebase -s @- -d";
         jrbom = "jj git fetch && jj rebase --skip-emptied -d main@origin";

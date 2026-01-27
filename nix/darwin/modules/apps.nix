@@ -56,6 +56,7 @@
       "itermbrowserplugin"
       "karabiner-elements"
       "linear-linear"
+      "logi-options-plus"
       "maccy"
       "pgadmin4"
       "postman"
