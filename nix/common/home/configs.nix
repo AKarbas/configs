@@ -126,6 +126,8 @@
       syntaxHighlighting.enable = true;
       shellAliases = {
         "ja!" = "jj abandon";
+        ghpr = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"[\" + .title + \"](\" + .url + \")\"'";
+        ghprd = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"- [\" + .title + \"](\" + .url + \")\"'";
         grboma = "git rebase origin/$(git_main_branch) --autosquash";
         gsh = "git show --stat --patch";
         jbd = "jj --no-pager bookmark delete";
