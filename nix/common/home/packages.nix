@@ -69,6 +69,7 @@ let
     wget
     which
     xz
+    yazi
     yq-go
     zip
     zstd
