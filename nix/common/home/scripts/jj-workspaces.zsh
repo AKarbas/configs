@@ -7,18 +7,23 @@ jwclean() {
     echo "Remove all workspaces? (y/N)"
     read -r confirm
     if [[ "$confirm" == "y" ]]; then
-        for ws in $(jj workspace list | awk '{print $1}' | grep -v '^default$'); do
-            jwd "$ws"
+        for ws in $(_jj_ws_list_no_default); do
+            jwdel "$ws"
         done
     fi
 }
 
 # Delete workspace
-jwd() {
+jwdel() {
     local name="$1"
 
     if [[ -z "$name" ]]; then
-        echo "Usage: jwd <name>"
+        echo "Usage: jwdel <name>"
+        return 1
+    fi
+
+    if [[ "$name" == "default" ]]; then
+        echo "Cannot delete default workspace"
         return 1
     fi
 
@@ -58,7 +63,7 @@ jwh() {
     cat <<'EOF'
 jwa <name> [rev]       Create workspace (default: @)
 jwaz <name> [rev]      Create workspace + open Zed
-jwd <name>             Delete workspace
+jwdel <name>           Delete workspace
 jwgo <name>            cd into workspace
 jwh                    Show this help
 jwpr <id> [branch]     Create pr-<id> workspace (fetches if branch given)
@@ -130,12 +135,29 @@ jwzed() {
     zed "$ws_path"
 }
 
+_jj_ws_path() {
+    if [[ "$1" != "default" ]]; then
+        echo "$JJ_WORKSPACES_DIR/$(_jj_repo_name)-$1"
+        return
+    fi
+
+    local jj_repo_file="$(jj root)/.jj/repo"
+    if [[ -f "$jj_repo_file" ]]; then
+        dirname "$(dirname "$(cat "$jj_repo_file")")"
+        return
+    fi
+
+    jj root
+    return
+}
+
+
 # Rebase + update all workspaces (replaces jrbom for multi-workspace)
 jrbomw() {
     echo "=== Checking workspaces ==="
     local dirty=""
 
-    for ws in $(jj workspace list | awk '{print $1}'); do
+    for ws in $(_jj_ws_list); do
         if [[ $(jj log -r "$ws@" --no-graph -T 'if(!empty, "1")' 2>/dev/null) == "1" ]]; then
             echo "⚠️  $ws has uncommitted changes"
             dirty="$dirty $ws"
@@ -173,12 +195,36 @@ jrbomw() {
 # Show all workspaces with their current change
 jwall() {
     echo "=== Workspaces ==="
-    for ws in $(jj workspace list | awk '{print $1}'); do
+    for ws in $(_jj_ws_list); do
         local info=$(jj log -r "$ws@" --no-graph -T 'change_id.short() ++ " " ++ if(empty, "(empty)", "") ++ " " ++ description.first_line()' 2>/dev/null)
         printf "%-12s %s\n" "$ws" "$info"
     done
 }
 
-_jj_ws_path() {
-    echo "$JJ_WORKSPACES_DIR/$(basename "$(jj root)")-$1"
+_jj_repo_name() {
+    local jj_dir="$(jj root)/.jj"
+    if [[ -f "$jj_dir/repo" ]]; then
+        basename "$(dirname "$(dirname "$(cat "$jj_dir/repo")")")"
+    else
+        basename "$(jj root)"
+    fi
 }
+
+_jj_ws_names_no_default() {
+    compadd -- ${(f)"$(_jj_ws_list_no_default)"}
+}
+
+_jj_ws_list_no_default() {
+    _jj_ws_list | grep -v '^default$'
+}
+
+_jj_ws_names() {
+    compadd -- ${(f)"$(_jj_ws_list)"}
+}
+
+_jj_ws_list() {
+    jj workspace list 2>/dev/null | awk '{gsub(/:$/, "", $1); print $1}'
+}
+
+compdef _jj_ws_names jwgo jwzed
+compdef _jj_ws_names_no_default jwdel
