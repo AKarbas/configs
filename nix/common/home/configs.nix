@@ -130,6 +130,7 @@
         ghprd = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"- [\" + .title + \"](\" + .url + \")\"'";
         grboma = "git rebase origin/$(git_main_branch) --autosquash";
         gsh = "git show --stat --patch";
+        jab = "jj absorb";
         jbd = "jj --no-pager bookmark delete";
         jbl = "jj --no-pager bookmark list";
         jblc = "jj --no-pager bookmark list --conflicted";

@@ -8,6 +8,7 @@ let
       buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ pkgs.zlib ];
     }))
     act
+    ast-grep
     awscli2
     axel
     bat
