@@ -126,6 +126,7 @@
       syntaxHighlighting.enable = true;
       shellAliases = {
         "ja!" = "jj abandon";
+        cdjr = "cd $(jj root)";
         ghpr = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"[\" + .title + \"](\" + .url + \")\"'";
         ghprd = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"- [\" + .title + \"](\" + .url + \")\"'";
         grboma = "git rebase origin/$(git_main_branch) --autosquash";
