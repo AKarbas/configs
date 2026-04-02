@@ -34,7 +34,6 @@ let
     helm-ls
     htop-vim
     hugo
-    jujutsu
     jq
     k9s
     kns
