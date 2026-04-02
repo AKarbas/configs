@@ -20,21 +20,44 @@
         ShowDate = 0; # true
         ShowSeconds = true;
         Show24Hour = true;
+        ShowDayOfWeek = true;
+        ShowDayOfMonth = true;
       };
       dock = {
         appswitcher-all-displays = true;
         autohide = true;
+        autohide-delay = 0.0;
+        autohide-time-modifier = 0.15;
         largesize = 80;
         magnification = true;
         minimize-to-application = true;
         mru-spaces = false;
         orientation = "right";
+        persistent-apps = [
+          "/System/Applications/Mail.app"
+          "/System/Applications/Reminders.app"
+          "/System/Applications/Music.app"
+          "/System/Applications/iPhone Mirroring.app"
+          "/Applications/Google Chrome.app"
+          "/System/Applications/Messages.app"
+          "/System/Applications/Calendar.app"
+        ];
+        persistent-others = [ ];
         show-process-indicators = true;
         show-recents = false;
         tilesize = 64;
         expose-animation-duration = 0.0;
         expose-group-apps = false; # used to be true - testing
         launchanim = false;
+        wvous-tl-corner = 1; # disabled
+        wvous-tr-corner = 1;
+        wvous-bl-corner = 1;
+        wvous-br-corner = 1;
+      };
+      controlcenter = {
+        BatteryShowPercentage = true;
+        Bluetooth = true;
+        Sound = true;
       };
       finder = {
         _FXShowPosixPathInTitle = true;
@@ -51,14 +74,31 @@
         TrackpadRightClick = true;
         TrackpadThreeFingerDrag = true;
       };
+      WindowManager = {
+        GloballyEnabled = false;
+        EnableStandardClickToShowDesktop = true;
+        EnableTiledWindowMargins = true;
+      };
+      universalaccess = {
+        reduceMotion = true;
+        reduceTransparency = false;
+      };
+      SoftwareUpdate = {
+        AutomaticallyInstallMacOSUpdates = true;
+      };
+      spaces = {
+        spans-displays = false;
+      };
       NSGlobalDomain = {
         "com.apple.swipescrolldirection" = true;
         "com.apple.sound.beep.feedback" = 0;
         "com.apple.sound.beep.volume" = 0.5;
         "com.apple.springing.enabled" = true;
+        "com.apple.keyboard.fnState" = false;
         AppleInterfaceStyleSwitchesAutomatically = true;
         AppleICUForce24HourTime = true;
         ApplePressAndHoldEnabled = false;
+        AppleShowScrollBars = "WhenScrolling";
         InitialKeyRepeat = 15; # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
         KeyRepeat = 2; # normal minimum is 2 (30 ms), maximum is 120 (1800 ms)
         NSAutomaticCapitalizationEnabled = false;
@@ -66,9 +106,13 @@
         NSAutomaticPeriodSubstitutionEnabled = false;
         NSAutomaticQuoteSubstitutionEnabled = false;
         NSAutomaticSpellingCorrectionEnabled = false;
+        NSDocumentSaveNewDocumentsToCloud = false;
         NSNavPanelExpandedStateForSaveMode = true;
         NSNavPanelExpandedStateForSaveMode2 = true;
+        NSTableViewDefaultSizeMode = 2;
         NSWindowResizeTime = 0.0;
+        PMPrintingExpandedStateForPrint = true;
+        PMPrintingExpandedStateForPrint2 = true;
       };
       # Customize settings that not supported by nix-darwin directly
       # see the source code of this project to get more undocumented options:
@@ -110,7 +154,146 @@
         "com.apple.AdLib" = {
           allowApplePersonalizedAdvertising = false;
         };
+        "com.apple.dock" = {
+          showAppExposeGestureEnabled = true;
+        };
         "com.apple.ImageCapture".disableHotPlug = true;
+        "com.googlecode.iterm2" = {
+          AlternateMouseScroll = true;
+          HideMenuBarInFullscreen = true;
+          StretchTabsToFillBar = true;
+          FlashTabBarInFullscreen = true;
+          QuitWhenAllWindowsClosed = true;
+          HideTab = true;
+          DimInactiveSplitPanes = false;
+          AdjustWindowForFontSizeChange = false;
+          PreventEscapeSequenceFromClearingHistory = true;
+          RestoreWindowsToSameSpaces = true;
+          AutoCommandHistory = true;
+          TabStyleWithAutomaticOption = 1;
+          TabViewType = 0;
+          AppleWindowTabbingMode = "manual";
+          UseLionStyleFullscreen = false;
+          NeverBlockSystemShutdown = true;
+          AlwaysOpenWindowAtStartup = true;
+          SavePasteHistory = true;
+          StatusBarPosition = 1;
+          WordCharacters = "/-+\\~_.";
+          PasteTabToStringTabStopSize = 4;
+          ConvertDosNewlines = false;
+          SoundForEsc = false;
+          HapticFeedbackForEsc = false;
+        };
+        "com.contextsformac.Contexts" = {
+          CTPreferenceInputDoubleTouchSwitchGestureActive = 1;
+          CTPreferencePanelRecentSwitcherShowAfterDelay = 0;
+          CTPreferenceRecentItemsSwitcherSearchEnabled = 1;
+          CTPreferenceSearchShortcutCommandLeftKeyEnabled = 0;
+          CTPreferenceSearchShortcutFunctionKeyEnabled = 0;
+          CTPreferenceSearchShortcutMaxLength = 3;
+          CTPreferenceSearchShortcutOptionLeftKeyEnabled = 0;
+          CTPreferenceSidebarDisplayMode = "CTDisplayModeAllScreens";
+          CTPreferenceSidebarShowDockIconStatus = 1;
+          CTPreferenceSidebarSpacesOption = "CTSpacesOptionAll";
+          CTPreferenceWorkspaceConstrainWindowFrames = 1;
+          CTSidebarHorizontalAlignment = "CTWindowHorizontalAlignmentRight";
+          CTSidebarInactiveMaximumWidth = 1;
+          CTSidebarShowIndicesForWindows = 0;
+          CTKeyboardEventCommandModeActive = 0;
+          CTKeyboardEventLeftCommandNumberActive = 0;
+        };
+        "com.knollsoft.Rectangle" = {
+          allowAnyShortcut = 1;
+          alternateDefaultShortcuts = 1;
+          hideMenubarIcon = 1;
+          launchOnLogin = 1;
+          hapticFeedbackOnSnap = 1;
+          moveCursorAcrossDisplays = 1;
+          footprintAnimationDurationMultiplier = "0.75";
+          subsequentExecutionMode = 0;
+          unsnapRestore = 2;
+          windowSnapping = 2;
+          almostMaximize = {
+            keyCode = 3;
+            modifierFlags = 786432;
+          };
+          nextDisplay = {
+            keyCode = 30;
+            modifierFlags = 1835008;
+          };
+          previousDisplay = {
+            keyCode = 33;
+            modifierFlags = 1835008;
+          };
+          reflowTodo = {
+            keyCode = 45;
+            modifierFlags = 786432;
+          };
+          toggleTodo = {
+            keyCode = 11;
+            modifierFlags = 786432;
+          };
+          todo = 2;
+          bottomHalf = { };
+          bottomLeft = { };
+          bottomRight = { };
+          centerHalf = { };
+          centerThird = { };
+          firstThird = { };
+          firstTwoThirds = { };
+          larger = { };
+          lastThird = { };
+          lastTwoThirds = { };
+          leftHalf = { };
+          maximize = { };
+          maximizeHeight = { };
+          restore = { };
+          rightHalf = { };
+          smaller = { };
+          topHalf = { };
+          topLeft = { };
+          topRight = { };
+        };
+        "com.raycast.macos" = {
+          raycastGlobalHotkey = "Control-Option-49";
+          raycastPreferredWindowMode = "default";
+          raycastShouldFollowSystemAppearance = 1;
+          "raycastUI_preferredTextSize" = "medium";
+          raycastWindowPresentationMode = 1;
+          navigationCommandStyleIdentifierKey = "macos";
+          useHyperKeyIcon = 0;
+          showGettingStartedLink = 0;
+        };
+        "org.p0deje.Maccy" = {
+          historySize = 999;
+          searchMode = "fuzzy";
+          popupPosition = "cursor";
+          pinTo = "top";
+          showInStatusBar = 0;
+          showFooter = 0;
+          showTitle = 0;
+          showRecentCopyInMenuBar = 0;
+          showSearch = 1;
+          showSpecialSymbols = 1;
+          showApplicationIcons = 1;
+          imageMaxHeight = 40;
+          menuIcon = "maccy";
+          previewDelay = 200;
+          searchVisibility = "duringSearch";
+          ignoreEvents = 0;
+          sortBy = "lastCopiedAt";
+          enabledPasteboardTypes = [
+            "public.utf8-plain-text"
+            "public.rtf"
+            "public.png"
+            "public.tiff"
+            "public.html"
+            "public.file-url"
+          ];
+          KeyboardShortcuts_popup = "{\"carbonKeyCode\":9,\"carbonModifiers\":6144}";
+          KeyboardShortcuts_pin = "{\"carbonModifiers\":2048,\"carbonKeyCode\":35}";
+          KeyboardShortcuts_delete = "{\"carbonKeyCode\":51,\"carbonModifiers\":2304}";
+        };
       };
       loginwindow = {
         GuestEnabled = false;
@@ -137,6 +320,7 @@
   };
   programs.zsh.enable = true;
   security.pam.services.sudo_local.touchIdAuth = true;
+  security.pam.services.sudo_local.watchIdAuth = true;
   # Set your time zone.
   # comment this due to the issue:
   #   https://github.com/LnL7/nix-darwin/issues/359

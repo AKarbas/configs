@@ -1,4 +1,4 @@
-.PHONY: nixos nixos-debug darwin darwin-debug update history gc fmt clean
+.PHONY: nixos nixos-debug darwin darwin-debug update history gc fmt clean bootstrap
 
 # NixOS targets
 nixos:
@@ -13,14 +13,18 @@ nixos-debug:
 
 # Darwin targets
 darwin:
-	cd darwin && nix build .#darwinConfigurations.UNiCORN.system \
+	cd darwin && nix build .#darwinConfigurations.$(HOSTNAME).system \
 		--extra-experimental-features 'nix-command flakes'
-	cd darwin && sudo ./result/sw/bin/darwin-rebuild switch --flake .#UNiCORN
+	cd darwin && sudo ./result/sw/bin/darwin-rebuild switch --flake .#$(HOSTNAME)
 
 darwin-debug:
-	cd darwin && nix build .#darwinConfigurations.UNiCORN.system --show-trace --verbose \
+	cd darwin && nix build .#darwinConfigurations.$(HOSTNAME).system --show-trace --verbose \
 		--extra-experimental-features 'nix-command flakes'
-	cd darwin && sudo ./result/sw/bin/darwin-rebuild switch --flake .#UNiCORN --show-trace --verbose
+	cd darwin && sudo ./result/sw/bin/darwin-rebuild switch --flake .#$(HOSTNAME) --show-trace --verbose
+
+# Bootstrap
+bootstrap:
+	./bootstrap.sh
 
 # Common targets
 update:
@@ -44,6 +48,7 @@ clean:
 # Detect system and set default target
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
+HOSTNAME := $(shell scutil --get LocalHostName 2>/dev/null || echo UNiCORN)
 default: darwin
 else
 default: nixos

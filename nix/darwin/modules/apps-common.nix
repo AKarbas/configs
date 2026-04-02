@@ -31,42 +31,42 @@
     # You need to install all these Apps manually first so that your apple account have records for them.
     # otherwise Apple Store will refuse to install them.
     # For details, see https://github.com/mas-cli/mas
-    masApps = { };
+    masApps = {
+      Notability = 360593530;
+      Vimlike = 1584519802;
+    };
     taps = [ ];
     brews = [
       "acsandmann/tap/rift"
       "clang-format"
       "docker-credential-helper"
       "dust"
+      "mas"
       "multitail"
       "node"
       "typescript"
       "zstd"
     ];
     casks = [
-      "aws-vpn-client"
       "chatgpt"
+      "claude"
       "cloudflare-warp"
+      "contexts"
       "docker-desktop"
-      "firefox"
       "ghostty"
       "google-chrome"
       "iglance"
-      "iina"
       "iterm2"
       "itermai"
-      "itermbrowserplugin"
       "karabiner-elements"
-      "linear-linear"
       "logi-options+"
       "maccy"
       "monitorcontrol"
-      "pgadmin4"
-      "postman"
+      "notion"
       "raycast"
       "rectangle"
-      "visual-studio-code"
-      "webstorm"
+      "telegram"
+      "whatsapp"
       "zed"
       "zoom"
     ];

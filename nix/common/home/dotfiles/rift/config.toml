@@ -1,0 +1,112 @@
+# rift config based on the defaults - easier names don't have comments. See:
+# - https://github.com/acsandmann/rift/blob/main/rift.default.toml
+# - https://github.com/acsandmann/rift/wiki/Config
+
+[settings]
+animate = true
+animation_duration = 0.1
+animation_fps = 100.0
+animation_easing = "ease_in_out"
+
+default_disable = false
+focus_follows_mouse = false
+mouse_follows_focus = true
+mouse_hides_on_focus = false
+hot_reload = true
+
+[settings.layout]
+mode = "traditional"
+
+[settings.layout.stack]
+stack_offset = 50.0
+default_orientation = "perpendicular"
+
+[settings.layout.gaps]
+[settings.layout.gaps.outer]
+top = 8
+left = 8
+bottom = 8
+right = 24 # for Contexts
+[settings.layout.gaps.inner]
+horizontal = 8
+vertical = 8
+
+[settings.ui.menu_bar]
+enabled = true
+show_empty = false
+mode = "all"
+
+[settings.ui.mission_control]
+enabled = true
+fade_enabled = false
+fade_duration_ms = 180.0
+
+[virtual_workspaces]
+enabled = true
+default_workspace_count = 4
+auto_assign_windows = true
+preserve_focus_per_workspace = true
+workspace_auto_back_and_forth = false
+reapply_app_rules_on_title_change = false
+
+app_rules = [
+  { app_id = "com.apple.Music", floating = true },
+  { app_id = "com.apple.Maps", floating = true },
+  { app_name = "AWS VPN Client", floating = true },
+  { app_name = "iPhone Mirroring", floating = true },
+  { app_name = "System Settings", floating = true },
+#  { app_name = "Claude", floating = true },
+  { app_name = "Finder", floating = true },
+  { app_name = "Messages", floating = true },
+#  { app_name = "Slack", floating = true },
+  { app_name = "WhatsApp", floating = true },
+  { app_name = "YouTube Music", floating = true },
+]
+
+[modifier_combinations]
+
+[keys]
+"Alt + Z" = "toggle_space_activated"
+
+"Alt + H" = { move_focus = "left" }
+"Alt + J" = { move_focus = "down" }
+"Alt + K" = { move_focus = "up" }
+"Alt + L" = { move_focus = "right" }
+
+"Alt + Shift + H" = { move_node = "left" }
+"Alt + Shift + J" = { move_node = "down" }
+"Alt + Shift + K" = { move_node = "up" }
+"Alt + Shift + L" = { move_node = "right" }
+
+"Alt + 0" = { switch_to_workspace = 0 }
+"Alt + 1" = { switch_to_workspace = 1 }
+"Alt + 2" = { switch_to_workspace = 2 }
+"Alt + 3" = { switch_to_workspace = 3 }
+
+"Alt + Shift + 0" = { move_window_to_workspace = 0 }
+"Alt + Shift + 1" = { move_window_to_workspace = 1 }
+"Alt + Shift + 2" = { move_window_to_workspace = 2 }
+"Alt + Shift + 3" = { move_window_to_workspace = 3 }
+
+"Ctrl + Meta + H" = { join_window = "left" }
+"Ctrl + Meta + L" = { join_window = "right" }
+"Ctrl + Meta + I" = { join_window = "up" }
+"Ctrl + Meta + J" = { join_window = "down" }
+"Alt + Comma" = "toggle_stack"
+"Alt + Slash" = "toggle_orientation"
+"Alt + Ctrl + E" = "unjoin_windows"
+
+"Alt + Shift + Space" = "toggle_window_floating"
+"Alt + F" = "toggle_fullscreen_within_gaps"
+"Ctrl + Alt + Meta + Space" = "toggle_focus_floating"
+
+"Alt + Ctrl + Equal" = "resize_window_grow"
+"Alt + Ctrl + Minus" = "resize_window_shrink"
+
+"Alt + Ctrl + Meta + M" = "show_mission_control_current"
+"Alt + Ctrl + M" = "show_mission_control_all"
+
+"Alt + Shift + D" = "debug"
+
+"Alt + Ctrl + S" = "serialize"
+"Alt + Ctrl + Q" = "save_and_exit"
