@@ -78,6 +78,8 @@
         GloballyEnabled = false;
         EnableStandardClickToShowDesktop = true;
         EnableTiledWindowMargins = true;
+        AppWindowGroupingBehavior = true;
+        AutoHide = true;
       };
       universalaccess = {
         reduceMotion = true;
@@ -147,6 +149,221 @@
           askForPassword = 1;
           askForPasswordDelay = 0;
         };
+        "com.apple.symbolichotkeys" = {
+          AppleSymbolicHotKeys = {
+            # Spotlight: disabled (Raycast replaces it)
+            "60" = {
+              enabled = 0;
+              value = {
+                parameters = [
+                  32
+                  49
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            # Input source switch: Opt+Cmd+Space
+            "61" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  32
+                  49
+                  1572864
+                ];
+                type = "standard";
+              };
+            };
+            # Input Sources: all disabled
+            "15" = {
+              enabled = 0;
+            };
+            "16" = {
+              enabled = 0;
+            };
+            "17" = {
+              enabled = 0;
+            };
+            "18" = {
+              enabled = 0;
+            };
+            "19" = {
+              enabled = 0;
+            };
+            "20" = {
+              enabled = 0;
+            };
+            "21" = {
+              enabled = 0;
+            };
+            "22" = {
+              enabled = 0;
+            };
+            "23" = {
+              enabled = 0;
+            };
+            "24" = {
+              enabled = 0;
+            };
+            "25" = {
+              enabled = 0;
+            };
+            "26" = {
+              enabled = 0;
+            };
+            # Mission Control: Ctrl+\
+            "32" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  92
+                  42
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            # Application Windows: Ctrl+Opt+\
+            "33" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  92
+                  42
+                  786432
+                ];
+                type = "standard";
+              };
+            };
+            # Show Desktop: Shift+Ctrl+\
+            "34" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  92
+                  42
+                  393216
+                ];
+                type = "standard";
+              };
+            };
+            # Show Desktop (variant): Shift+Ctrl+Opt+\
+            "35" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  92
+                  42
+                  917504
+                ];
+                type = "standard";
+              };
+            };
+            # Move focus to left display: disabled
+            "36" = {
+              enabled = 0;
+            };
+            # Move focus to right display: disabled
+            "37" = {
+              enabled = 0;
+            };
+            # Move left a space: Ctrl+[
+            "79" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  91
+                  33
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            # Move left a space + window: disabled
+            "80" = {
+              enabled = 0;
+            };
+            # Move right a space: Ctrl+]
+            "81" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  93
+                  30
+                  262144
+                ];
+                type = "standard";
+              };
+            };
+            # Move right a space + window: disabled
+            "82" = {
+              enabled = 0;
+            };
+            # Switch input source: disabled
+            "65" = {
+              enabled = 0;
+              value = {
+                parameters = [
+                  32
+                  49
+                  1572864
+                ];
+                type = "standard";
+              };
+            };
+            # Notification Center: Globe+N
+            "164" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  110
+                  45
+                  8388608
+                ];
+                type = "standard";
+              };
+            };
+            # Show Focus: Globe+F
+            "176" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  102
+                  3
+                  8388608
+                ];
+                type = "standard";
+              };
+            };
+            # Show Help menu: Shift+Cmd+/
+            "98" = {
+              enabled = 1;
+              value = {
+                parameters = [
+                  47
+                  44
+                  1179648
+                ];
+                type = "standard";
+              };
+            };
+            # Move focus to menu bar: disabled
+            "118" = {
+              enabled = 0;
+            };
+          };
+        };
+        "com.apple.driver.AppleBluetoothMultitouch.mouse" = {
+          MouseButtonDivision = 55;
+          MouseButtonMode = "TwoButton";
+          MouseHorizontalScroll = 1;
+          MouseMomentumScroll = 1;
+          MouseOneFingerDoubleTapGesture = 1;
+          MouseTwoFingerDoubleTapGesture = 3;
+          MouseTwoFingerHorizSwipeGesture = 2;
+          MouseVerticalScroll = 1;
+        };
         "com.apple.screencapture" = {
           location = "~/Desktop";
           type = "png";
@@ -158,6 +375,11 @@
           showAppExposeGestureEnabled = true;
         };
         "com.apple.ImageCapture".disableHotPlug = true;
+        "com.apple.AppleMultitouchTrackpad" = {
+          TrackpadFourFingerVertSwipeGesture = 2;
+          TrackpadFourFingerHorizSwipeGesture = 2;
+          TrackpadFourFingerPinchGesture = 2;
+        };
         "com.googlecode.iterm2" = {
           AlternateMouseScroll = true;
           HideMenuBarInFullscreen = true;
@@ -321,6 +543,12 @@
   programs.zsh.enable = true;
   security.pam.services.sudo_local.touchIdAuth = true;
   security.pam.services.sudo_local.watchIdAuth = true;
+  power = {
+    sleep = {
+      computer = "never";
+      display = 10;
+    };
+  };
   # Set your time zone.
   # comment this due to the issue:
   #   https://github.com/LnL7/nix-darwin/issues/359
