@@ -38,7 +38,7 @@
       fi
 
       $PB -c "Print :New\ Bookmarks:0:Guid" "$PLIST" &>/dev/null || {
-        $PB -c "Delete :New\ Bookmarks" "$PLIST" &>/dev/null
+        $PB -c "Delete :New\ Bookmarks" "$PLIST" &>/dev/null || true
         $PB -c "Add :New\ Bookmarks array" "$PLIST"
         $PB -c "Add :New\ Bookmarks:0 dict" "$PLIST"
       }
@@ -69,7 +69,7 @@
       pb "Blur\ Radius"                                       real    15.120991
 
       # Natural Text Editing keyboard map
-      $PB -c "Delete :New\ Bookmarks:0:Keyboard\ Map" "$PLIST" 2>/dev/null
+      $PB -c "Delete :New\ Bookmarks:0:Keyboard\ Map" "$PLIST" 2>/dev/null || true
       $PB -c "Add :New\ Bookmarks:0:Keyboard\ Map dict" "$PLIST"
       km() { # km <hexkey> <action> <text>
         $PB -c "Add :New\ Bookmarks:0:Keyboard\ Map:$1 dict" "$PLIST"
@@ -84,6 +84,10 @@
       km "0x7f-0x100000"   11 "0x15"         # Cmd+Delete     → delete line
       km "0xf728-0x80000"  10 "d"            # Opt+Fn+Delete  → delete word forward
       km "0xf728-0x0"      11 "0x4"          # Fn+Delete      → delete char forward
+
+      # Status bar layout (components: CPU, Memory, Network, Job, Clock, Battery, Working Dir)
+      $PB -c "Delete :New\ Bookmarks:0:Status\ Bar\ Layout" "$PLIST" 2>/dev/null || true
+      $PB -c "Merge ${./dotfiles/iterm2/status-bar-layout.plist} :New\ Bookmarks:0:Status\ Bar\ Layout" "$PLIST"
 
       $PB -c "Set :Default\ Bookmark\ Guid amin-iterm-profile-0001" "$PLIST" 2>/dev/null || \
         $PB -c "Add :Default\ Bookmark\ Guid string amin-iterm-profile-0001" "$PLIST"
