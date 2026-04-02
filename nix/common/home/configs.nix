@@ -87,6 +87,7 @@
 
       # Status bar layout (components: CPU, Memory, Network, Job, Clock, Battery, Working Dir)
       $PB -c "Delete :New\ Bookmarks:0:Status\ Bar\ Layout" "$PLIST" 2>/dev/null || true
+      $PB -c "Add :New\ Bookmarks:0:Status\ Bar\ Layout dict" "$PLIST"
       $PB -c "Merge ${./dotfiles/iterm2/status-bar-layout.plist} :New\ Bookmarks:0:Status\ Bar\ Layout" "$PLIST"
 
       $PB -c "Set :Default\ Bookmark\ Guid amin-iterm-profile-0001" "$PLIST" 2>/dev/null || \
