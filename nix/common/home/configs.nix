@@ -168,6 +168,7 @@
     };
     ssh = {
       enable = true;
+      includes = [ "config.d/*" ];
       addKeysToAgent = "yes";
       matchBlocks."*" = {
         extraOptions.UseKeychain = "yes";
