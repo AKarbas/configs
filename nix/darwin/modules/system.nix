@@ -56,7 +56,6 @@
       };
       controlcenter = {
         BatteryShowPercentage = true;
-        Bluetooth = true;
         Sound = true;
       };
       finder = {
@@ -551,7 +550,31 @@
   };
   system.activationScripts.postActivation.text = ''
     sudo -u amin /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    # Clean up old brew-managed rift launch agent if present
+    if [ -f /Users/amin/Library/LaunchAgents/git.acsandmann.rift.plist ]; then
+      sudo -u amin launchctl bootout "gui/$(id -u amin)" /Users/amin/Library/LaunchAgents/git.acsandmann.rift.plist 2>/dev/null || true
+      rm -f /Users/amin/Library/LaunchAgents/git.acsandmann.rift.plist
+    fi
   '';
+  launchd.user.agents.rift = {
+    serviceConfig = {
+      ProgramArguments = [ "/opt/homebrew/bin/rift" ];
+      RunAtLoad = true;
+      KeepAlive = {
+        SuccessfulExit = false;
+        Crashed = true;
+      };
+      EnvironmentVariables = {
+        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin";
+        RUST_LOG = "error,warn,info";
+      };
+      StandardOutPath = "/tmp/rift_amin.out.log";
+      StandardErrorPath = "/tmp/rift_amin.err.log";
+      ProcessType = "Interactive";
+      LimitLoadToSessionType = "Aqua";
+      Nice = -20;
+    };
+  };
   # Set your time zone.
   # comment this due to the issue:
   #   https://github.com/LnL7/nix-darwin/issues/359
