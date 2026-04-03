@@ -549,6 +549,9 @@
       display = 10;
     };
   };
+  system.activationScripts.postActivation.text = ''
+    sudo -u amin /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+  '';
   # Set your time zone.
   # comment this due to the issue:
   #   https://github.com/LnL7/nix-darwin/issues/359
