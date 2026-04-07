@@ -353,6 +353,8 @@
     sessionVariables = {
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
+      TG_PROVIDER_CACHE="1";
+      TG_PROVIDER_CACHE_DIR="${config.home.homeDirectory}/.cache/terragrunt-providers";
     };
     file = {
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {
