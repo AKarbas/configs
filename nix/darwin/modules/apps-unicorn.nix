@@ -15,7 +15,6 @@
     brews = [ ];
     casks = [
       "aws-vpn-client"
-      "antigravity"
       "firefox"
       "linear-linear"
       "pgadmin4"

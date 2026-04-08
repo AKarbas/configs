@@ -55,6 +55,7 @@
       "docker-desktop"
       "ghostty"
       "google-chrome"
+      "granola"
       "iterm2"
       "itermai"
       "karabiner-elements"
