@@ -28,6 +28,12 @@
     ''
   );
 
+  home.activation.configureStats = lib.mkIf pkgs.stdenv.isDarwin (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      /usr/bin/defaults import eu.exelban.Stats "${./dotfiles/stats/StatsSettings.plist}"
+    ''
+  );
+
   home.activation.configureITerm = lib.mkIf pkgs.stdenv.isDarwin (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       PLIST="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
@@ -353,8 +359,8 @@
     sessionVariables = {
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
-      TG_PROVIDER_CACHE="1";
-      TG_PROVIDER_CACHE_DIR="${config.home.homeDirectory}/.cache/terragrunt-providers";
+      TG_PROVIDER_CACHE = "1";
+      TG_PROVIDER_CACHE_DIR = "${config.home.homeDirectory}/.cache/terragrunt-providers";
     };
     file = {
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {

@@ -23,5 +23,4 @@ make darwin
 
 echo ""
 echo "==> Done! Manual steps remaining:"
-echo "  - Configure iGlance menu bar items manually"
 echo "  - Import Raycast settings: open Raycast, run 'Import Settings & Data', select common/home/dotfiles/raycast/export.rayconfig"
