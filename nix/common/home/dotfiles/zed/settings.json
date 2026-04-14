@@ -1,4 +1,13 @@
 {
+  "context_servers": {
+//    "mcp-server-github": {
+//      "enabled": true,
+//      "remote": false,
+//      "settings": {
+//        "github_personal_access_token": "ghp_...",
+//      },
+//    },
+  },
   "terminal": { "copy_on_select": true },
   "agent_buffer_font_size": 13.0,
   "buffer_font_size": 15.0,
@@ -7,10 +16,9 @@
     "show_user_picture": true,
     "show_onboarding_banner": true,
     "show_branch_name": true,
-    "show_branch_icon": false,
   },
   "colorize_brackets": true,
-  "collaboration_panel": { "button": false },
+  "collaboration_panel": { "dock": "right", "button": false },
   "helix_mode": false,
   "notification_panel": { "button": false },
   "agent_ui_font_size": 13.0,
@@ -42,8 +50,9 @@
     },
   },
   "agent": {
+    "dock": "left",
     "show_turn_stats": true,
-    "play_sound_when_agent_done": true,
+    "play_sound_when_agent_done": "always",
     "enable_feedback": false,
     "favorite_models": [
       {
@@ -68,6 +77,7 @@
       "ask-+-terminal": {
         "name": "Ask + Terminal",
         "tools": {
+          "search_web": true,
           "terminal": true,
           "contents": true,
           "diagnostics": true,
@@ -79,7 +89,6 @@
           "open": true,
           "grep": true,
           "thinking": true,
-          "web_search": true,
         },
         "enable_all_context_servers": false,
         "context_servers": {},
@@ -94,10 +103,11 @@
       "effort": "max",
       "enable_thinking": true,
       "provider": "zed.dev",
-      "model": "claude-opus-4-6",
+      "model": "claude-opus-4-7",
     },
   },
   "project_panel": {
+    "dock": "right",
     "git_status": true,
     "hide_hidden": false,
     "entry_spacing": "standard",
@@ -118,7 +128,7 @@
   "format_on_save": "on",
   "show_whitespaces": "all",
   "wrap_guides": [80, 100, 120],
-  "git_panel": { "button": false },
+  "git_panel": { "dock": "right", "button": false },
   "tabs": { "file_icons": true, "git_status": true },
   "telemetry": { "diagnostics": false, "metrics": false },
   "unnecessary_code_fade": 0.5,
@@ -174,3 +184,4 @@
     "xml": true,
   },
 }
+
