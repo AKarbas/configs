@@ -19,14 +19,6 @@
       chmod 644 "$HOME/.config/karabiner/karabiner.json"
     ''
   );
-  home.activation.copyZedConfig = lib.mkIf pkgs.stdenv.isDarwin (
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      mkdir -p "$HOME/.config/zed"
-      cp -f "${./dotfiles/zed/settings.json}" "$HOME/.config/zed/settings.json"
-      cp -f "${./dotfiles/zed/keymap.json}" "$HOME/.config/zed/keymap.json"
-      chmod 644 "$HOME/.config/zed/settings.json" "$HOME/.config/zed/keymap.json"
-    ''
-  );
 
   home.activation.configureStats = lib.mkIf pkgs.stdenv.isDarwin (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''

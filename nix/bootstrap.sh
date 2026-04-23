@@ -24,3 +24,4 @@ make darwin
 echo ""
 echo "==> Done! Manual steps remaining:"
 echo "  - Import Raycast settings: open Raycast, run 'Import Settings & Data', select common/home/dotfiles/raycast/export.rayconfig"
+echo "  - Sync Zed config: run 'make zed-push' (zed config is not auto-deployed)"
