@@ -12,7 +12,12 @@
     "/System/Applications/Calendar.app"
   ];
   homebrew = {
-    brews = [ ];
+    brews = [
+      {
+        name = "astronomer/tap/astro";
+        args = [ "without-podman" ];
+      }
+    ];
     casks = [
       "aws-vpn-client"
       "firefox"
