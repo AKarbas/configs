@@ -17,13 +17,14 @@ let
     clang-tools
     cmake
     colordiff
+    delta
+    diffnav
     direnv
     docker-client
     duckdb
     fd
     file
     fswatch
-    fzf
     gawk
     gh
     gnumake
@@ -85,19 +86,20 @@ let
     zsh-z
   ];
 
-  customScripts = [
-    (makeScript "git-spr-single" ./scripts/git-spr-single.sh)
-    (makeScript "git-vimdiff" ./scripts/git-vimdiff.sh)
-  ];
+  customScripts = [ (makeScript "git-spr-single" ./scripts/git-spr-single.sh) ];
 
   customPackages = [
+    # jj-spr is not in nixpkgs.
     (builtins.getFlake "github:LucioFranco/jj-spr/f628b200dcd25e01df1d97677305dc828a396b24")
     .packages.${pkgs.stdenv.hostPlatform.system}.default
+    # jj-starship is in nixpkgs-unstable but not in 25.11; pin upstream flake at v0.7.0.
+    # Drop this once 25.11 backports it (or on the next channel bump).
+    (builtins.getFlake "github:dmmulroy/jj-starship/76cf00619b0cce5bd08a1b9a49b310ed928794d5")
+    .packages.${pkgs.stdenv.hostPlatform.system}.jj-starship
   ];
 
   maybeNix = if config.nix.enable then [ pkgs.nix ] else [ ];
 in
 {
-  home.packages =
-    customScripts ++ zshPackages ++ standardPackages ++ customPackages ++ maybeNix;
+  home.packages = customScripts ++ zshPackages ++ standardPackages ++ customPackages ++ maybeNix;
 }

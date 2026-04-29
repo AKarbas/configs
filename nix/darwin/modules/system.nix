@@ -556,6 +556,24 @@
       rm -f /Users/amin/Library/LaunchAgents/git.acsandmann.rift.plist
     fi
   '';
+  # Ghostty restores via macOS session-resume before org.nixos.activate-system
+  # has finished relaying home-manager symlinks, so it reads stale config.
+  # This agent fires after login, waits for activation to settle, then reloads.
+  launchd.user.agents.ghostty-config-reload = {
+    serviceConfig = {
+      Label = "local.ghostty-config-reload";
+      ProgramArguments = [
+        "/bin/sh"
+        "-c"
+        # osascript is available without any PATH setup; 10s is conservative
+        # but activation is usually done in <5s.
+        "sleep 10 && osascript -e 'tell application \"Ghostty\" to perform action \"reload_config\" on (first terminal)' 2>/dev/null || true"
+      ];
+      RunAtLoad = true;
+      LimitLoadToSessionType = "Aqua";
+      StandardErrorPath = "/tmp/ghostty-config-reload.log";
+    };
+  };
   launchd.user.agents.rift = {
     serviceConfig = {
       ProgramArguments = [ "/opt/homebrew/bin/rift" ];
