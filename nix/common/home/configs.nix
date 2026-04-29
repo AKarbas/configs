@@ -12,6 +12,19 @@
   home.activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
     rm -f ~/.gitconfig
   '';
+
+  # Migrate ~/.z (oh-my-zsh `z` plugin db) into zoxide on first switch.
+  # Idempotent: a sentinel marks the import as done so we never re-merge.
+  home.activation.importZIntoZoxide = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    _z_db="$HOME/.z"
+    _zoxide_data_dir="''${XDG_DATA_HOME:-$HOME/.local/share}/zoxide"
+    _sentinel="$_zoxide_data_dir/.imported-from-z"
+    if [ -f "$_z_db" ] && [ ! -f "$_sentinel" ]; then
+      $DRY_RUN_CMD mkdir -p "$_zoxide_data_dir"
+      $DRY_RUN_CMD ${pkgs.zoxide}/bin/zoxide import --from z --merge "$_z_db"
+      $DRY_RUN_CMD touch "$_sentinel"
+    fi
+  '';
   home.activation.copyKarabinerConfig = lib.mkIf pkgs.stdenv.isDarwin (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       mkdir -p "$HOME/.config/karabiner"
@@ -108,6 +121,13 @@
         core.autocrlf = false;
         core.untrackedcache = true;
         core.fsmonitor = true;
+        core.pager = "delta";
+        interactive.diffFilter = "delta --color-only";
+        delta = {
+          navigate = true;
+          dark = true;
+        };
+        merge.conflictStyle = "zdiff3";
         http.postBuffer = 1024 * 1024 * 1024;
       };
     };
@@ -162,6 +182,11 @@
           time_format = "%T%.3f";
           format = "[$time]($style)";
         };
+        custom.jj = {
+          command = "jj-starship";
+          when = "jj-starship detect";
+          format = "$output ";
+        };
       };
     };
     ssh = {
@@ -202,6 +227,14 @@
       enable = true;
       enableZshIntegration = true;
       nix-direnv.enable = true;
+    };
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
     };
     ghostty = {
       enable = true;
@@ -245,12 +278,50 @@
           private-commits = "description(glob:'*local-only*')";
         };
         templates.git_push_bookmark = ''"amin/push-" ++ change_id.short()'';
-        aliases.spr = [
-          "util"
-          "exec"
-          "--"
-          "jj-spr"
+        ui = {
+          default-command = [
+            "log"
+            "--no-pager"
+            "-n=5"
+          ];
+          conflict-marker-style = "snapshot";
+          movement.edit = true;
+          paginate = "auto";
+          streampager.interface = "quit-if-one-page";
+        };
+        # Use diffnav (delta + file tree, à la GitHub) for diff/show/interdiff/obslog.
+        # diff-formatter must be :git here because diffnav (wrapping delta) only
+        # understands git/unified diff format, not jj's native format.
+        # See https://jj-vcs.github.io/jj/latest/config/#conditional-configuration
+        "--scope" = [
+          {
+            "--when".commands = [
+              "diff"
+              "show"
+              "interdiff"
+              "obslog"
+            ];
+            ui.pager = "diffnav";
+            ui.diff-formatter = ":git";
+          }
         ];
+        "remotes.origin" = {
+          auto-track-bookmarks = "*";
+          auto-track-created-bookmarks = "*";
+        };
+        aliases = {
+          spr = [
+            "util"
+            "exec"
+            "--"
+            "jj-spr"
+          ];
+          tip = [
+            "edit"
+            "-r"
+            "latest(heads(mutable()))"
+          ];
+        };
       };
     };
     zsh = {
@@ -261,6 +332,7 @@
       syntaxHighlighting.enable = true;
       shellAliases = {
         "ja!" = "jj abandon";
+        cat = "bat --plain";
         cdjr = "cd $(jj root)";
         ghpr = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"[\" + .title + \"](\" + .url + \")\"'";
         ghprd = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"- [\" + .title + \"](\" + .url + \")\"'";
@@ -296,7 +368,16 @@
         tf = "terraform";
         tg = "terragrunt";
       };
+      # ^R goes to atuin: omz=800 → fzf=910 binds ^R → atuin=1000 binds ^R (wins).
+      # ^T / alt-c stay on fzf.
       initContent = ''
+        # Pipe `--help`/`-h` output through bat for syntax highlighting.
+        # Caveat: zsh global aliases match whole tokens anywhere in the line, so
+        # this works for `cmd --help` and `cmd --help | grep`, but breaks for
+        # `cmd --help --other-flag` (the trailing flag becomes a bat arg).
+        alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
+        alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+
         source ${./scripts/jj-workspaces.zsh}
       '';
       oh-my-zsh = {
@@ -308,12 +389,12 @@
           "kubectl"
           "kubectx"
           "macos"
-          "z"
         ];
         extraConfig = ''
-          DISABLE_FZF_KEY_BINDINGS="true"
+          # Source zsh-vi-mode keybindings inline at zshrc time instead of zvm's
+          # default lazy init (first-prompt hook), which would otherwise rebind
+          # keys after our config and clobber e.g. atuin's ^R.
           export ZVM_INIT_MODE=sourcing
-          bindkey '^r' _atuin_search_widget
         '';
       };
       plugins = [
@@ -348,6 +429,7 @@
     ];
     sessionVariables = {
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
+      MANPAGER = "bat --plain --language=man";
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
       TG_PROVIDER_CACHE = "1";
       TG_PROVIDER_CACHE_DIR = "${config.home.homeDirectory}/.cache/terragrunt-providers";
