@@ -181,8 +181,7 @@
         set number
       '';
     };
-    # A modern replacement for ‘ls’
-    # useful in bash/zsh prompt, not in nushell.
+    # A modern replacement for ‘ls’ useful in bash/zsh prompt.
     eza = {
       enable = true;
       enableZshIntegration = true;
@@ -190,7 +189,6 @@
     };
     atuin = {
       enable = true;
-      enableNushellIntegration = true;
       enableZshIntegration = true;
       # This does not work if a config for atuin already exists
       # https://github.com/nix-community/home-manager/issues/5734
