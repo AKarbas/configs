@@ -97,9 +97,9 @@
     git = {
       enable = true;
       lfs.enable = true;
-      userName = "Amin Karbas";
-      userEmail = "6280244+AKarbas@users.noreply.github.com";
-      extraConfig = {
+      settings = {
+        user.name = "Amin Karbas";
+        user.email = "6280244+AKarbas@users.noreply.github.com";
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
         advice.detachedHead = false;
@@ -166,9 +166,10 @@
     };
     ssh = {
       enable = true;
+      enableDefaultConfig = false;
       includes = [ "config.d/*" ];
-      addKeysToAgent = "yes";
       matchBlocks."*" = {
+        addKeysToAgent = "yes";
         extraOptions.UseKeychain = "yes";
         identityFile = [ "~/.ssh/id_ed25519" ];
       };
@@ -242,7 +243,6 @@
         };
         git = {
           private-commits = "description(glob:'*local-only*')";
-          push-bookmark-prefix = "amin/push-";
         };
         templates.git_push_bookmark = ''"amin/push-" ++ change_id.short()'';
         aliases.spr = [
