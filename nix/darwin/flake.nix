@@ -7,10 +7,10 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
-    nix-darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    nix-darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     flox.url = "github:flox/flox/latest";
   };
@@ -27,7 +27,7 @@
       floxConfig =
         { pkgs, ... }:
         {
-          environment.systemPackages = [ flox.packages.${pkgs.system}.default ];
+          environment.systemPackages = [ flox.packages.${pkgs.stdenv.hostPlatform.system}.default ];
           nix.settings = {
             substituters = [ "https://cache.flox.dev" ];
             trusted-public-keys = [ "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs=" ];
@@ -47,6 +47,7 @@
       commonModules = [
         floxConfig
         ../common/modules/nix-core.nix
+        ./modules/overlays.nix
         ./modules/system.nix
         ./modules/apps-common.nix
         home-manager.darwinModules.home-manager
