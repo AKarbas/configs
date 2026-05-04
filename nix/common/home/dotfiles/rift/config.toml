@@ -106,6 +106,9 @@ app_rules = [
 "Alt + Ctrl + Meta + M" = "show_mission_control_current"
 "Alt + Ctrl + M" = "show_mission_control_all"
 
+"Ctrl + Alt + LeftBracket" = { move_window_to_display = { selector = "left" } }
+"Ctrl + Alt + RightBracket" = { move_window_to_display = { selector = "right" } }
+
 "Alt + Shift + D" = "debug"
 
 "Alt + Ctrl + S" = "serialize"

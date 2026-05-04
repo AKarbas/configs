@@ -1,12 +1,13 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  pkgs-unstable,
+  config,
+  ...
+}:
 let
   makeScript = name: script: pkgs.writeShellScriptBin name (builtins.readFile script);
 
   standardPackages = with pkgs; [
-    (pkgs.spr.overrideAttrs (oldAttrs: {
-      nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
-      buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ pkgs.zlib ];
-    }))
     act
     ast-grep
     awscli2
@@ -60,6 +61,7 @@ let
     ripgrep
     rsync
     skaffold
+    spr
     terraform
     terragrunt
     tmux
@@ -92,10 +94,9 @@ let
     # jj-spr is not in nixpkgs.
     (builtins.getFlake "github:LucioFranco/jj-spr/f628b200dcd25e01df1d97677305dc828a396b24")
     .packages.${pkgs.stdenv.hostPlatform.system}.default
-    # jj-starship is in nixpkgs-unstable but not in 25.11; pin upstream flake at v0.7.0.
-    # Drop this once 25.11 backports it (or on the next channel bump).
-    (builtins.getFlake "github:dmmulroy/jj-starship/76cf00619b0cce5bd08a1b9a49b310ed928794d5")
-    .packages.${pkgs.stdenv.hostPlatform.system}.jj-starship
+    # jj-starship is in nixpkgs-unstable but not in 25.11.
+    # Drop this (use pkgs.jj-starship) once 25.11 backports it or on the next channel bump.
+    pkgs-unstable.jj-starship
   ];
 
   maybeNix = if config.nix.enable then [ pkgs.nix ] else [ ];

@@ -64,7 +64,6 @@
       "monitorcontrol"
       "notion"
       "raycast"
-      "rectangle"
       "stats"
       "telegram"
       "whatsapp"
