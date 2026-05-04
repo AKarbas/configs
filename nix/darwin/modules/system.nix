@@ -423,58 +423,6 @@
           CTKeyboardEventCommandModeActive = 0;
           CTKeyboardEventLeftCommandNumberActive = 0;
         };
-        "com.knollsoft.Rectangle" = {
-          allowAnyShortcut = 1;
-          alternateDefaultShortcuts = 1;
-          hideMenubarIcon = 1;
-          launchOnLogin = 1;
-          hapticFeedbackOnSnap = 1;
-          moveCursorAcrossDisplays = 1;
-          footprintAnimationDurationMultiplier = "0.75";
-          subsequentExecutionMode = 0;
-          unsnapRestore = 2;
-          windowSnapping = 2;
-          almostMaximize = {
-            keyCode = 3;
-            modifierFlags = 786432;
-          };
-          nextDisplay = {
-            keyCode = 30;
-            modifierFlags = 1835008;
-          };
-          previousDisplay = {
-            keyCode = 33;
-            modifierFlags = 1835008;
-          };
-          reflowTodo = {
-            keyCode = 45;
-            modifierFlags = 786432;
-          };
-          toggleTodo = {
-            keyCode = 11;
-            modifierFlags = 786432;
-          };
-          todo = 2;
-          bottomHalf = { };
-          bottomLeft = { };
-          bottomRight = { };
-          centerHalf = { };
-          centerThird = { };
-          firstThird = { };
-          firstTwoThirds = { };
-          larger = { };
-          lastThird = { };
-          lastTwoThirds = { };
-          leftHalf = { };
-          maximize = { };
-          maximizeHeight = { };
-          restore = { };
-          rightHalf = { };
-          smaller = { };
-          topHalf = { };
-          topLeft = { };
-          topRight = { };
-        };
         "com.raycast.macos" = {
           raycastGlobalHotkey = "Control-Option-49";
           raycastPreferredWindowMode = "default";

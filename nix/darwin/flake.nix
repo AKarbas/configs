@@ -12,6 +12,7 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flox.url = "github:flox/flox/latest";
   };
 
@@ -33,10 +34,15 @@
             trusted-public-keys = [ "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs=" ];
           };
         };
+      pkgs-unstable = import inputs.nixpkgs-unstable {
+        system = "aarch64-darwin";
+        config.allowUnfree = true;
+      };
       homeManagerConfig = {
         home-manager.backupFileExtension = "bak";
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = { inherit pkgs-unstable; };
         home-manager.users.amin = {
           imports = [
             ../common/home/configs.nix
