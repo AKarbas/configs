@@ -21,7 +21,8 @@
     casks = [
       "aws-vpn-client"
       "firefox"
-      "linear-linear"
+      "linear"
+      "obsidian"
       "pgadmin4"
       "postman"
       "slack"
