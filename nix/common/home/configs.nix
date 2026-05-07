@@ -309,6 +309,9 @@
           auto-track-bookmarks = "*";
           auto-track-created-bookmarks = "*";
         };
+        "revset-aliases" = {
+          "immutable_heads()" = "builtin_immutable_heads() ~ remote_bookmarks(glob:'spr/*', remote='origin')";
+        };
         aliases = {
           spr = [
             "util"
@@ -431,8 +434,6 @@
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
       MANPAGER = "bat --plain --language=man";
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
-      TG_PROVIDER_CACHE = "1";
-      TG_PROVIDER_CACHE_DIR = "${config.home.homeDirectory}/.cache/terragrunt-providers";
     };
     file = {
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {

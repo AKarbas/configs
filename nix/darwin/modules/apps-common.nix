@@ -48,6 +48,8 @@
       "zstd"
     ];
     casks = [
+      "1password"
+      "1password-cli"
       "chatgpt"
       "claude"
       "cloudflare-warp"
