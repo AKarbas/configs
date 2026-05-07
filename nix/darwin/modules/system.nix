@@ -370,6 +370,9 @@
         "com.apple.AdLib" = {
           allowApplePersonalizedAdvertising = false;
         };
+        "com.apple.controlcenter" = {
+          "NSStatusItem Visible Battery" = true;
+        };
         "com.apple.dock" = {
           showAppExposeGestureEnabled = true;
         };
