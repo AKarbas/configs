@@ -6,6 +6,7 @@
     casks = [
       "electrum"
       "iina"
+      "insta360-studio"
       "steam"
     ];
     masApps = { };
