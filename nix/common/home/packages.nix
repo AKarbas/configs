@@ -52,6 +52,7 @@ let
     nix-index
     nixd
     nixfmt-rfc-style
+    opentofu
     p7zip
     parallel
     poetry
@@ -63,7 +64,6 @@ let
     rsync
     skaffold
     spr
-    terraform
     terragrunt
     tmux
     tree

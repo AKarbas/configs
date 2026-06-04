@@ -368,7 +368,7 @@
         l = "ls -ahl";
         sd = "git-spr-single diff";
         sl = "git-spr-single land";
-        tf = "terraform";
+        tf = "tofu";
         tg = "terragrunt";
       };
       # ^R goes to atuin: omz=800 → fzf=910 binds ^R → atuin=1000 binds ^R (wins).
