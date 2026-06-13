@@ -235,14 +235,14 @@
                 type = "standard";
               };
             };
-            # Show Desktop: Shift+Ctrl+\
+            # Show Desktop: Cmd+Ctrl+D
             "34" = {
               enabled = 1;
               value = {
                 parameters = [
-                  92
-                  42
-                  393216
+                  100
+                  2
+                  1310720
                 ];
                 type = "standard";
               };
