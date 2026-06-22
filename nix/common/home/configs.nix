@@ -261,7 +261,7 @@
         quick-terminal-animation-duration = 0;
         scrollback-limit = 1024 * 1024 * 1024;
         shell-integration-features = "ssh-terminfo";
-        theme = "Mathias";
+        theme = "light:Apple System Colors Light,dark:Mathias";
         unfocused-split-fill = "#302e33";
         window-padding-x = 4;
         window-padding-y = 4;
