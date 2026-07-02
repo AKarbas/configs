@@ -219,6 +219,12 @@ easily.
 
 Never make the commit/PR yourself unless I explicitly ask you to.
 
+When writing the title:
+
+1. Scope by the affected system/deployment, not the tool — e.g.
+   `chore(database):` not `chore(helm):`. The narrower scope also makes
+   repeating the system's name in the summary redundant.
+
 When writing the description:
 
 1. Lead with operational context when the change is reactive — if the PR is
@@ -240,6 +246,11 @@ When writing the description:
 7. Add investigation/analysis sections only when the root cause was non-obvious
    (e.g., "## What caused the scheduling failures").
 8. Put `Follows ...`, `refs ...`, etc. notes at the bottom of the description.
+9. Size the structure to the change: small changes get 1-2 plain sentences (what +
+   why fused) plus any operational runbook — skip template sections
+   that aren't necessary and only add bloat.
+10. Include operational runbooks (SQL/commands), but only with concise prose
+    around them. Similarly, prefer inline comments.
 
 When amending a description:
 
