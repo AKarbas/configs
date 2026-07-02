@@ -125,7 +125,6 @@
         interactive.diffFilter = "delta --color-only";
         delta = {
           navigate = true;
-          dark = true;
         };
         merge.conflictStyle = "zdiff3";
         http.postBuffer = 1024 * 1024 * 1024;
