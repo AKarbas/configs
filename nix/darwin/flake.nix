@@ -62,6 +62,8 @@
       mkHost =
         {
           hostname,
+          computerName ? hostname,
+          netbiosName ? hostname,
           extraModules ? [ ],
         }:
         nix-darwin.lib.darwinSystem {
@@ -72,11 +74,11 @@
             ++ [
               {
                 networking = {
-                  computerName = hostname;
+                  inherit computerName;
                   hostName = hostname;
                   localHostName = hostname;
                 };
-                system.defaults.smb.NetBIOSName = hostname;
+                system.defaults.smb.NetBIOSName = netbiosName;
                 system.primaryUser = "amin";
                 users.users.amin = {
                   home = "/Users/amin";
@@ -88,9 +90,11 @@
         };
     in
     {
-      darwinConfigurations.UNiCORN = mkHost {
-        hostname = "UNiCORN";
-        extraModules = [ ./modules/apps-unicorn.nix ];
+      darwinConfigurations.Amin-Karbas-MacBook-Pro = mkHost {
+        hostname = "Amin-Karbas-MacBook-Pro";
+        computerName = "Amin Karbas - MacBook Pro";
+        netbiosName = null;
+        extraModules = [ ./modules/apps-amin-karbas-macbook-pro.nix ];
       };
       darwinConfigurations.UNiCHARM = mkHost {
         hostname = "UNiCHARM";

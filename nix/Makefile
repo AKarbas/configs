@@ -81,7 +81,7 @@ zed-push:
 # Detect system and set default target
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
-HOSTNAME := $(shell scutil --get LocalHostName 2>/dev/null || echo UNiCORN)
+HOSTNAME := $(shell scutil --get LocalHostName 2>/dev/null || echo Amin-Karbas-MacBook-Pro)
 default: darwin
 else
 default: nixos
