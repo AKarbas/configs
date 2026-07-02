@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  # UNiCORN-specific apps. Move items from apps-common.nix here as needed.
+  # Amin-Karbas-MacBook-Pro-specific apps. Move items from apps-common.nix here as needed.
   system.defaults.dock.persistent-apps = lib.mkForce [
     "/System/Applications/Mail.app"
     "/System/Applications/Reminders.app"
