@@ -7,6 +7,48 @@
 let
   makeScript = name: script: pkgs.writeShellScriptBin name (builtins.readFile script);
 
+  # Piped diff tools can't see the terminal background and default to dark, so
+  # the wrappers below pass --dark/--light from the effective macOS appearance.
+  # Only SkyLight (the WindowServer) tracks it: under Auto appearance, the
+  # AppleInterfaceStyle plist key (and System Events, which reads it) says
+  # "Dark" even during the light phase. Prints nothing off-macOS/over ssh.
+  macosTheme = pkgs.writeCBin "macos-theme" ''
+    #include <dlfcn.h>
+    #include <stdio.h>
+    int main(void) {
+      void *skylight = dlopen(
+        "/System/Library/PrivateFrameworks/SkyLight.framework/SkyLight",
+        RTLD_LAZY);
+      int (*theme)(void) =
+        skylight ? (int (*)(void))dlsym(skylight, "SLSGetAppearanceThemeLegacy") : 0;
+      if (!theme) return 1;
+      puts(theme() == 1 ? "dark" : "light");
+      return 0;
+    }
+  '';
+
+  themedDelta = pkgs.writeShellScriptBin "delta" ''
+    case $(${macosTheme}/bin/macos-theme) in
+      dark)  exec ${pkgs.delta}/bin/delta --dark "$@" ;;
+      light) exec ${pkgs.delta}/bin/delta --light "$@" ;;
+      *)     exec ${pkgs.delta}/bin/delta "$@" ;;
+    esac
+  '';
+
+  # difftastic: unstable's is much newer than 25.11's.
+  themedDifft = pkgs.writeShellScriptBin "difft" ''
+    # difft assumes 80 columns when piped.
+    if [ -z "$DFT_WIDTH" ] && [ -r /dev/tty ]; then
+      cols=$(stty size 2>/dev/null </dev/tty | cut -d' ' -f2)
+      [ -n "$cols" ] && export DFT_WIDTH="$cols"
+    fi
+    case $(${macosTheme}/bin/macos-theme) in
+      dark)  exec ${pkgs-unstable.difftastic}/bin/difft --background dark "$@" ;;
+      light) exec ${pkgs-unstable.difftastic}/bin/difft --background light "$@" ;;
+      *)     exec ${pkgs-unstable.difftastic}/bin/difft "$@" ;;
+    esac
+  '';
+
   standardPackages = with pkgs; [
     act
     ast-grep
@@ -19,8 +61,8 @@ let
     claude-code
     cmake
     colordiff
-    delta
-    diffnav
+    themedDelta
+    themedDifft
     direnv
     docker-client
     duckdb

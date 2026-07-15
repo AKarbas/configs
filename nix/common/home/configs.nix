@@ -123,6 +123,7 @@
         core.fsmonitor = true;
         core.pager = "delta";
         interactive.diffFilter = "delta --color-only";
+        # delta is wrapped in packages.nix (light/dark).
         delta = {
           navigate = true;
         };
@@ -287,23 +288,14 @@
           movement.edit = true;
           paginate = "auto";
           streampager.interface = "quit-if-one-page";
+          # difft is wrapped in packages.nix (light/dark, width).
+          diff-formatter = [
+            "difft"
+            "--color=always"
+            "$left"
+            "$right"
+          ];
         };
-        # Use diffnav (delta + file tree, à la GitHub) for diff/show/interdiff/obslog.
-        # diff-formatter must be :git here because diffnav (wrapping delta) only
-        # understands git/unified diff format, not jj's native format.
-        # See https://jj-vcs.github.io/jj/latest/config/#conditional-configuration
-        "--scope" = [
-          {
-            "--when".commands = [
-              "diff"
-              "show"
-              "interdiff"
-              "obslog"
-            ];
-            ui.pager = "diffnav";
-            ui.diff-formatter = ":git";
-          }
-        ];
         "remotes.origin" = {
           auto-track-bookmarks = "*";
           auto-track-created-bookmarks = "*";
