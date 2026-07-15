@@ -23,12 +23,10 @@ in
     git
     neovim
     nushell
-    tailscale
     wget
     zsh
   ];
   environment.variables.EDITOR = "nvim";
-  services.tailscale.enable = true;
 
   # `brew bundle` runs mid-activation, before home-manager. brew resolves the
   # store to $HOME/.homebrew/trust.json under the activation's `sudo
