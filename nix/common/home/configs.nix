@@ -364,6 +364,9 @@
       };
       # ^R goes to atuin: omz=800 → fzf=910 binds ^R → atuin=1000 binds ^R (wins).
       # ^T / alt-c stay on fzf.
+      envExtra = ''
+        [ -f "$HOME/.zshenv.local" ] && . "$HOME/.zshenv.local"
+      '';
       initContent = ''
         # Pipe `--help`/`-h` output through bat for syntax highlighting.
         # Caveat: zsh global aliases match whole tokens anywhere in the line, so
@@ -427,6 +430,7 @@
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
     };
     file = {
+      "${config.home.homeDirectory}/.zshenv".force = true;
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {
         source = ./dotfiles/rift/config.toml;
       };
