@@ -79,6 +79,7 @@ let
     helm-ls
     htop-vim
     hugo
+    jjui
     jq
     k9s
     kns
