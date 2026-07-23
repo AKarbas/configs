@@ -64,7 +64,7 @@ let
     themedDelta
     themedDifft
     direnv
-    docker-client
+    (docker_29.override { clientOnly = true; })
     duckdb
     fd
     file
