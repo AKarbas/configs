@@ -1,10 +1,16 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
-    networkmanager.enable = false;
+    # mkDefault so the installer ISO profile (which insists on true) wins.
+    networkmanager.enable = lib.mkDefault false;
     hostName = "UNiXOS";
   };
 
@@ -36,7 +42,7 @@
   fonts.packages = with pkgs; [
     material-design-icons
     font-awesome
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    nerd-fonts.fira-code
   ];
 
   programs.zsh.enable = true;

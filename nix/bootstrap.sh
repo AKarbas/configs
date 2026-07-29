@@ -11,17 +11,22 @@ else
   echo "    Nix already installed, skipping"
 fi
 
-echo "==> Installing Homebrew"
-if ! command -v brew &>/dev/null; then
-  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if [[ "$(uname)" == "Darwin" ]]; then
+  echo "==> Installing Homebrew"
+  if ! command -v brew &>/dev/null; then
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  else
+    echo "    Homebrew already installed, skipping"
+  fi
+
+  echo "==> Running make darwin"
+  make darwin
+
+  echo ""
+  echo "==> Done! Manual steps remaining:"
+  echo "  - Import Raycast settings: open Raycast, run 'Import Settings & Data', select common/home/dotfiles/raycast/export.rayconfig"
+  echo "  - Sync Zed config: run 'make zed-push' (zed config is not auto-deployed)"
 else
-  echo "    Homebrew already installed, skipping"
+  echo "==> Running make hm (standalone home-manager)"
+  make hm
 fi
-
-echo "==> Running make darwin"
-make darwin
-
-echo ""
-echo "==> Done! Manual steps remaining:"
-echo "  - Import Raycast settings: open Raycast, run 'Import Settings & Data', select common/home/dotfiles/raycast/export.rayconfig"
-echo "  - Sync Zed config: run 'make zed-push' (zed config is not auto-deployed)"
