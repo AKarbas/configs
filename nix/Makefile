@@ -1,29 +1,37 @@
-.PHONY: nixos nixos-debug darwin darwin-debug update history gc fmt clean bootstrap zed-pull zed-push
+.PHONY: nixos nixos-debug darwin darwin-debug hm hm-debug update history gc fmt clean bootstrap zed-pull zed-push
+
+NIXFLAGS := --extra-experimental-features 'nix-command flakes'
+DEBUGFLAGS := --show-trace --verbose
 
 ZED_DOTFILES := common/home/dotfiles/zed
 ZED_LIVE := $(HOME)/.config/zed
 
 # NixOS targets
 nixos:
-	cd nixos && nix build .#nixosConfigurations.UNiXOS.system \
-		--extra-experimental-features 'nix-command flakes'
-	cd nixos && sudo ./result/bin/switch-to-configuration switch
+	nix build .#nixosConfigurations.UNiXOS.system $(NIXFLAGS)
+	sudo ./result/bin/switch-to-configuration switch
 
 nixos-debug:
-	cd nixos && nix build .#nixosConfigurations.UNiXOS.system --show-trace --verbose \
-		--extra-experimental-features 'nix-command flakes'
-	cd nixos && sudo ./result/bin/switch-to-configuration switch --show-trace --verbose
+	nix build .#nixosConfigurations.UNiXOS.system $(NIXFLAGS) $(DEBUGFLAGS)
+	sudo ./result/bin/switch-to-configuration switch $(DEBUGFLAGS)
 
 # Darwin targets
 darwin:
-	cd darwin && nix build .#darwinConfigurations.$(HOSTNAME).system \
-		--extra-experimental-features 'nix-command flakes'
-	cd darwin && sudo ./result/sw/bin/darwin-rebuild switch --flake .#$(HOSTNAME)
+	nix build .#darwinConfigurations.$(HOSTNAME).system $(NIXFLAGS)
+	sudo ./result/sw/bin/darwin-rebuild switch --flake .#$(HOSTNAME)
 
 darwin-debug:
-	cd darwin && nix build .#darwinConfigurations.$(HOSTNAME).system --show-trace --verbose \
-		--extra-experimental-features 'nix-command flakes'
-	cd darwin && sudo ./result/sw/bin/darwin-rebuild switch --flake .#$(HOSTNAME) --show-trace --verbose
+	nix build .#darwinConfigurations.$(HOSTNAME).system $(NIXFLAGS) $(DEBUGFLAGS)
+	sudo ./result/sw/bin/darwin-rebuild switch --flake .#$(HOSTNAME) $(DEBUGFLAGS)
+
+# Standalone home-manager targets (foreign-distro Linux)
+hm:
+	nix build .#homeConfigurations.amin-linux.activationPackage $(NIXFLAGS)
+	./result/activate
+
+hm-debug:
+	nix build .#homeConfigurations.amin-linux.activationPackage $(NIXFLAGS) $(DEBUGFLAGS)
+	./result/activate
 
 # Bootstrap
 bootstrap:
@@ -31,8 +39,7 @@ bootstrap:
 
 # Common targets
 update:
-	cd darwin && nix flake update
-	cd nixos && nix flake update
+	nix flake update $(NIXFLAGS)
 
 history:
 	nix profile history --profile /nix/var/nix/profiles/system
@@ -42,11 +49,10 @@ gc:
 	sudo nix store gc --debug
 
 fmt:
-	cd darwin && nix fmt
-	cd nixos && nix fmt
+	nix fmt .
 
 clean:
-	rm -rf darwin/result nixos/result
+	rm -rf result
 
 # Zed config sync
 # Pull live ~/.config/zed into the repo, redacting `ghp_*` tokens.
@@ -83,8 +89,10 @@ UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
 HOSTNAME := $(shell scutil --get LocalHostName 2>/dev/null || echo Amin-Karbas-MacBook-Pro)
 default: darwin
-else
+else ifneq ($(wildcard /etc/NIXOS),)
 default: nixos
+else
+default: hm
 endif
 
 .DEFAULT_GOAL := default

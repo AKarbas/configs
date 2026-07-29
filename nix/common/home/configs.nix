@@ -239,6 +239,9 @@
     ghostty = {
       enable = true;
       package = null; # installed via homebrew cask
+      # With a null package the module can't install the user service the
+      # option would default to on Linux (no-op on darwin).
+      systemd.enable = false;
       settings = {
         auto-update = "check";
         background-blur = 20;
