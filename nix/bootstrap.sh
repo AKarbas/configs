@@ -11,6 +11,12 @@ else
   echo "    Nix already installed, skipping"
 fi
 
+# The installer only edits shell rc files, so the current shell does not see
+# nix yet. Source the profile script to make it usable in this same run.
+if ! command -v nix &>/dev/null; then
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+
 if [[ "$(uname)" == "Darwin" ]]; then
   echo "==> Installing Homebrew"
   if ! command -v brew &>/dev/null; then

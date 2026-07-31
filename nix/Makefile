@@ -88,6 +88,11 @@ zed-push:
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
 HOSTNAME := $(shell scutil --get LocalHostName 2>/dev/null || echo Amin-Karbas-MacBook-Pro)
+endif
+
+ifeq ($(shell command -v nix 2>/dev/null),)
+default: bootstrap
+else ifeq ($(UNAME), Darwin)
 default: darwin
 else ifneq ($(wildcard /etc/NIXOS),)
 default: nixos
