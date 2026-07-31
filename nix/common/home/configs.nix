@@ -440,6 +440,13 @@
       # Read-only (nix-store) symlink. Edit the source files in the repo
       # under nix/common/home/dotfiles/agents/ and run `make` to propagate.
       ".config/agents".source = ./dotfiles/agents;
-    };
+    }
+    # Each dir under dotfiles/skills/ becomes ~/.claude/skills/<name>.
+    # Per-skill links (not one link for the whole skills dir) so other
+    # tooling can keep adding its own symlinks next to them.
+    // lib.mapAttrs' (name: _: {
+      name = ".claude/skills/${name}";
+      value.source = ./dotfiles/skills + "/${name}";
+    }) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./dotfiles/skills));
   };
 }
