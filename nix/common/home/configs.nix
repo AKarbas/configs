@@ -195,7 +195,8 @@
       includes = [ "config.d/*" ];
       matchBlocks."*" = {
         addKeysToAgent = "yes";
-        extraOptions.UseKeychain = "yes";
+        # UseKeychain only exists in Apple's OpenSSH build.
+        extraOptions = lib.optionalAttrs pkgs.stdenv.isDarwin { UseKeychain = "yes"; };
         identityFile = [ "~/.ssh/id_ed25519" ];
       };
     };
