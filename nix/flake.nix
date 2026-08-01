@@ -143,6 +143,9 @@
           ./common/home/configs.nix
           ./common/home/packages.nix
           ./common/home/linux-foreign.nix
+          # flox is a system package on darwin/nixos hosts (floxConfig); here
+          # it goes into the home profile.
+          { home.packages = [ flox.packages.x86_64-linux.default ]; }
         ];
       };
 

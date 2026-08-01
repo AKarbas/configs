@@ -42,10 +42,10 @@ update:
 	nix flake update $(NIXFLAGS)
 
 history:
-	nix profile history --profile /nix/var/nix/profiles/system
+	nix profile history --profile $(NIX_PROFILE)
 
 gc:
-	sudo nix profile wipe-history --profile /nix/var/nix/profiles/system  --older-than 7d
+	$(PROFILE_SUDO) nix profile wipe-history --profile $(NIX_PROFILE) --older-than 7d
 	sudo nix store gc --debug
 
 fmt:
@@ -88,6 +88,16 @@ zed-push:
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
 HOSTNAME := $(shell scutil --get LocalHostName 2>/dev/null || echo Amin-Karbas-MacBook-Pro)
+endif
+
+# System-managed hosts use the system profile; hm hosts use the
+# user-owned home-manager profile (no sudo for its history).
+ifneq ($(filter Darwin,$(UNAME))$(wildcard /etc/NIXOS),)
+NIX_PROFILE := /nix/var/nix/profiles/system
+PROFILE_SUDO := sudo
+else
+NIX_PROFILE := $(HOME)/.local/state/nix/profiles/home-manager
+PROFILE_SUDO :=
 endif
 
 ifeq ($(shell command -v nix 2>/dev/null),)
