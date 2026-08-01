@@ -422,12 +422,11 @@
     # the Home Manager release notes for a list of state version
     # changes in each release.
     stateVersion = "24.11";
-    sessionPath = [
-      "/opt/homebrew/bin/"
-      "${config.home.homeDirectory}/go/bin/"
-      "/Applications/Docker.app/Contents/Resources/bin"
-      "${config.home.homeDirectory}/.npm-global/bin"
-    ];
+    sessionPath =
+      lib.optionals pkgs.stdenv.isDarwin [ "/opt/homebrew/bin/" ]
+      ++ [ "${config.home.homeDirectory}/go/bin/" ]
+      ++ lib.optionals pkgs.stdenv.isDarwin [ "/Applications/Docker.app/Contents/Resources/bin" ]
+      ++ [ "${config.home.homeDirectory}/.npm-global/bin" ];
     sessionVariables = {
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
       MANPAGER = "bat --plain --language=man";

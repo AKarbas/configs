@@ -10,9 +10,8 @@
   # non-NixOS hosts.
   targets.genericLinux.enable = true;
 
-  # chsh cannot set the login shell when the user is not in /etc/passwd.
-  # Keep bash as the login shell and hand interactive shells to zsh.
-  # Escape hatch: run `_NO_ZSH=1 bash` to stay in bash.
+  home.packages = [ pkgs.nerd-fonts.fira-code ];
+
   programs.bash = {
     enable = true;
     initExtra = ''
