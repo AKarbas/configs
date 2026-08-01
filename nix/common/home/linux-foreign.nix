@@ -10,18 +10,13 @@
   # non-NixOS hosts.
   targets.genericLinux.enable = true;
 
-  # The nix-store zsh is only a valid login shell once it's in /etc/shells
-  # (needs root, once). chsh itself can also fail, so never fail the
-  # switch — print the manual steps instead.
-  home.activation.zshLoginShell = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    _zsh="${pkgs.zsh}/bin/zsh"
-    if [ "''${SHELL:-}" != "$_zsh" ]; then
-      if grep -qF "$_zsh" /etc/shells 2>/dev/null; then
-        $DRY_RUN_CMD chsh -s "$_zsh" || true
-      else
-        echo "To make zsh the login shell:"
-        echo "  echo '$_zsh' | sudo tee -a /etc/shells && chsh -s '$_zsh'"
-      fi
-    fi
-  '';
+  # chsh cannot set the login shell when the user is not in /etc/passwd.
+  # Keep bash as the login shell and hand interactive shells to zsh.
+  # Escape hatch: run `_NO_ZSH=1 bash` to stay in bash.
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      [ -z "$ZSH_VERSION" ] && [ -z "$_NO_ZSH" ] && [ -x "$HOME/.nix-profile/bin/zsh" ] && exec "$HOME/.nix-profile/bin/zsh" -l
+    '';
+  };
 }
