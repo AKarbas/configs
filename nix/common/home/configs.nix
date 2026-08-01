@@ -170,6 +170,9 @@
         git_status = {
           disabled = true;
         };
+        hostname = {
+          ssh_only = false;
+        };
         kubernetes = {
           disabled = false;
         };
@@ -426,8 +429,12 @@
       lib.optionals pkgs.stdenv.isDarwin [ "/opt/homebrew/bin/" ]
       ++ [ "${config.home.homeDirectory}/go/bin/" ]
       ++ lib.optionals pkgs.stdenv.isDarwin [ "/Applications/Docker.app/Contents/Resources/bin" ]
-      ++ [ "${config.home.homeDirectory}/.npm-global/bin" ];
+      ++ [
+        "${config.home.homeDirectory}/.npm-global/bin"
+        "${config.home.homeDirectory}/.local/bin"
+      ];
     sessionVariables = {
+      FLOX_DISABLE_METRICS = "true";
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
       MANPAGER = "bat --plain --language=man";
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
