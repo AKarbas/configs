@@ -27,11 +27,11 @@ darwin-debug:
 # Standalone home-manager targets (foreign-distro Linux)
 hm:
 	nix build .#homeConfigurations.amin-linux.activationPackage $(NIXFLAGS)
-	./result/activate
+	HOME_MANAGER_BACKUP_EXT=bak ./result/activate
 
 hm-debug:
 	nix build .#homeConfigurations.amin-linux.activationPackage $(NIXFLAGS) $(DEBUGFLAGS)
-	./result/activate
+	HOME_MANAGER_BACKUP_EXT=bak ./result/activate
 
 # Bootstrap
 bootstrap:
