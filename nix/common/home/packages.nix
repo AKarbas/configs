@@ -58,7 +58,6 @@ let
     btop
     buf
     clang-tools
-    claude-code
     cmake
     colordiff
     themedDelta
