@@ -447,6 +447,73 @@
       # Read-only (nix-store) symlink. Edit the source files in the repo
       # under nix/common/home/dotfiles/agents/ and run `make` to propagate.
       ".config/agents".source = ./dotfiles/agents;
+      # Read-only, so the agent-deck installer cannot append its block —
+      # its content (marked by the version comment below) is inlined and
+      # future agent-deck config-version bumps get merged by hand.
+      ".tmux.conf".text = ''
+        # agent-deck-tmux-config-version: 4 (inlined; see comment in configs.nix)
+
+        # --- terminal ---
+        set  -g default-terminal "tmux-256color"
+        set -ag terminal-overrides ",xterm*:Tc:smcup@:rmcup@"
+        set -ag terminal-overrides ",*256col*:Tc"
+        set -as terminal-features ",xterm-ghostty:RGB"
+
+        # Extended keys (tmux 3.2+): csi-u form so Claude Code sees Shift+Enter.
+        set -s extended-keys on
+        set -s extended-keys-format csi-u
+        set -as terminal-features 'tmux-256color:extkeys'
+
+        # --- behavior ---
+        set  -sg escape-time 10
+        set  -g history-limit 50000
+        set  -g mouse on
+        set  -g base-index 1
+        setw -g pane-base-index 1
+        set  -g focus-events on
+        set  -g set-clipboard on
+
+        # Auto-enter copy-mode when scrolling up in a normal pane.
+        bind-key -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e'"
+        bind-key -T copy-mode-vi WheelUpPane send-keys -X scroll-up
+        bind-key -T copy-mode-vi WheelDownPane send-keys -X scroll-down
+        bind-key -T copy-mode WheelUpPane send-keys -X scroll-up
+        bind-key -T copy-mode WheelDownPane send-keys -X scroll-down
+
+        # Clipboard via OSC 52 on both machines: Ghostty honors it locally
+        # and passes it through over SSH, so remote yanks land in the local
+        # clipboard. No pbcopy/xclip pipes.
+        bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-selection-and-cancel
+        bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-selection-and-cancel
+
+        # --- splits: | horizontal-stack, - vertical-stack ---
+        bind | split-window -h
+        bind - split-window -v
+
+        # --- vim pane navigation (-r repeatable) ---
+        bind -r h select-pane -L
+        bind -r j select-pane -D
+        bind -r k select-pane -U
+        bind -r l select-pane -R
+
+        # --- vim resize ---
+        bind -r H resize-pane -L 5
+        bind -r J resize-pane -D 5
+        bind -r K resize-pane -U 5
+        bind -r L resize-pane -R 5
+
+        # `l` above shadows default last-window; rehome it
+        bind C-l last-window
+
+        # --- vi mode in copy-mode and at the command prompt ---
+        setw -g mode-keys vi
+        set  -g status-keys vi
+        bind -T copy-mode-vi v send -X begin-selection
+        bind -T copy-mode-vi y send -X copy-selection-and-cancel
+
+        # --- reload ---
+        bind R source-file ~/.tmux.conf \; display "reloaded"
+      '';
     }
     # Each dir under dotfiles/skills/ becomes ~/.claude/skills/<name>.
     # Per-skill links (not one link for the whole skills dir) so other
