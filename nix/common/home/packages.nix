@@ -117,6 +117,7 @@ let
     xz
     yazi
     yq-go
+    zellij
     zip
     zstd
   ];
