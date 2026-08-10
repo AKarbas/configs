@@ -466,6 +466,9 @@
 
         # --- behavior ---
         set  -sg escape-time 10
+        # Effectively disables -r repeats: typing right after a prefixed
+        # nav key must not re-trigger it (e.g. `jj` after C-b k).
+        set  -g repeat-time 10
         set  -g history-limit 50000
         set  -g mouse on
         set  -g base-index 1
