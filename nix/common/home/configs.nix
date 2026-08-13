@@ -457,7 +457,10 @@
         set  -g default-terminal "tmux-256color"
         set -ag terminal-overrides ",xterm*:Tc:smcup@:rmcup@"
         set -ag terminal-overrides ",*256col*:Tc"
-        set -as terminal-features ",xterm-ghostty:RGB"
+        # hyperlinks: without it tmux strips OSC 8 (Claude Code file:line
+        # links etc.). Ghostty's ssh-terminfo integration keeps
+        # TERM=xterm-ghostty on remote hosts, so this applies there too.
+        set -as terminal-features ",xterm-ghostty:RGB:hyperlinks"
 
         # Extended keys (tmux 3.2+): csi-u form so Claude Code sees Shift+Enter.
         set -s extended-keys on
