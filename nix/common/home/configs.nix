@@ -374,16 +374,22 @@
       envExtra = ''
         [ -f "$HOME/.zshenv.local" ] && . "$HOME/.zshenv.local"
       '';
-      initContent = ''
-        # Pipe `--help`/`-h` output through bat for syntax highlighting.
-        # Caveat: zsh global aliases match whole tokens anywhere in the line, so
-        # this works for `cmd --help` and `cmd --help | grep`, but breaks for
-        # `cmd --help --other-flag` (the trailing flag becomes a bat arg).
-        alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
-        alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+      initContent = lib.mkMerge [
+        # 550 = before compinit, so completions in ~/.zfunc register.
+        (lib.mkOrder 550 ''
+          fpath=(~/.zfunc $fpath)
+        '')
+        ''
+          # Pipe `--help`/`-h` output through bat for syntax highlighting.
+          # Caveat: zsh global aliases match whole tokens anywhere in the line, so
+          # this works for `cmd --help` and `cmd --help | grep`, but breaks for
+          # `cmd --help --other-flag` (the trailing flag becomes a bat arg).
+          alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
+          alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
-        source ${./scripts/jj-workspaces.zsh}
-      '';
+          source ${./scripts/jj-workspaces.zsh}
+        ''
+      ];
       oh-my-zsh = {
         enable = true;
         plugins = [
@@ -447,6 +453,10 @@
       # Read-only (nix-store) symlink. Edit the source files in the repo
       # under nix/common/home/dotfiles/agents/ and run `make` to propagate.
       ".config/agents".source = ./dotfiles/agents;
+      ".zfunc/_bazel".source = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/bazelbuild/bazel/9.1.1/scripts/zsh_completion/_bazel";
+        hash = "sha256-QJTchK3S8jgjvDQRhq32uEh/vV1BZL1S2YiRxBUR66Q=";
+      };
       # Read-only, so the agent-deck installer cannot append its block —
       # its content (marked by the version comment below) is inlined and
       # future agent-deck config-version bumps get merged by hand.
