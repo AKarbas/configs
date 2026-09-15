@@ -503,8 +503,11 @@
         bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-selection-and-cancel
 
         # --- splits: | horizontal-stack, - vertical-stack ---
-        bind | split-window -h
-        bind - split-window -v
+        # -c: new panes/windows inherit the current pane's directory, not
+        # the session's start directory.
+        bind | split-window -h -c "#{pane_current_path}"
+        bind - split-window -v -c "#{pane_current_path}"
+        bind c new-window -c "#{pane_current_path}"
 
         # --- vim pane navigation (-r repeatable) ---
         bind -r h select-pane -L
