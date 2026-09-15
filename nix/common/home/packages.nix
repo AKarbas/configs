@@ -65,6 +65,7 @@ let
     direnv
     (docker_29.override { clientOnly = true; })
     duckdb
+    dust
     fd
     file
     fswatch
