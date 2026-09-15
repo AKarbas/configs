@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   # Homebrew 6.0 refuses to load formulae/casks from non-official taps during
   # `brew bundle` unless the tap is trusted. Derive the trusted taps from the
@@ -45,11 +50,17 @@ in
 
     onActivation = {
       autoUpdate = true;
-      # 'zap': uninstalls all formulae(and related files) not listed here.
-      # Disable if you want to keep ad-hoc installed formulae.
-      cleanup = "zap";
-      # zap cleanup non-interactively (HB 6 prompts otherwise)
-      extraFlags = [ "--force-cleanup" ];
+      # Zap-cleanup (uninstall everything not listed here) via extraFlags,
+      # not `cleanup = "zap"`: Homebrew 7 removed the `--cleanup` switch the
+      # pinned nix-darwin still emits for it. This is the flag set current
+      # nix-darwin master emits (nix-darwin/nix-darwin@bb9c29c1). Revert to
+      # cleanup = "zap" + extraFlags = ["--force-cleanup"] once the input
+      # includes that fix.
+      cleanup = "none";
+      extraFlags = [
+        "--zap"
+        "--force-cleanup"
+      ];
     };
 
     # Applications to install from Mac App Store using mas.
