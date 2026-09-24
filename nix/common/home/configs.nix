@@ -33,6 +33,15 @@
     ''
   );
 
+  # agent-deck rewrites its config.toml, so set keys instead of owning the file.
+  home.activation.configureAgentDeck = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    _cfg="$HOME/.config/agent-deck/config.toml"
+    _dasel=${pkgs.dasel}/bin/dasel
+    if [ -f "$_cfg" ] && [ "$($_dasel -f "$_cfg" -r toml tmux.window_style_override 2>/dev/null)" != "'default'" ]; then
+      $DRY_RUN_CMD $_dasel put -f "$_cfg" -r toml -t string -v default tmux.window_style_override
+    fi
+  '';
+
   home.activation.configureStats = lib.mkIf pkgs.stdenv.isDarwin (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       /usr/bin/defaults import eu.exelban.Stats "${./dotfiles/stats/StatsSettings.plist}"
@@ -532,6 +541,8 @@
 
         # --- reload ---
         bind R source-file ~/.tmux.conf \; display "reloaded"
+
+        source-file -q ~/.tmux.conf.local
       '';
     }
     # Each dir under dotfiles/skills/ becomes ~/.claude/skills/<name>.
