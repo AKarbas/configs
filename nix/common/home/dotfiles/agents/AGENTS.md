@@ -157,6 +157,18 @@ Full rules with examples: see `~/.config/agents/function-ordering.md`.
 
 ---
 
+## Run every subagent on Opus
+
+- Pass `model: "opus"` on every Agent tool call and every Workflow `agent()`
+  call. The Workflow default inherits the session model, so spell it out there
+  too. Explore, sweep and verify agents included.
+- Prefer the effort-tier definitions in `~/.claude/agents/` (`opus-low`,
+  `opus-medium`, `opus-high`, `opus-xhigh`) through `subagent_type` or
+  `agentType`.
+- Codex is the one other lane, for adversarial review.
+
+---
+
 ## Use better tools when available
 
 Examples:
