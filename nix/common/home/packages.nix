@@ -133,7 +133,9 @@ let
     zsh-z
   ];
 
-  customScripts = [ (makeScript "git-spr-single" ./scripts/git-spr-single.sh) ];
+  customScripts = [
+    (makeScript "ghs" ./scripts/gh-stack.sh)
+  ];
 
   customPackages = [
     # jj-spr is not in nixpkgs.
