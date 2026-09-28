@@ -242,16 +242,12 @@ use the same text for both. (Assume I force-push. I do not, but it does not
 matter.)
 
 MANDATORY first step: read the FULL messages (not only the subjects) of my 5
-most recent commits on the remote main. Match their tone, length, and
-structure.
+most recent commits on the remote main. Match their tone (except: use the STE
+writing skill), length, and structure.
 
 - git repos: `git log origin/main --author=Amin -5`
 - jj workspaces (no `.git`):
   `jj --no-pager log -r 'author("Amin") & ::main@origin' -n 5 --no-graph -T builtin_log_detailed`
-
-My merged commits override any repo PR-template doc (TL;DR/What/Why/Testing
-section headers etc.). Use a repo template only when I ask for it
-explicitly.
 
 Dump the title and the description in a single md block so I can copy them
 easily.
