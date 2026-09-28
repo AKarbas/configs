@@ -9,6 +9,7 @@
       "docker"
     ];
     shell = pkgs.zsh;
+    linger = true; # see enableLinger in common/home/linux-foreign.nix
   };
 
   # Enable sudo without password for wheel group
