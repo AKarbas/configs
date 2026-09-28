@@ -3,7 +3,7 @@
 The `nix/` dir configures my machines through one flake:
 
 - nix-darwin for the Macs,
-- NixOS for `UNiXOS`,
+- NixOS for `UNiXOS` - currently not maintained,
 - home-manager only, for Linux hosts that are not NixOS.
 
 To try: replace all instances of my username (`amin`) and the host names

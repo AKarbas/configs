@@ -17,6 +17,17 @@
 
   home.packages = [ pkgs.nerd-fonts.fira-code ];
 
+  # systemd stops user@<uid>.service after the last logout unless the user
+  # lingers, killing anything started under it via systemd-run --user (e.g.
+  # agent-deck's tmux servers). Plain tmux sits in the login scope and is
+  # unaffected either way.
+  home.activation.enableLinger = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    _loginctl=${pkgs.systemd}/bin/loginctl
+    if [ "$($_loginctl show-user "$(id -un)" -p Linger --value 2>/dev/null)" != "yes" ]; then
+      $DRY_RUN_CMD $_loginctl enable-linger
+    fi
+  '';
+
   programs.bash = {
     enable = true;
     # bashrcExtra lands above .bashrc's interactive guard, and sshd-invoked
