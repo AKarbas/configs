@@ -8,19 +8,21 @@ main() {
   prefix="stack/${GH_STACK_USER:-${USER:-$(id -un)}}/"
   main_root=$(main_workspace_root)
 
+  local prev_branch=main base_change
+  base_change=$(change_ids "latest(($range) & remote_bookmarks(glob:\"spr/*\"))")
+  if [[ -n "$base_change" ]]; then
+    prev_branch=$(spr_bookmark_on "$base_change")
+    range="($range) & ($base_change+::)"
+    echo "base $prev_branch (jj-spr, $base_change)"
+  fi
+
   jj log --no-pager --no-graph -r "$range" -T '"+" ++ diff.stat().total_added() ++ " -" ++ diff.stat().total_removed() ++ " " ++ builtin_log_oneline'
   reject_commits "($range) & empty()" "empty commits in range"
   reject_commits "($range) & immutable()" "immutable commits in range"
+  reject_commits "($range) & remote_bookmarks(glob:\"spr/*\")" "jj-spr commits above the stack base"
 
-  local prev_branch=main change branch pr stacked=0
+  local change branch
   for change in $(change_ids "$range"); do
-    if pr=$(spr_pr_of "$change"); then
-      (( stacked == 0 )) || die "$change is a jj-spr commit above a stack commit"
-      prev_branch=$(gh_main pr view "$pr" --json headRefName --jq .headRefName)
-      echo "base $prev_branch (jj-spr #$pr on $change)"
-      continue
-    fi
-    stacked=1
     branch=$(branch_for "$change")
     push_bookmark "$branch" "$change"
     upsert_pr "$branch" "$change" "$prev_branch"
@@ -75,6 +77,7 @@ push_bookmark() {
   local branch=$1 change=$2
   jj bookmark set "$branch" -r "$change" --allow-backwards
   jj git push --bookmark "$branch" --allow-new
+  jj -R "$main_root" git export
 }
 
 upsert_pr() {
@@ -88,10 +91,9 @@ upsert_pr() {
   fi
 }
 
-spr_pr_of() {
-  local pr
-  pr=$(jj log --no-graph -r "$1" -T 'description' | sed -n 's|^Pull Request: .*/pull/\([0-9]*\)$|\1|p')
-  [[ -n "$pr" ]] && echo "$pr"
+spr_bookmark_on() {
+  jj log --no-graph -r "$1" -T 'remote_bookmarks.map(|b| b.name() ++ "\n").join("")' \
+    | grep '^spr/' | sort -u | head -1
 }
 
 title_of() {
