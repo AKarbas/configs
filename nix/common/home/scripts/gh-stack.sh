@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # gh-stack [revset]   one PR per jj commit; reruns update title/body/base in place.
+# Can start the stack on a jj-spr commit.
 set -euo pipefail
 
 main() {
@@ -11,8 +12,15 @@ main() {
   reject_commits "($range) & empty()" "empty commits in range"
   reject_commits "($range) & immutable()" "immutable commits in range"
 
-  local prev_branch=main change branch
+  local prev_branch=main change branch pr stacked=0
   for change in $(change_ids "$range"); do
+    if pr=$(spr_pr_of "$change"); then
+      (( stacked == 0 )) || die "$change is a jj-spr commit above a stack commit"
+      prev_branch=$(gh_main pr view "$pr" --json headRefName --jq .headRefName)
+      echo "base $prev_branch (jj-spr #$pr on $change)"
+      continue
+    fi
+    stacked=1
     branch=$(branch_for "$change")
     push_bookmark "$branch" "$change"
     upsert_pr "$branch" "$change" "$prev_branch"
@@ -78,6 +86,12 @@ upsert_pr() {
   else
     gh_main pr create --head "$branch" --base "$base" --fill
   fi
+}
+
+spr_pr_of() {
+  local pr
+  pr=$(jj log --no-graph -r "$1" -T 'description' | sed -n 's|^Pull Request: .*/pull/\([0-9]*\)$|\1|p')
+  [[ -n "$pr" ]] && echo "$pr"
 }
 
 title_of() {
