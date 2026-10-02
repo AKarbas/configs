@@ -50,13 +50,13 @@ workspace_auto_back_and_forth = false
 reapply_app_rules_on_title_change = false
 
 app_rules = [
-  { app_id = "com.apple.Maps", floating = true },
+  { app_id = "com.apple.Maps", workspace = 1 },
   { app_name = "AWS VPN Client", floating = true },
   { app_name = "Finder", floating = true },
-  { app_name = "Messages", floating = true },
+  { app_name = "Messages", workspace = 1 },
   { app_name = "System Settings", floating = true },
-  { app_name = "WhatsApp", floating = true },
-  { app_name = "YouTube Music", floating = true },
+  { app_name = "WhatsApp", workspace = 1 },
+  { app_name = "YouTube Music", workspace = 1 },
   { app_name = "iPhone Mirroring", floating = true },
 ]
 
