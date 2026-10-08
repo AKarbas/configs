@@ -14,6 +14,7 @@
   # Source the nix profile and fix XDG vars in generated shell configs on
   # non-NixOS hosts.
   targets.genericLinux.enable = true;
+  targets.genericLinux.gpu.enable = false;
 
   home.packages = [ pkgs.nerd-fonts.fira-code ];
 
@@ -23,7 +24,7 @@
   # unaffected either way.
   home.activation.enableLinger = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     _loginctl=${pkgs.systemd}/bin/loginctl
-    if [ "$($_loginctl show-user "$(id -un)" -p Linger --value 2>/dev/null)" != "yes" ]; then
+    if [ "$($_loginctl show-user "$UID" -p Linger --value 2>/dev/null)" != "yes" ]; then
       $DRY_RUN_CMD $_loginctl enable-linger
     fi
   '';
