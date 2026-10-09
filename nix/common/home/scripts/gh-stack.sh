@@ -14,7 +14,7 @@ main() {
   prefix="stack/${GH_STACK_USER:-${USER:-$(id -un)}}/"
   main_root=$(main_workspace_root)
 
-  jj log --no-pager -r "$range" -T '"+" ++ diff.stat().total_added() ++ " -" ++ diff.stat().total_removed() ++ " " ++ builtin_log_oneline'
+  show_range
 
   local spr_base='' base_change
   base_change=$(change_ids "latest(($range) & remote_bookmarks(glob:\"spr/*\"))")
@@ -39,6 +39,14 @@ main() {
   update_descriptions
   push_changed_bookmarks
   create_or_rebase_prs
+}
+
+show_range() {
+  local quoted=${range//\\/\\\\}
+  quoted=${quoted//\"/\\\"}
+  jj log --no-pager -r "($range) | roots($range)-" -T "if(self.contained_in(\"$quoted\"),
+    \"+\" ++ diff.stat().total_added() ++ \" -\" ++ diff.stat().total_removed() ++ \" \" ++ builtin_log_oneline,
+    builtin_log_oneline)"
 }
 
 plan_branches() {
@@ -134,13 +142,13 @@ push_changed_bookmarks() {
   local -a args=()
   for i in "${!changes[@]}"; do
     ((pushed[i])) && continue
-    run jj bookmark set "${branches[i]}" -r "${changes[i]}" --allow-backwards
+    run jj --quiet bookmark set "${branches[i]}" -r "${changes[i]}" --allow-backwards
     args+=(--bookmark "${branches[i]}")
   done
   ((${#args[@]} > 0)) || return 0
   run jj git push --allow-new "${args[@]}"
   # gh pr create --fill reads the new branches through git in the main checkout.
-  run jj -R "$main_root" git export
+  run jj --quiet -R "$main_root" git export
 }
 
 create_or_rebase_prs() {
