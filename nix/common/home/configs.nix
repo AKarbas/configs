@@ -315,7 +315,7 @@
             "$right"
           ];
         };
-        "remotes.origin" = {
+        remotes.origin = {
           auto-track-bookmarks = "*";
           auto-track-created-bookmarks = "*";
         };

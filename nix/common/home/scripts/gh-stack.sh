@@ -146,7 +146,7 @@ push_changed_bookmarks() {
     args+=(--bookmark "${branches[i]}")
   done
   ((${#args[@]} > 0)) || return 0
-  run jj git push --allow-new "${args[@]}"
+  run jj git push "${args[@]}"
   # gh pr create --fill reads the new branches through git in the main checkout.
   run jj --quiet -R "$main_root" git export
 }
