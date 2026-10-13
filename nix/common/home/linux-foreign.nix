@@ -23,7 +23,7 @@
   # agent-deck's tmux servers). Plain tmux sits in the login scope and is
   # unaffected either way.
   home.activation.enableLinger = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    _loginctl=${pkgs.systemd}/bin/loginctl
+    _loginctl=/usr/bin/loginctl
     if [ "$($_loginctl show-user "$UID" -p Linger --value 2>/dev/null)" != "yes" ]; then
       $DRY_RUN_CMD $_loginctl enable-linger
     fi
