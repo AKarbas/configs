@@ -35,7 +35,7 @@ let
     esac
   '';
 
-  # difftastic: unstable's is much newer than 25.11's.
+  # difftastic: unstable's is much newer than 26.05's.
   themedDifft = pkgs.writeShellScriptBin "difft" ''
     # difft assumes 80 columns when piped.
     if [ -z "$DFT_WIDTH" ] && [ -r /dev/tty ]; then
@@ -79,6 +79,7 @@ let
     helm-ls
     htop-vim
     hugo
+    jj-starship
     jjui
     jq
     k9s
@@ -94,7 +95,7 @@ let
     ninja
     nix-index
     nixd
-    nixfmt-rfc-style
+    nixfmt
     opentofu
     p7zip
     parallel
@@ -141,9 +142,6 @@ let
     # jj-spr is not in nixpkgs.
     (builtins.getFlake "github:LucioFranco/jj-spr/f628b200dcd25e01df1d97677305dc828a396b24")
     .packages.${pkgs.stdenv.hostPlatform.system}.default
-    # jj-starship is in nixpkgs-unstable but not in 25.11.
-    # Drop this (use pkgs.jj-starship) once 25.11 backports it or on the next channel bump.
-    pkgs-unstable.jj-starship
   ];
 
   maybeNix = if config.nix.enable then [ pkgs.nix ] else [ ];

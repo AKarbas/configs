@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   # The nix.* configs will be unavailable on MacOS (or Linux) if Determinate's
   # nix distribution is used.

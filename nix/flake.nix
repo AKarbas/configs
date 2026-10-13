@@ -7,12 +7,12 @@
   };
 
   inputs = {
-    # Single nixpkgs for every output. The -darwin branch is release-25.11
-    # plus darwin-only fixes; its linux package set is release-25.11's.
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
-    nix-darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.11";
+    # Single nixpkgs for every output. The -darwin branch is release-26.05
+    # plus darwin-only fixes; its linux package set is release-26.05's.
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
+    nix-darwin.url = "github:lnl7/nix-darwin/nix-darwin-26.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flox.url = "github:flox/flox/latest";
@@ -166,8 +166,6 @@
         };
       });
 
-      formatter = nixpkgs.lib.genAttrs allSystems (
-        system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style
-      );
+      formatter = nixpkgs.lib.genAttrs allSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
     };
 }
