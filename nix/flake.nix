@@ -16,10 +16,6 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flox.url = "github:flox/flox/latest";
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -27,7 +23,6 @@
       flox,
       home-manager,
       nix-darwin,
-      nixos-generators,
       nixpkgs,
       ...
     }@inputs:
@@ -156,13 +151,15 @@
       # Installer ISOs (native builds only; needs a builder for the target
       # system).
       packages = nixpkgs.lib.genAttrs linuxSystems (system: {
-        iso = nixos-generators.nixosGenerate {
-          inherit system;
-          modules = nixosModules ++ [
-            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
-          ];
-          format = "iso";
-        };
+        iso =
+          (nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = nixosModules ++ [
+              "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+              # The installer pulls in zfs; 26.11's default, silences the warning.
+              { boot.zfs.forceImportRoot = false; }
+            ];
+          }).config.system.build.isoImage;
       });
 
       formatter = nixpkgs.lib.genAttrs allSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
