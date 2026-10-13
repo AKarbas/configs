@@ -458,7 +458,11 @@
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
     };
     file = {
-      "./.zshenv".force = true;
+      # Key matches home-manager's zsh module; the plain target is what `force` matches against.
+      "./.zshenv" = {
+        force = true;
+        target = ".zshenv";
+      };
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {
         source = ./dotfiles/rift/config.toml;
       };
