@@ -36,9 +36,10 @@
   # agent-deck rewrites its config.toml, so set keys instead of owning the file.
   home.activation.configureAgentDeck = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     _cfg="$HOME/.config/agent-deck/config.toml"
-    _dasel=${pkgs.dasel}/bin/dasel
-    if [ -f "$_cfg" ] && [ "$($_dasel -f "$_cfg" -r toml tmux.window_style_override 2>/dev/null)" != "'default'" ]; then
-      $DRY_RUN_CMD $_dasel put -f "$_cfg" -r toml -t string -v default tmux.window_style_override
+    _toml=${pkgs.toml-cli}/bin/toml
+    if [ -f "$_cfg" ] && [ "$($_toml get -r "$_cfg" tmux.window_style_override 2>/dev/null)" != "default" ]; then
+      $_toml set "$_cfg" tmux.window_style_override default > "$_cfg.tmp"
+      run mv "$_cfg.tmp" "$_cfg"
     fi
   '';
 
@@ -205,17 +206,19 @@
       enable = true;
       enableDefaultConfig = false;
       includes = [ "config.d/*" ];
-      matchBlocks."*" = {
-        addKeysToAgent = "yes";
-        # UseKeychain only exists in Apple's OpenSSH build.
-        extraOptions = lib.optionalAttrs pkgs.stdenv.isDarwin { UseKeychain = "yes"; };
-        identityFile = [ "~/.ssh/id_ed25519" ];
-      };
+      settings."*" = {
+        AddKeysToAgent = "yes";
+        IdentityFile = "~/.ssh/id_ed25519";
+      }
+      # UseKeychain only exists in Apple's OpenSSH build.
+      // lib.optionalAttrs pkgs.stdenv.isDarwin { UseKeychain = "yes"; };
     };
     neovim = {
       enable = true;
       defaultEditor = true;
       vimAlias = true;
+      withPython3 = false;
+      withRuby = false;
       extraConfig = ''
         set number
       '';
@@ -455,7 +458,7 @@
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
     };
     file = {
-      "${config.home.homeDirectory}/.zshenv".force = true;
+      "./.zshenv".force = true;
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {
         source = ./dotfiles/rift/config.toml;
       };

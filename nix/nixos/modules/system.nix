@@ -9,17 +9,15 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
-    # mkDefault so the installer ISO profile (which insists on true) wins.
-    networkmanager.enable = lib.mkDefault false;
+    # Beats gnome's mkDefault true, loses to the installer ISO profile's true.
+    networkmanager.enable = lib.mkOverride 999 false;
     hostName = "UNiXOS";
   };
 
   # Enable X11 windowing system
-  services.xserver = {
-    enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-  };
+  services.xserver.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Enable OpenGL
   hardware.graphics.enable = true;
