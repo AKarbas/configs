@@ -68,7 +68,6 @@
       darwinModules = [
         floxConfig
         ./common/modules/nix-core.nix
-        ./darwin/modules/overlays.nix
         ./darwin/modules/system.nix
         ./darwin/modules/apps-common.nix
         home-manager.darwinModules.home-manager
