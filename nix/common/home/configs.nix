@@ -372,6 +372,8 @@
         jsh = "jj show";
         jsh- = "jj show @-";
         jsi = "jj squash -i";
+        jsp = "jj spr diff --update-message --cherry-pick -r";
+        jspa = "jj spr diff --update-message --cherry-pick --all -r";
         jst = "jj --no-pager status";
         jwl = "jj workspace list";
         jwu = "jj workspace update-stale";
