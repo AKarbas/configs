@@ -9,8 +9,10 @@
       "electrum"
       "iina"
       "insta360-studio"
-      "steam"
+      "logi-options+"
     ];
-    masApps = { };
+    masApps = {
+      Notability = 360593530;
+    };
   };
 }
