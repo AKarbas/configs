@@ -174,7 +174,7 @@ jrbomw() {
 
     echo ""
     echo "=== Rebasing ==="
-    jj git fetch && jj rebase --skip-emptied -d main@origin
+    jj git fetch && _jj_abandon_merged && jj rebase --skip-emptied -d main@origin
 
     echo ""
     echo "=== Updating stale ==="
@@ -212,6 +212,19 @@ _jj_repo_name() {
 
 _jj_ws_names_no_default() {
     compadd -- ${(f)"$(_jj_ws_list_no_default)"}
+}
+
+# Abandon my commits whose PR (spr's "Pull Request:" trailer) has merged, so a rebase never replays them.
+_jj_abandon_merged() {
+    local merged id url
+    local ids=()
+    merged=$(gh pr list -R clouddatalabs/devops-copilot --author @me --state merged --limit 1000 --json number --jq '.[].number') || return 1
+    while IFS=$'\t' read -r id url; do
+        grep -qx "${url##*/}" <<<"$merged" && ids+=("$id")
+    done < <(jj log --no-graph -r 'mutable() & mine() & description(regex:"(?m)^Pull Request: ")' \
+        -T 'change_id.short(12) ++ "\t" ++ description.lines().filter(|l| l.starts_with("Pull Request: ")).map(|l| l.remove_prefix("Pull Request: ")).join("") ++ "\n"')
+    (( ${#ids} )) && jj abandon "${ids[@]}"
+    return 0
 }
 
 _jj_ws_list_no_default() {

@@ -366,7 +366,7 @@
         jlm = "jj log -r 'mine() & ~(::remote_bookmarks(glob:\"*spr/*\"))'";
         jrb = "jj rebase";
         jrb- = "jj rebase -s @- -d";
-        jrbom = "jj git fetch && jj rebase --skip-emptied -d main@origin";
+        jrbom = "jj git fetch && _jj_abandon_merged && jj rebase --skip-emptied -d main@origin";
         jsh = "jj show";
         jsh- = "jj show @-";
         jsi = "jj squash -i";
