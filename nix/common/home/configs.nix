@@ -405,10 +405,10 @@
           jsp() {
             local usage='usage: jsp <rev>... | jsp -r <revset> [-m <message>]'
             local -a opt_r opt_m
-            zparseopts -D -E -F -- r:=opt_r m:=opt_m || { echo "$usage" >&2; return 2; }
+            zparseopts -D -E -F -- r+:=opt_r m:=opt_m || { echo "$usage" >&2; return 2; }
             local revset
             if (( $#opt_r )); then
-              (( $# == 0 )) || { echo "$usage" >&2; return 2; }
+              (( $#opt_r == 2 && $# == 0 )) || { echo "$usage" >&2; return 2; }
               revset=$opt_r[2]
             else
               (( $# && !$#opt_m )) || { echo "$usage" >&2; return 2; }
@@ -420,6 +420,18 @@
               jj spr diff --update-message --cherry-pick $opt_m -r "$rev" || return
             done
           }
+
+          _jsp() {
+            [[ $words[CURRENT-1] == -m ]] && return 1
+            if [[ $PREFIX == -* ]]; then
+              compadd -- -r -m
+              return
+            fi
+            local -a revs
+            revs=("''${(@f)$(COMPLETE=zsh _CLAP_COMPLETE_INDEX=3 _CLAP_IFS=$'\n' jj -- jj log -r "$PREFIX" 2>/dev/null)}")
+            _describe revision revs
+          }
+          compdef _jsp jsp
         ''
       ];
       oh-my-zsh = {
