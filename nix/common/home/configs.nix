@@ -403,8 +403,10 @@
           source ${./scripts/jj-workspaces.zsh}
 
           jsp() {
-            local rev
-            for rev in "$@"; do
+            (( $# == 1 )) || { echo "usage: jsp <revset>" >&2; return 2; }
+            local revs rev
+            revs=$(jj log --no-graph --reversed -r "$1" -T 'change_id ++ "\n"') || return
+            for rev in ''${(f)revs}; do
               jj spr diff --update-message --cherry-pick -r "$rev" || return
             done
           }
