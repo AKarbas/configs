@@ -403,11 +403,21 @@
           source ${./scripts/jj-workspaces.zsh}
 
           jsp() {
-            (( $# == 1 )) || { echo "usage: jsp <revset>" >&2; return 2; }
+            local usage='usage: jsp <rev>... | jsp -r <revset> [-m <message>]'
+            local -a opt_r opt_m
+            zparseopts -D -E -F -- r:=opt_r m:=opt_m || { echo "$usage" >&2; return 2; }
+            local revset
+            if (( $#opt_r )); then
+              (( $# == 0 )) || { echo "$usage" >&2; return 2; }
+              revset=$opt_r[2]
+            else
+              (( $# && !$#opt_m )) || { echo "$usage" >&2; return 2; }
+              revset=''${(j: | :)@}
+            fi
             local revs rev
-            revs=$(jj log --no-graph --reversed -r "$1" -T 'change_id ++ "\n"') || return
+            revs=$(jj log --no-graph --reversed -r "$revset" -T 'change_id ++ "\n"') || return
             for rev in ''${(f)revs}; do
-              jj spr diff --update-message --cherry-pick -r "$rev" || return
+              jj spr diff --update-message --cherry-pick $opt_m -r "$rev" || return
             done
           }
         ''
