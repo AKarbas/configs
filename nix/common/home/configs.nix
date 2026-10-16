@@ -372,7 +372,6 @@
         jsh = "jj show";
         jsh- = "jj show @-";
         jsi = "jj squash -i";
-        jsp = "jj spr diff --update-message --cherry-pick -r";
         jspa = "jj spr diff --update-message --cherry-pick --all -r";
         jst = "jj --no-pager status";
         jwl = "jj workspace list";
@@ -402,6 +401,13 @@
           alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
           source ${./scripts/jj-workspaces.zsh}
+
+          jsp() {
+            local rev
+            for rev in "$@"; do
+              jj spr diff --update-message --cherry-pick -r "$rev" || return
+            done
+          }
         ''
       ];
       oh-my-zsh = {
