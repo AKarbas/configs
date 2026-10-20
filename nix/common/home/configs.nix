@@ -397,9 +397,8 @@
           alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
           alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
-          source ${./scripts/jj-main-root.zsh}
-          source ${./scripts/jj-workspaces.zsh}
-          source ${./scripts/pr.zsh}
+          source ${./scripts}/jj-workspaces.zsh
+          source ${./scripts}/pr.zsh
         ''
       ];
       oh-my-zsh = {

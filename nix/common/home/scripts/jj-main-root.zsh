@@ -1,5 +1,3 @@
-# Sourced in ../configs.nix and ../packages.nix (ghs)
-
 _jj_main_root() {
     local ws_root
     ws_root=$(jj root) || return

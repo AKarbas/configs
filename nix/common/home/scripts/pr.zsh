@@ -1,5 +1,7 @@
 # PR helpers — Sourced in ../configs.nix
 
+source ${0:A:h}/jj-main-root.zsh
+
 jsp() {
     local usage='usage: jsp <rev>... | jsp -r <revset> [-m <message>]'
     local -a opt_r opt_m

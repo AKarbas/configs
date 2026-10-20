@@ -1,5 +1,7 @@
 # JJ Multi-Workspace Workflow — Sourced in ../configs.nix
 
+source ${0:A:h}/jj-main-root.zsh
+
 export JJ_WORKSPACES_DIR="${JJ_WORKSPACES_DIR:-$HOME/.jj-workspaces}"
 
 # Remove all non-default workspaces
@@ -204,14 +206,14 @@ _jj_ws_names_no_default() {
 
 # Abandon my commits whose PR (spr's "Pull Request:" trailer) has merged, so a rebase never replays them.
 _jj_abandon_merged() {
-    local merged id url
-    local ids=()
-    merged=$(gh pr list -R clouddatalabs/devops-copilot --author @me --state merged --limit 1000 --json number --jq '.[].number') || return 1
+    local id url query='' merged
     while IFS=$'\t' read -r id url; do
-        grep -qx "${url##*/}" <<<"$merged" && ids+=("$id")
+        query+=" c$id: resource(url: \"$url\") { ... on PullRequest { merged } }"
     done < <(jj log --no-graph -r 'mutable() & mine() & description(regex:"(?m)^Pull Request: ")' \
         -T 'change_id.short(12) ++ "\t" ++ description.lines().filter(|l| l.starts_with("Pull Request: ")).map(|l| l.remove_prefix("Pull Request: ")).join("") ++ "\n"')
-    (( ${#ids} )) && jj abandon "${ids[@]}"
+    [[ -n $query ]] || return 0
+    merged=$(gh api graphql -f query="{$query }" --jq '.data | to_entries[] | select(.value.merged) | .key[1:]') || return 1
+    [[ -n $merged ]] && jj abandon ${(f)merged}
     return 0
 }
 
