@@ -141,14 +141,7 @@ _jj_ws_path() {
         return
     fi
 
-    local jj_repo_file="$(jj root)/.jj/repo"
-    if [[ -f "$jj_repo_file" ]]; then
-        dirname "$(dirname "$(cat "$jj_repo_file")")"
-        return
-    fi
-
-    jj root
-    return
+    _jj_main_root
 }
 
 
@@ -202,12 +195,7 @@ jwall() {
 }
 
 _jj_repo_name() {
-    local jj_dir="$(jj root)/.jj"
-    if [[ -f "$jj_dir/repo" ]]; then
-        basename "$(dirname "$(dirname "$(cat "$jj_dir/repo")")")"
-    else
-        basename "$(jj root)"
-    fi
+    basename "$(_jj_main_root)"
 }
 
 _jj_ws_names_no_default() {
