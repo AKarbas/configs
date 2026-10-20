@@ -347,8 +347,6 @@
         "ja!" = "jj abandon";
         cat = "bat --plain";
         cdjr = "cd $(jj root)";
-        ghpr = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"[\" + .title + \"](\" + .url + \")\"'";
-        ghprd = "gh pr list --author=@me --json url,title | jq -r 'reverse | .[] | \"- [\" + .title + \"](\" + .url + \")\"'";
         grboma = "git rebase origin/$(git_main_branch) --autosquash";
         gsh = "git show --stat --patch";
         jab = "jj absorb";
@@ -372,7 +370,6 @@
         jsh = "jj show";
         jsh- = "jj show @-";
         jsi = "jj squash -i";
-        jspa = "jj spr diff --update-message --cherry-pick --all -r";
         jst = "jj --no-pager status";
         jwl = "jj workspace list";
         jwu = "jj workspace update-stale";
@@ -417,21 +414,45 @@
             local revs rev
             revs=$(jj log --no-graph --reversed -r "$revset" -T 'change_id ++ "\n"') || return
             for rev in ''${(f)revs}; do
-              jj spr diff --update-message --cherry-pick $opt_m -r "$rev" || return
+              _jj_spr_diff_in_main_root $opt_m -r "$rev" || return
             done
+          }
+
+          jspa() {
+            (( $# )) || { echo "usage: jspa <rev> [jj spr diff flags]" >&2; return 2; }
+            local head
+            head=$(jj log --no-graph -r "exactly($1, 1)" -T 'change_id') || return
+            _jj_spr_diff_in_main_root --all -r "$head" "''${@:2}"
+          }
+
+          _jj_spr_diff_in_main_root() {
+            local main_root
+            main_root=$(_jj_ws_path default) || return
+            (cd "$main_root" && jj spr diff --update-message --cherry-pick "$@")
           }
 
           _jsp() {
             [[ $words[CURRENT-1] == -m ]] && return 1
             if [[ $PREFIX == -* ]]; then
-              compadd -- -r -m
+              [[ $service == jspa ]] && compadd -- -m || compadd -- -r -m
               return
             fi
+            [[ $service == jspa ]] && (( CURRENT > 2 )) && return 1
             local -a revs
             revs=("''${(@f)$(COMPLETE=zsh _CLAP_COMPLETE_INDEX=3 _CLAP_IFS=$'\n' jj -- jj log -r "$PREFIX" 2>/dev/null)}")
             _describe revision revs
           }
-          compdef _jsp jsp
+          compdef _jsp jsp jspa
+
+          ghpr() { _ghpr_links ""; }
+          ghprd() { _ghpr_links "- "; }
+
+          _ghpr_links() {
+            local main_root
+            main_root=$(_jj_ws_path default 2>/dev/null) || main_root=$PWD
+            (cd "$main_root" && gh pr list --author=@me --json url,title) |
+              jq -r --arg bullet "$1" 'reverse | .[] | $bullet + "[" + .title + "](" + .url + ")"'
+          }
         ''
       ];
       oh-my-zsh = {
