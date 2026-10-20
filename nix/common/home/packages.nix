@@ -5,7 +5,13 @@
   ...
 }:
 let
-  makeScript = name: script: pkgs.writeShellScriptBin name (builtins.readFile script);
+  makeZshScript =
+    name: sources: script:
+    pkgs.writeScriptBin name ''
+      #!${pkgs.zsh}/bin/zsh
+      ${pkgs.lib.concatMapStrings (source: "source ${source}\n") sources}
+      ${builtins.readFile script}
+    '';
 
   # Piped diff tools can't see the terminal background and default to dark, so
   # the wrappers below pass --dark/--light from the effective macOS appearance.
@@ -135,7 +141,7 @@ let
   ];
 
   customScripts = [
-    (makeScript "ghs" ./scripts/gh-stack.sh)
+    (makeZshScript "ghs" [ ./scripts/jj-main-root.zsh ] ./scripts/gh-stack.zsh)
   ];
 
   customPackages = [

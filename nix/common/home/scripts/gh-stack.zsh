@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # gh-stack [--dry-run] [revset]   one PR per jj commit, based on its parent's PR; reruns update title/body/base in place.
 # --dry-run prints every push and gh change instead of making it.
 # The revset may be a DAG. Can start on a jj-spr commit, or on commits whose parents have stack PRs.
-set -euo pipefail
+setopt err_exit no_unset pipe_fail
 
 main() {
   dry_run=0
@@ -12,7 +12,7 @@ main() {
   fi
   range=${1:-'trunk()..@ ~ empty()'}
   prefix="stack/${GH_STACK_USER:-${USER:-$(id -un)}}/"
-  main_root=$(main_workspace_root)
+  main_root=$(_jj_main_root)
 
   show_range
 
@@ -68,7 +68,7 @@ plan_branches() {
     ++ "\x1f" ++ local_bookmarks.map(|b| b.name()).join(",")
     ++ "\x1f" ++ remote_bookmarks.filter(|b| b.remote() == "origin").map(|b| b.name()).join(",")
     ++ "\x1e"')
-  for i in "${!changes[@]}"; do
+  for ((i = 1; i <= ${#changes[@]}; i++)); do
     bases[i]=${branch_of[${parents[i]}]:-$(base_outside_range "${parents[i]}" "${parents_bookmarks[i]}")}
   done
 }
@@ -76,13 +76,13 @@ plan_branches() {
 stack_branch() {
   local change=$1 commit=$2 bookmark
   local -a names found=()
-  IFS=, read -ra names <<<"$3"
+  IFS=, read -rA names <<<"$3"
   for bookmark in "${names[@]}"; do
     [[ $bookmark == "$prefix"* ]] && found+=("$bookmark")
   done
   case ${#found[@]} in
     0) new_branch "$commit" ;;
-    1) echo "${found[0]}" ;;
+    1) echo "${found[1]}" ;;
     *) die "$change has several stack bookmarks: ${found[*]}" ;;
   esac
 }
@@ -101,13 +101,13 @@ base_outside_range() {
     echo "$spr_base"
     return
   fi
-  IFS=, read -ra names <<<"$2"
+  IFS=, read -rA names <<<"$2"
   for bookmark in "${names[@]}"; do
     [[ $bookmark == "$prefix"* ]] && found+=("$bookmark")
   done
   case ${#found[@]} in
     0) echo main ;;
-    1) echo "${found[0]}" ;;
+    1) echo "${found[1]}" ;;
     *) die "$parent has several stack bookmarks: ${found[*]}" ;;
   esac
 }
@@ -126,7 +126,7 @@ read_descriptions() {
 update_descriptions() {
   local i pr
   local -a pids=()
-  for i in "${!changes[@]}"; do
+  for ((i = 1; i <= ${#changes[@]}; i++)); do
     pr=$(pr_for "${branches[i]}")
     [[ -n "$pr" ]] || continue
     [[ "$(jq -r .title <<<"$pr")" == "${titles[i]}" && "$(own_body "$pr")" == "${bodies[i]}" ]] && continue
@@ -140,7 +140,7 @@ update_descriptions() {
 push_changed_bookmarks() {
   local i
   local -a args=()
-  for i in "${!changes[@]}"; do
+  for ((i = 1; i <= ${#changes[@]}; i++)); do
     ((pushed[i])) && continue
     run jj --quiet bookmark set "${branches[i]}" -r "${changes[i]}" --allow-backwards
     args+=(--bookmark "${branches[i]}")
@@ -154,7 +154,7 @@ push_changed_bookmarks() {
 create_or_rebase_prs() {
   local i pr
   local -a pids=()
-  for i in "${!changes[@]}"; do
+  for ((i = 1; i <= ${#changes[@]}; i++)); do
     pr=$(pr_for "${branches[i]}")
     if [[ -z "$pr" ]]; then
       run gh_main pr create --head "${branches[i]}" --base "${bases[i]}" --fill
@@ -200,15 +200,6 @@ wait_all() {
   ((failed == 0)) || die "a gh call failed"
 }
 
-main_workspace_root() {
-  local ws_root; ws_root=$(jj root)
-  if [[ -f "$ws_root/.jj/repo" ]]; then
-    dirname "$(dirname "$(cat "$ws_root/.jj/repo")")"
-  else
-    echo "$ws_root"
-  fi
-}
-
 reject_commits() {
   local revset=$1 reason=$2 found
   found=$(change_ids "$revset")
@@ -238,6 +229,4 @@ die() {
   exit 1
 }
 
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  main "$@"
-fi
+main "$@"
