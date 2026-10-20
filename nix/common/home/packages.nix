@@ -6,11 +6,10 @@
 }:
 let
   makeZshScript =
-    name: sources: script:
+    name: script:
     pkgs.writeScriptBin name ''
       #!${pkgs.zsh}/bin/zsh
-      ${pkgs.lib.concatMapStrings (source: "source ${source}\n") sources}
-      ${builtins.readFile script}
+      source ${./scripts}/${script} "$@"
     '';
 
   # Piped diff tools can't see the terminal background and default to dark, so
@@ -141,7 +140,7 @@ let
   ];
 
   customScripts = [
-    (makeZshScript "ghs" [ ./scripts/jj-main-root.zsh ] ./scripts/gh-stack.zsh)
+    (makeZshScript "ghs" "gh-stack.zsh")
   ];
 
   customPackages = [

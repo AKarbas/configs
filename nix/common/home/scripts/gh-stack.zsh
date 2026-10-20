@@ -2,6 +2,7 @@
 # gh-stack [--dry-run] [revset]   one PR per jj commit, based on its parent's PR; reruns update title/body/base in place.
 # --dry-run prints every push and gh change instead of making it.
 # The revset may be a DAG. Can start on a jj-spr commit, or on commits whose parents have stack PRs.
+source ${0:A:h}/jj-main-root.zsh
 setopt err_exit no_unset pipe_fail
 
 main() {
