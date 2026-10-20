@@ -37,6 +37,8 @@
 
   environment.variables.EDITOR = "nvim";
 
+  nix.optimise.automatic = true;
+
   fonts.packages = with pkgs; [
     material-design-icons
     font-awesome
