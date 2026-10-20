@@ -4,7 +4,6 @@ set -euo pipefail
 echo "==> Installing Nix (Determinate Systems installer)"
 if ! command -v nix &>/dev/null; then
   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install \
-    --extra-conf "extra-trusted-substituters = https://cache.flox.dev" \
     --extra-conf "extra-substituters = https://cache.flox.dev" \
     --extra-conf "extra-trusted-public-keys = flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
 else
@@ -23,6 +22,13 @@ if [[ "$(uname)" == "Darwin" ]]; then
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   else
     echo "    Homebrew already installed, skipping"
+  fi
+
+  # Build while the installer's nix.custom.conf (flox cache) is still in place.
+  echo "==> Running make darwin-build"
+  make darwin-build
+  if [[ -f /etc/nix/nix.custom.conf && ! -L /etc/nix/nix.custom.conf ]]; then
+    sudo mv /etc/nix/nix.custom.conf{,.before-nix-darwin}
   fi
 
   echo "==> Running make darwin"

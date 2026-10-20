@@ -1,7 +1,7 @@
 {
   pkgs,
   pkgs-unstable,
-  config,
+  flox,
   ...
 }:
 let
@@ -139,13 +139,12 @@ let
   ];
 
   customPackages = [
+    flox
     # jj-spr is not in nixpkgs.
     (builtins.getFlake "github:LucioFranco/jj-spr/f628b200dcd25e01df1d97677305dc828a396b24")
     .packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
-
-  maybeNix = if config.nix.enable then [ pkgs.nix ] else [ ];
 in
 {
-  home.packages = customScripts ++ zshPackages ++ standardPackages ++ customPackages ++ maybeNix;
+  home.packages = customScripts ++ zshPackages ++ standardPackages ++ customPackages;
 }

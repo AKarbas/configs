@@ -1,11 +1,4 @@
 {
-  nixConfig = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-  };
-
   inputs = {
     # Single nixpkgs for every output. The -darwin branch is release-26.05
     # plus darwin-only fixes; its linux package set is release-26.05's.
@@ -16,10 +9,12 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flox.url = "github:flox/flox/latest";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
   };
 
   outputs =
     {
+      determinate,
       flox,
       home-manager,
       nix-darwin,
@@ -27,41 +22,35 @@
       ...
     }@inputs:
     let
-      unstableFor =
-        system:
-        import inputs.nixpkgs-unstable {
+      homeModules = [
+        ./common/home/configs.nix
+        ./common/home/packages.nix
+      ];
+      homeSpecialArgs = system: {
+        pkgs-unstable = import inputs.nixpkgs-unstable {
           inherit system;
           config.allowUnfree = true;
         };
+        flox = flox.packages.${system}.default;
+      };
 
       # home-manager-as-module config, shared by darwin and NixOS hosts.
       mkHomeManagerConfig = system: {
         home-manager.backupFileExtension = "bak";
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = {
-          pkgs-unstable = unstableFor system;
-        };
-        home-manager.users.amin = {
-          imports = [
-            ./common/home/configs.nix
-            ./common/home/packages.nix
-          ];
-        };
+        home-manager.extraSpecialArgs = homeSpecialArgs system;
+        home-manager.users.amin.imports = homeModules;
       };
 
-      floxConfig =
-        { pkgs, ... }:
-        {
-          environment.systemPackages = [ flox.packages.${pkgs.stdenv.hostPlatform.system}.default ];
-          nix.settings = {
-            substituters = [ "https://cache.flox.dev" ];
-            trusted-public-keys = [ "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs=" ];
-          };
-        };
+      floxCache = {
+        extra-substituters = [ "https://cache.flox.dev" ];
+        extra-trusted-public-keys = [ "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs=" ];
+      };
 
       darwinModules = [
-        floxConfig
+        determinate.darwinModules.default
+        { determinateNix.customSettings = floxCache; }
         ./common/modules/nix-core.nix
         ./darwin/modules/system.nix
         ./darwin/modules/apps-common.nix
@@ -99,6 +88,8 @@
         };
 
       nixosModules = [
+        determinate.nixosModules.default
+        { nix.settings = floxCache; }
         ./nixos/modules/system.nix
         ./nixos/modules/host-users.nix
         ./common/modules/nix-core.nix
@@ -130,17 +121,8 @@
           system = "x86_64-linux";
           config.allowUnfree = true;
         };
-        extraSpecialArgs = {
-          pkgs-unstable = unstableFor "x86_64-linux";
-        };
-        modules = [
-          ./common/home/configs.nix
-          ./common/home/packages.nix
-          ./common/home/linux-foreign.nix
-          # flox is a system package on darwin/nixos hosts (floxConfig); here
-          # it goes into the home profile.
-          { home.packages = [ flox.packages.x86_64-linux.default ]; }
-        ];
+        extraSpecialArgs = homeSpecialArgs "x86_64-linux";
+        modules = homeModules ++ [ ./common/home/linux-foreign.nix ];
       };
 
       nixosConfigurations.UNiXOS = nixpkgs.lib.nixosSystem {
