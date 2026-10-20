@@ -3,7 +3,7 @@
 source ${0:A:h}/jj-main-root.zsh
 
 jsp() {
-    local usage='usage: jsp <rev>... | jsp -r <revset> [-m <message>]'
+    local usage='usage: jsp {<rev>... | -r <revset>} [-m <message>]'
     local -a opt_r opt_m
     zparseopts -D -E -F -- r+:=opt_r m:=opt_m || { echo "$usage" >&2; return 2; }
     local revset
@@ -11,7 +11,7 @@ jsp() {
         (( $#opt_r == 2 && $# == 0 )) || { echo "$usage" >&2; return 2; }
         revset=$opt_r[2]
     else
-        (( $# && !$#opt_m )) || { echo "$usage" >&2; return 2; }
+        (( $# )) || { echo "$usage" >&2; return 2; }
         revset=${(j: | :)@}
     fi
     local revs rev
