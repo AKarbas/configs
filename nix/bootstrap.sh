@@ -112,13 +112,16 @@ EOF
 }
 
 list_processes_using_nix() {
-  local pids
-  pids=$({ sudo lsof -t -n /nix 2>/dev/null || true; } | sort -u | paste -sd, -)
+  local pids processes
+  pids=$({ lsof -t -n -a -u "$(id -un)" /nix 2>/dev/null || true; } | sort -u | paste -sd, -)
   if [[ -z $pids ]]; then
     return
   fi
-  echo "==> These processes use /nix and crash when it is deleted. Quit them first:"
-  ps -o pid=,comm= -p "$pids" | grep -v -e nix-daemon -e determinate-nixd -e UserEventAgent || true
+  processes=$(ps -o pid=,comm= -p "$pids" | grep -v -e /Finder -e /UserEventAgent || true)
+  if [[ -n $processes ]]; then
+    echo "==> These processes use /nix and crash when it is deleted. Quit them first:"
+    echo "$processes"
+  fi
 }
 
 confirm_hostname() {
