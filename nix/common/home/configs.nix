@@ -463,7 +463,7 @@
         target = ".zshenv";
       };
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {
-        source = ./dotfiles/rift/config.toml;
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/personal/configs/nix/common/home/dotfiles/rift/config.toml";
       };
       # Read-only (nix-store) symlink. Edit the source files in the repo
       # under nix/common/home/dotfiles/agents/ and run `make` to propagate.
