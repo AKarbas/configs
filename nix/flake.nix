@@ -51,6 +51,7 @@
       darwinModules = [
         determinate.darwinModules.default
         { determinateNix.customSettings = floxCache; }
+        ./darwin/modules/use-case-hack.nix
         ./common/modules/nix-core.nix
         ./darwin/modules/system.nix
         ./darwin/modules/apps-common.nix
