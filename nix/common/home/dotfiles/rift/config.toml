@@ -15,11 +15,11 @@ mouse_hides_on_focus = false
 hot_reload = true
 
 [settings.layout]
-mode = "traditional"
+mode = "stack"
 
 [settings.layout.stack]
 stack_offset = 50.0
-default_orientation = "perpendicular"
+default_orientation = "horizontal"
 
 [settings.layout.gaps]
 [settings.layout.gaps.outer]
@@ -40,6 +40,9 @@ mode = "all"
 enabled = true
 fade_enabled = false
 fade_duration_ms = 180.0
+
+[settings.ui.stack_line]
+enabled = true
 
 [virtual_workspaces]
 enabled = true
