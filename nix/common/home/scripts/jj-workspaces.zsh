@@ -34,6 +34,9 @@ jwdel() {
     jj workspace forget "$name" 2>/dev/null
 
     if [[ -d "$ws_path" ]]; then
+        if [[ -f "$ws_path/MODULE.bazel" ]] && (( $+commands[bazel] )); then
+            (cd "$ws_path" && bazel clean --expunge_async >/dev/null 2>&1)
+        fi
         rm -rf "$ws_path"
         echo "Removed: $name"
     fi
