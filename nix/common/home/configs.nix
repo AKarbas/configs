@@ -316,7 +316,7 @@
           ];
         };
         remotes.origin = {
-          auto-track-bookmarks = "*";
+          auto-track-bookmarks = "amin/* | spr/akarbas/* | stack/amin/*";
           auto-track-created-bookmarks = "*";
         };
         "revset-aliases" = {
