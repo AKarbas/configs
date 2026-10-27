@@ -31,7 +31,7 @@ jspa() {
 _jj_spr_diff_in_main_root() {
     local main_root
     main_root=$(_jj_main_root) || return
-    (cd "$main_root" && jj spr diff --update-message --cherry-pick "$@")
+    (cd -q "$main_root" && jj spr diff --update-message --cherry-pick "$@")
 }
 
 _jsp() {
@@ -54,6 +54,6 @@ _ghpr_links() {
     setopt local_options pipe_fail
     local main_root
     main_root=$(_jj_main_root 2>/dev/null) || main_root=$PWD
-    (cd "$main_root" && gh pr list --author=@me --json url,title) |
+    (cd -q "$main_root" && gh pr list --author=@me --json url,title) |
         jq -r --arg bullet "$1" 'reverse | .[] | $bullet + "[" + .title + "](" + .url + ")"'
 }

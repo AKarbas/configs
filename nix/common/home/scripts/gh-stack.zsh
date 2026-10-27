@@ -222,7 +222,7 @@ jjq() {
 }
 
 gh_main() {
-  (cd "$main_root" && gh "$@")
+  (cd -q "$main_root" && gh "$@")
 }
 
 die() {
