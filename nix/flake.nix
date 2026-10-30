@@ -50,8 +50,11 @@
 
       darwinModules = [
         determinate.darwinModules.default
-        { determinateNix.customSettings = floxCache; }
-        ./darwin/modules/use-case-hack.nix
+        {
+          determinateNix.customSettings = floxCache // {
+            use-case-hack = false;
+          };
+        }
         ./common/modules/nix-core.nix
         ./darwin/modules/system.nix
         ./darwin/modules/apps-common.nix
