@@ -54,6 +54,36 @@ let
     esac
   '';
 
+  # Not in nixpkgs.
+  plannotator =
+    let
+      version = "0.28.22";
+      asset =
+        {
+          x86_64-linux = {
+            name = "linux-x64";
+            hash = "sha256-JVqPA2TYbYu/AdNskz6TaK1iethJgvxxHiAtN1bT/6w=";
+          };
+          aarch64-linux = {
+            name = "linux-arm64";
+            hash = "sha256-1OvlaCA3tdEbM/Zpb967sQq/dH3qRon+bfFREppkIUo=";
+          };
+          aarch64-darwin = {
+            name = "darwin-arm64";
+            hash = "sha256-qDoJggD7CzAu7jS3OeahEi2uZedZ33tVGSVcEn4MFKk=";
+          };
+        }
+        .${pkgs.stdenv.hostPlatform.system};
+    in
+    pkgs.runCommand "plannotator-${version}" { } ''
+      install -Dm755 ${
+        pkgs.fetchurl {
+          url = "https://github.com/backnotprop/plannotator/releases/download/v${version}/plannotator-${asset.name}";
+          inherit (asset) hash;
+        }
+      } $out/bin/plannotator
+    '';
+
   standardPackages = with pkgs; [
     act
     ast-grep
@@ -145,6 +175,7 @@ let
 
   customPackages = [
     flox
+    plannotator
     # jj-spr is not in nixpkgs.
     (builtins.getFlake "github:LucioFranco/jj-spr/f628b200dcd25e01df1d97677305dc828a396b24")
     .packages.${pkgs.stdenv.hostPlatform.system}.default
