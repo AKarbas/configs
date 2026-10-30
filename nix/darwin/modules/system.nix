@@ -542,6 +542,33 @@
       Nice = -20;
     };
   };
+  # Tunnel to plannotatorPort (common/home/configs.nix).
+  # devbox: a Host alias in ~/.ssh/config.d/.
+  launchd.user.agents.devbox-plannotator-forward = {
+    serviceConfig = {
+      Label = "local.devbox-plannotator-forward";
+      ProgramArguments = [
+        "/usr/bin/ssh"
+        "-N"
+        "-o"
+        "BatchMode=yes"
+        "-o"
+        "ExitOnForwardFailure=yes"
+        "-o"
+        "ServerAliveInterval=30"
+        "-o"
+        "ServerAliveCountMax=3"
+        "-L"
+        "19432:localhost:19432"
+        "devbox"
+      ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      ThrottleInterval = 30;
+      LimitLoadToSessionType = "Aqua";
+      StandardErrorPath = "/tmp/devbox-plannotator-forward.log";
+    };
+  };
   # Set your time zone.
   # comment this due to the issue:
   #   https://github.com/LnL7/nix-darwin/issues/359

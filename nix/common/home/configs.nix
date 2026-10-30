@@ -4,6 +4,14 @@
   pkgs,
   ...
 }:
+let
+  # The Linux hosts have no browser. Plannotator must print its URL on a
+  # fixed port, and the Mac tunnels that port (darwin/modules/system.nix).
+  # Agents start from three environments, so PLANNOTATOR_PORT and
+  # PLANNOTATOR_REMOTE are set three times: the login shell, agent-deck
+  # (~/.agent-deck.env) and Claude Desktop (settings.json env).
+  plannotatorPort = "19432";
+in
 {
   # `programs.git` will generate the config file: ~/.config/git/config
   # to make git use this config file, `~/.gitconfig` should not exist!
@@ -34,12 +42,60 @@
   );
 
   # agent-deck rewrites its config.toml, so set keys instead of owning the file.
-  home.activation.configureAgentDeck = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    _cfg="$HOME/.config/agent-deck/config.toml"
-    _toml=${pkgs.toml-cli}/bin/toml
-    if [ -f "$_cfg" ] && [ "$($_toml get -r "$_cfg" tmux.window_style_override 2>/dev/null)" != "default" ]; then
-      $_toml set "$_cfg" tmux.window_style_override default > "$_cfg.tmp"
-      run mv "$_cfg.tmp" "$_cfg"
+  home.activation.configureAgentDeck = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+    ''
+      _cfg="$HOME/.config/agent-deck/config.toml"
+      _toml=${pkgs.toml-cli}/bin/toml
+      if [ -f "$_cfg" ] && [ "$($_toml get -r "$_cfg" tmux.window_style_override 2>/dev/null)" != "default" ]; then
+        $_toml set "$_cfg" tmux.window_style_override default > "$_cfg.tmp"
+        run mv "$_cfg.tmp" "$_cfg"
+      fi
+    ''
+    + lib.optionalString pkgs.stdenv.isLinux ''
+      # toml-cli sets strings only.
+      if [ -f "$_cfg" ] && ! $_toml get -r "$_cfg" shell.env_files 2>/dev/null | grep -q agent-deck.env; then
+        if grep -q '^\[shell\]' "$_cfg"; then
+          sed '/^\[shell\]/a env_files = ["~/.agent-deck.env"]' "$_cfg" > "$_cfg.tmp"
+        else
+          { cat "$_cfg"; printf '\n[shell]\nenv_files = ["~/.agent-deck.env"]\n'; } > "$_cfg.tmp"
+        fi
+        if $_toml get -r "$_cfg.tmp" shell.env_files > /dev/null 2>&1; then
+          run mv "$_cfg.tmp" "$_cfg"
+        else
+          echo "agent-deck config: could not add shell.env_files, left as is" >&2
+          rm -f "$_cfg.tmp"
+        fi
+      fi
+    ''
+  );
+
+  home.activation.mergeClaudeSettings = lib.mkIf pkgs.stdenv.isLinux (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      _settings="$HOME/.claude/settings.json"
+      _jq=${pkgs.jq}/bin/jq
+      [ -f "$_settings" ] || { mkdir -p "$HOME/.claude"; echo '{}' > "$_settings"; }
+      $_jq --argjson add '${
+        builtins.toJSON {
+          env = {
+            PLANNOTATOR_PORT = plannotatorPort;
+            PLANNOTATOR_REMOTE = "1";
+          };
+        }
+      }' '. * $add' "$_settings" > "$_settings.tmp"
+      if $_jq . "$_settings" | cmp -s - "$_settings.tmp"; then
+        rm "$_settings.tmp"
+      else
+        run mv "$_settings.tmp" "$_settings"
+      fi
+    ''
+  );
+
+  home.activation.installPlannotatorPlugin = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    _claude="$HOME/.local/bin/claude"
+    if [ ! -x "$_claude" ]; then
+      echo "plannotator plugin: no $_claude, skipped" >&2
+    elif ! grep -qs '"plannotator@plannotator"' "$HOME/.claude/plugins/installed_plugins.json"; then
+      $DRY_RUN_CMD "$_claude" plugin install plannotator --marketplace backnotprop/plannotator || true
     fi
   '';
 
@@ -455,6 +511,10 @@
       KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
       MANPAGER = "bat --plain --language=man";
       npm_config_prefix = "${config.home.homeDirectory}/.npm-global";
+    }
+    // lib.optionalAttrs pkgs.stdenv.isLinux {
+      PLANNOTATOR_PORT = plannotatorPort;
+      PLANNOTATOR_REMOTE = "1";
     };
     file = {
       # Key matches home-manager's zsh module; the plain target is what `force` matches against.
@@ -464,6 +524,12 @@
       };
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {
         source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/personal/configs/nix/common/home/dotfiles/rift/config.toml";
+      };
+      ".agent-deck.env" = lib.mkIf pkgs.stdenv.isLinux {
+        text = ''
+          export PLANNOTATOR_PORT=${plannotatorPort}
+          export PLANNOTATOR_REMOTE=1
+        '';
       };
       # Read-only (nix-store) symlink. Edit the source files in the repo
       # under nix/common/home/dotfiles/agents/ and run `make` to propagate.
