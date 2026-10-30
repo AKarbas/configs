@@ -72,16 +72,26 @@
 	<false/>
 	<key>CombinedModules</key>
 	<true/>
+	<key>CombinedModules_icon</key>
+	<false/>
+	<key>CombinedModules_popup</key>
+	<false/>
 	<key>CombinedModules_separator</key>
 	<false/>
 	<key>CombinedModules_spacing</key>
 	<string>none</string>
+	<key>Disk_SMART</key>
+	<true/>
 	<key>Disk_barChart_position</key>
-	<integer>4</integer>
+	<integer>6</integer>
+	<key>Disk_disk</key>
+	<string>Macintosh HD</string>
+	<key>Disk_icon_position</key>
+	<integer>5</integer>
 	<key>Disk_label_position</key>
-	<integer>3</integer>
+	<integer>4</integer>
 	<key>Disk_memory_color</key>
-	<string>yellow</string>
+	<string>purple</string>
 	<key>Disk_memory_orderReversed</key>
 	<false/>
 	<key>Disk_memory_position</key>
@@ -89,21 +99,33 @@
 	<key>Disk_memory_symbols</key>
 	<false/>
 	<key>Disk_mini_position</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>Disk_networkChart_position</key>
-	<integer>7</integer>
+	<integer>8</integer>
 	<key>Disk_notifications_utilization_state</key>
 	<true/>
+	<key>Disk_oneView</key>
+	<true/>
 	<key>Disk_pieChart_position</key>
-	<integer>5</integer>
+	<integer>7</integer>
 	<key>Disk_position</key>
 	<integer>3</integer>
+	<key>Disk_processes</key>
+	<integer>5</integer>
 	<key>Disk_removable</key>
 	<false/>
+	<key>Disk_speed_icon</key>
+	<string>chars</string>
+	<key>Disk_speed_mode</key>
+	<string>twoRows</string>
+	<key>Disk_speed_monochrome</key>
+	<false/>
 	<key>Disk_speed_position</key>
-	<integer>6</integer>
+	<integer>1</integer>
+	<key>Disk_speed_valueColor</key>
+	<string>constant</string>
 	<key>Disk_text_position</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>Disk_updateInterval</key>
 	<integer>5</integer>
 	<key>Disk_widget</key>
@@ -138,6 +160,8 @@
 	<integer>3</integer>
 	<key>GPU_widget</key>
 	<string>line_chart</string>
+	<key>LaunchAtLoginNext</key>
+	<true/>
 	<key>NSNavPanelExpandedSizeForSaveMode</key>
 	<string>{880, 448}</string>
 	<key>NSOSPLastRootDirectory</key>
@@ -159,20 +183,39 @@
 	</data>
 	<key>NSStatusItem Preferred Position CombinedModules</key>
 	<real>457</real>
+	<key>NSToolbar Configuration eu.exelban.Stats.Settings.Toolbar</key>
+	<dict>
+		<key>TB Display Mode</key>
+		<integer>1</integer>
+		<key>TB Icon Size Mode</key>
+		<integer>1</integer>
+		<key>TB Is Shown</key>
+		<true/>
+		<key>TB Size Mode</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSWindow Frame eu.exelban.Stats.Settings.WindowFrame</key>
-	<string>600 436 728 480 0 0 1920 1205 </string>
+	<string>58 8 720 1421 0 0 2336 1465 </string>
+	<key>Network_VPNMode</key>
+	<false/>
 	<key>Network_base</key>
 	<string>byte</string>
 	<key>Network_connectivityMode</key>
 	<string>icmp</string>
 	<key>Network_emojiCC</key>
 	<false/>
-	<key>Network_label_position</key>
-	<integer>3</integer>
-	<key>Network_networkChart_position</key>
+	<key>Network_icon_position</key>
 	<integer>4</integer>
-	<key>Network_oneView</key>
+	<key>Network_label_position</key>
+	<integer>5</integer>
+	<key>Network_networkChart_position</key>
+	<integer>1</integer>
+	<key>Network_network_chart_box</key>
+	<true/>
+	<key>Network_network_chart_label</key>
 	<false/>
+	<key>Network_oneView</key>
+	<true/>
 	<key>Network_position</key>
 	<integer>4</integer>
 	<key>Network_processes</key>
@@ -186,7 +229,7 @@
 	<key>Network_speed_displayValue</key>
 	<string>oi</string>
 	<key>Network_speed_icon</key>
-	<string>none</string>
+	<string>chars</string>
 	<key>Network_speed_iconAlignment</key>
 	<string>left</string>
 	<key>Network_speed_iconColor</key>
@@ -200,11 +243,11 @@
 	<key>Network_speed_valueAlignment</key>
 	<string>center</string>
 	<key>Network_speed_valueColor</key>
-	<string>none</string>
+	<string>constant</string>
 	<key>Network_state_position</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>Network_text_position</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>Network_updateICMPInterval</key>
 	<integer>1</integer>
 	<key>Network_usageReset</key>
@@ -247,6 +290,8 @@
 	<integer>3</integer>
 	<key>RAM_widget</key>
 	<string>line_chart</string>
+	<key>Remote_position</key>
+	<integer>1</integer>
 	<key>Sensor_mini_alignment</key>
 	<string>center</string>
 	<key>Sensor_mini_color</key>
@@ -275,18 +320,32 @@
 	<false/>
 	<key>Sensors_widget</key>
 	<string>mini</string>
+	<key>dockIcon</key>
+	<false/>
+	<key>keep_menubar_positions</key>
+	<false/>
+	<key>remote_tokens_migrated_to_keychain</key>
+	<true/>
 	<key>runAtLoginInitialized</key>
 	<true/>
 	<key>sensor_PPBR</key>
 	<false/>
 	<key>setupProcess</key>
 	<true/>
+	<key>support_pending</key>
+	<false/>
+	<key>support_pending_ts</key>
+	<integer>1792096765</integer>
+	<key>support_ts</key>
+	<integer>1792096765</integer>
 	<key>temperature_units</key>
 	<string>celsius</string>
 	<key>update-interval</key>
 	<string>Silent</string>
 	<key>updater_check_ts</key>
 	<integer>1775727444</integer>
+	<key>updater_install_ts</key>
+	<integer>1793259645</integer>
 	<key>version</key>
 	<string>2.12.8</string>
 </dict>
