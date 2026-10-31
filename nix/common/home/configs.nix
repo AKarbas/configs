@@ -95,7 +95,9 @@ in
     if [ ! -x "$_claude" ]; then
       echo "plannotator plugin: no $_claude, skipped" >&2
     elif ! grep -qs '"plannotator@plannotator"' "$HOME/.claude/plugins/installed_plugins.json"; then
-      $DRY_RUN_CMD "$_claude" plugin install plannotator --marketplace backnotprop/plannotator || true
+      # The marketplace is a git clone; activation runs with no git or ssh on PATH.
+      PATH="${lib.makeBinPath [ pkgs.git pkgs.openssh ]}:$PATH" \
+        $DRY_RUN_CMD "$_claude" plugin install plannotator --marketplace backnotprop/plannotator || true
     fi
   '';
 
