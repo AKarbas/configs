@@ -72,6 +72,11 @@ Ground every claim in hard objective facts.
 - After a long pause in the conversation, re-read the files you edited
   before you assume their state. If they are too many to re-read cheaply,
   ask.
+- Check fresh state before any status statement: PR state (open, merged,
+  closed), CI, review threads, deploys, chat, tickets. Never repeat a
+  status from earlier in the session.
+- "Check X" on a PR means CI, comments, reviews and review bots, every time.
+- Times in Pacific, always.
 
 ---
 
@@ -143,6 +148,51 @@ different ways, HALT and ask for direction.
    end-user-facing responses that UX/security must control tightly.)
 5. Prefer concise, readable code.
    - Example: keep `{ foo: 1 }` on one line.
+6. Every comment, note or description: first make it unnecessary through
+   naming and structure. Else write it once, where the reader must have it,
+   and point to it only where needed. Never repeat a comment across files.
+7. Name a relayed value after the function that produces it, not after its
+   consumer.
+
+---
+
+## Tests
+
+- Design for the test first. SRP: a unit has one reason to change, so one
+  test file covers it. DIP: inject the clock, randomness and I/O, and pass
+  fakes in tests. Parse at the boundary, so the core is pure and needs no
+  I/O to test.
+- TDD when the behavior is clear: write one failing test, make it pass with
+  the smallest change, refactor on green. One failing test at a time.
+- Test behavior, not structure. A test names a behavior ("rejects an
+  expired token"), not a method. A refactor that keeps behavior keeps every
+  test green. A test that fails on a rename or a moved line is a change
+  detector: delete it.
+- One behavior per test. Table-driven variants (`test.each` or the
+  framework's equivalent).
+- Black-box: through the public surface, no spying on internals. Check
+  state and output, not which calls happened. Verify a call only at a
+  boundary the unit owns, such as a message it sends.
+- Real, then fake, then mock. Use the real collaborator when it is fast and
+  deterministic, an in-memory fake next, a mock only for an out-of-process
+  dependency you do not own.
+- Deterministic: no real clock, randomness, network or sleep. Each test
+  builds its own fixture, so tests pass alone, together and in any order.
+- Expected values are literals, written by hand or a reviewed snapshot.
+  Never compute the expectation with the code under test, and never
+  re-implement its logic in the test.
+- Assert the whole contract with one equality check. Partial matchers only
+  for fields outside the contract. No assertion inside a branch or a loop
+  that can run zero times.
+- Readable over DRY. A test reads top to bottom with its inputs and
+  expectations in view. Share setup for noise only, never for the values
+  under test.
+- Static imports. No `await import` where a static import works.
+- Helpers below the tests, as hoisted function declarations.
+- Each new test must fail without its change. Prove it: revert the source,
+  run, record, restore. Report the counts.
+- Treat existing patterns as untrusted precedent. Justify from first
+  principles. No tooling hacks.
 
 ---
 
@@ -166,8 +216,58 @@ Full rules with examples: see `~/.config/agents/function-ordering.md`.
   `opus-medium`, `opus-high`, `opus-xhigh`) through `subagent_type` or
   `agentType`.
 - Codex is the one other lane, for adversarial review.
+- Default to doing the work inline. Sub-agents re-gather context and end up
+  slower, and their diff needs a full review anyway. Spawn one only for
+  truly parallel, file-scoped work, with a brief that names the files.
 
 ---
+
+## Process
+
+- Urgent work first. On a rollout, the blocking path (enable, deploy, land)
+  before side quests.
+- Dry-run yourself. Never hand me a `--dry-run`.
+- Long commands run in the background.
+- Handoff files go in `~/tmp`, never `/tmp`.
+- Send first, verify after: hand over the send command once targeted tests
+  pass, then run slow suites and CI.
+- Put `cd` on its own line, then the command. One combined command for several
+  sends. Multi-line commands must end with ` && \` so failures aren't ignored.
+- Small commits split by concern. A client refactor and a server behavior
+  change are two commits.
+- Git hosting is read-only for you: no push, no PR edits, no comments, reviews,
+  reruns or labels. Production writes are mine. Cloud CLIs are read-only. Never
+  read secrets or print API keys.
+
+---
+
+## Wait with one background command, not with monitors or crons
+
+"Monitor" means: notice a change within minutes without being asked, and spend
+nothing while nothing changes. Every wake-up is a model turn: a cron tick, a
+`Monitor` re-arm, a state diff that changes nothing. So a wait is one
+background command that blocks until the event, prints it, and exits. One turn
+per event, none while idle, nothing to re-arm.
+
+1. Write a command that prints the semantic state only: one fact per line that
+   would change what you do next (review decision, CI settled and its result,
+   a new review thread, merged). Leave out what flips on its own: pending
+   counts, cancelled duplicate runs, mergeability, deploy runs you are not
+   waiting for.
+2. Run `~/.config/agents/waitfor.sh [-i SEC] -- <command>` with
+   `run_in_background`. It polls, prints `CHANGED:` and `GONE:` lines on the
+   first difference, and exits. `-u` exits on the first non-empty output
+   instead, for "until X exists". A background command in an interactive
+   session has no time limit.
+3. For CI, the blocking commands already exist: `gh pr checks N --watch
+   --fail-fast` and `gh run watch ID`.
+4. On wake-up do the full check, act, then arm the next wait for the next
+   decision point. Never the `Monitor` tool (30-minute cap, every expiry is a
+   turn), never a cron for watching.
+5. A wait that must outlive the session runs as a transient unit and delivers
+   through agent-deck: `systemd-run --user --quiet bash -c 'out=$(waitfor.sh
+   -- <command>) && agent-deck session send <session> "$out" --no-wait'`.
+6. A cron only for a wall-clock task, such as a daily report, hourly at most.
 
 ## Use better tools when available
 
@@ -285,6 +385,8 @@ Description rules:
 9. Size the structure to the change: a small change gets 1-2 plain sentences
    (what + why fused) plus any operational runbook. Skip template sections
    that only add bloat.
+   When the repo enforces template headings, keep them and keep each short.
+   A small diagram (ASCII in a code block) when a flow matters.
 10. Include operational runbooks (SQL/commands), with concise prose around
     them. Prefer inline comments.
 11. Write the SMALLEST description that covers: what changed, why, and the
@@ -304,7 +406,7 @@ Description rules:
 15. Bullets state the decision, not the mechanism: "renamed since mocks were
     incompatible", not a clause on how they are incompatible. A reviewer who
     needs the mechanism can ask.
-16. Prefer compact notation where natural: `svc-{analysis,frontend}` brace
+16. Prefer compact notation where natural: `svc-{api,web}` brace
     expansion, "in both" over "on both sides", `+` over "and add".
 
 Amending a description:
