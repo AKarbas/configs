@@ -82,7 +82,6 @@ in
       "1password"
       "chatgpt"
       "claude"
-      "cloudflare-warp"
       "contexts"
       "docker-desktop"
       "ghostty"
