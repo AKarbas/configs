@@ -332,6 +332,7 @@ in
           "super+ctrl+j=resize_split:down,10"
           "super+ctrl+k=resize_split:up,10"
           "super+ctrl+l=resize_split:right,10"
+          "super+u=toggle_background_opacity"
         ];
         macos-non-native-fullscreen = "visible-menu";
         macos-titlebar-style = "tabs";
