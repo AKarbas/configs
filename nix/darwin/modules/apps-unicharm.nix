@@ -6,6 +6,7 @@
   homebrew = {
     brews = [ ];
     casks = [
+      "cloudflare-warp"
       "electrum"
       "iina"
       "insta360-studio"
