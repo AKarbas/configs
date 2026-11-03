@@ -613,6 +613,7 @@ in
         set  -g status-keys vi
         bind -T copy-mode-vi v send -X begin-selection
         bind -T copy-mode-vi y send -X copy-selection-and-cancel
+        bind -T copy-mode-vi E send -X copy-pipe-and-cancel 'f=$(mktemp); cat > "$f"; tmux split-window -h "''${EDITOR:-vi} \"$f\" && tmux load-buffer -w \"$f\"; rm -f \"$f\""'
 
         # --- reload ---
         bind R source-file ~/.tmux.conf \; display "reloaded"
