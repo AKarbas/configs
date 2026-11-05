@@ -41,6 +41,36 @@ in
     ''
   );
 
+  # Pinned for the first install only: agent-deck updates itself after that.
+  home.activation.installAgentDeck =
+    let
+      version = "v1.16.36";
+      installer = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/asheshgoplani/agent-deck/${version}/install.sh";
+        hash = "sha256-EwuaTiNR6/uDIlfJ55Ny4BK7K8EDPJ9huuIcuaxQuMM=";
+      };
+    in
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      _target="$HOME/.local/bin/agent-deck"
+      _upstreamInstallDirs="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/home/linuxbrew/.linuxbrew/bin:$HOME/go/bin"
+      if [ ! -e "$_target" ] && [ ! -L "$_target" ] \
+        && ! PATH="$_upstreamInstallDirs:$PATH" command -v agent-deck > /dev/null; then
+        PATH="${
+          lib.makeBinPath (
+            with pkgs;
+            [
+              curl
+              gawk
+              gnutar
+              gzip
+              tmux
+            ]
+          )
+        }:$PATH" \
+          $DRY_RUN_CMD ${pkgs.bash}/bin/bash ${installer} --non-interactive --version ${version} || true
+      fi
+    '';
+
   # agent-deck rewrites its config.toml, so set keys instead of owning the file.
   home.activation.configureAgentDeck = lib.hm.dag.entryAfter [ "writeBoundary" ] (
     ''
@@ -96,7 +126,12 @@ in
       echo "plannotator plugin: no $_claude, skipped" >&2
     elif ! grep -qs '"plannotator@plannotator"' "$HOME/.claude/plugins/installed_plugins.json"; then
       # The marketplace is a git clone; activation runs with no git or ssh on PATH.
-      PATH="${lib.makeBinPath [ pkgs.git pkgs.openssh ]}:$PATH" \
+      PATH="${
+        lib.makeBinPath [
+          pkgs.git
+          pkgs.openssh
+        ]
+      }:$PATH" \
         $DRY_RUN_CMD "$_claude" plugin install plannotator --marketplace backnotprop/plannotator || true
     fi
   '';
