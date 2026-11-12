@@ -457,6 +457,7 @@ in
         jgpb = "jj git push -b";
         jl = "jj log";
         jla = "jj log -r 'all()'";
+        jlh = "jj log -r '::@'";
         jlm = "jj log -r 'mine() & ~(::remote_bookmarks(glob:\"*spr/*\"))'";
         jrb = "jj rebase";
         jrb- = "jj rebase -s @- -d";
