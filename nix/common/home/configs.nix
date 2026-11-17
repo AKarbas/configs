@@ -441,6 +441,7 @@ in
         "ja!" = "jj abandon";
         cat = "bat --plain";
         cdjr = "cd $(jj root)";
+        dfh = "df --human-readable --output=source,fstype,size,used,avail,pcent,itotal,iused,iavail,ipcent,target";
         grboma = "git rebase origin/$(git_main_branch) --autosquash";
         gsh = "git show --stat --patch";
         jab = "jj absorb";
