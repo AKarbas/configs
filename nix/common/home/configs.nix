@@ -71,6 +71,31 @@ in
       fi
     '';
 
+  # Pinned for the first install only: the app updates itself after that.
+  home.activation.installRexApp = lib.mkIf pkgs.stdenv.isDarwin (
+    let
+      app = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+        pname = "rex-app";
+        version = "0.1.0-2102";
+        src = pkgs.fetchurl {
+          url = "https://blob.superlogical.com/public/rex-app/snapshot/Rex-${finalAttrs.version}.dmg";
+          hash = "sha256-r7zW7fYfHN1DrONl16agWKrRt2rENXBT3bKVc2j45Ek=";
+        };
+        nativeBuildInputs = [ pkgs.undmg ];
+        sourceRoot = "Rex.app";
+        installPhase = "cp -R . $out";
+        # Fixup rewrites binaries, which breaks the code signature.
+        dontFixup = true;
+      });
+    in
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if [ ! -e /Applications/Rex.app ]; then
+        run /usr/bin/ditto ${app} /Applications/Rex.app
+        run chmod -R u+w /Applications/Rex.app
+      fi
+    ''
+  );
+
   # agent-deck rewrites its config.toml, so set keys instead of owning the file.
   home.activation.configureAgentDeck = lib.hm.dag.entryAfter [ "writeBoundary" ] (
     ''
@@ -208,8 +233,11 @@ in
         $PB -c "Add :Default\ Bookmark\ Guid string amin-iterm-profile-0001" "$PLIST"
     ''
   );
+  # On macOS the Rex app runs the server (installRexApp).
+  services.rex.enable = pkgs.stdenv.isLinux;
   programs = {
     home-manager.enable = true;
+    rex.enable = true;
     git = {
       enable = true;
       lfs.enable = true;

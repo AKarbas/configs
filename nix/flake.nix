@@ -10,6 +10,8 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flox.url = "github:flox/flox/latest";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    rex.url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";
+    rex.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -19,10 +21,12 @@
       home-manager,
       nix-darwin,
       nixpkgs,
+      rex,
       ...
     }@inputs:
     let
       homeModules = [
+        rex.homeManagerModules.default
         ./common/home/configs.nix
         ./common/home/packages.nix
       ];
