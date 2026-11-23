@@ -42,7 +42,7 @@ resume() {
   [[ -f $saved ]] || return 0
   local session
   session=$(<"$saved") && rm -f "$saved"
-  claude --resume "$session"
+  exec claude --resume "$session"
 }
 
 main "$@"
