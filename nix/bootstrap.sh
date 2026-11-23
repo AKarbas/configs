@@ -3,9 +3,9 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-FLOX_CACHE_CONF=(
-  --extra-conf "extra-substituters = https://cache.flox.dev"
-  --extra-conf "extra-trusted-public-keys = flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+FLOX_CACHE_SETTINGS=(
+  "extra-substituters = https://cache.flox.dev"
+  "extra-trusted-public-keys = flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
 )
 
 main() {
@@ -20,26 +20,53 @@ main() {
   fi
 }
 
+install_nix() {
+  if command -v nix &>/dev/null; then
+    echo "==> Nix already installed, skipping"
+  elif is_darwin; then
+    install_nix_multi_user install macos --case-sensitive --extra-conf "use-case-hack = false"
+  elif has_systemd; then
+    install_nix_multi_user install
+  else
+    install_nix_single_user
+  fi
+}
+
+install_nix_multi_user() {
+  echo "==> Installing Nix (Determinate Systems installer)"
+  local setting extra_conf=()
+  for setting in "${FLOX_CACHE_SETTINGS[@]}"; do
+    extra_conf+=(--extra-conf "$setting")
+  done
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix |
+    sh -s -- "$@" "${extra_conf[@]}"
+}
+
+has_systemd() {
+  [[ -d /run/systemd/system ]]
+}
+
+# Without systemd, the multi-user daemon cannot run. The user owns the store
+# instead.
+install_nix_single_user() {
+  echo "==> Installing Nix single-user (no systemd)"
+  mkdir -p ~/.config/nix
+  printf '%s\n' "experimental-features = nix-command flakes" "${FLOX_CACHE_SETTINGS[@]}" \
+    >>~/.config/nix/nix.conf
+  curl --proto '=https' --tlsv1.2 -sSf -L https://nixos.org/nix/install |
+    sh -s -- --no-daemon --no-channel-add
+}
+
 is_darwin() {
   [[ "$(uname)" == "Darwin" ]]
 }
 
-install_nix() {
-  echo "==> Installing Nix (Determinate Systems installer)"
-  if command -v nix &>/dev/null; then
-    echo "    Nix already installed, skipping"
-    return
-  fi
-  local install_args=(install)
-  if is_darwin; then
-    install_args=(install macos --case-sensitive --extra-conf "use-case-hack = false")
-  fi
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix |
-    sh -s -- "${install_args[@]}" "${FLOX_CACHE_CONF[@]}"
-}
-
 load_nix_into_shell() {
-  if ! command -v nix &>/dev/null; then
+  if command -v nix &>/dev/null; then
+    return
+  elif [[ -e ~/.nix-profile/etc/profile.d/nix.sh ]]; then
+    . ~/.nix-profile/etc/profile.d/nix.sh
+  else
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   fi
 }

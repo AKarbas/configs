@@ -551,8 +551,8 @@ in
     };
   };
   home = {
-    username = "amin";
-    homeDirectory = if pkgs.stdenv.isLinux then "/home/amin" else "/Users/amin";
+    username = lib.mkDefault "amin";
+    homeDirectory = lib.mkDefault (if pkgs.stdenv.isLinux then "/home/amin" else "/Users/amin");
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
     # when a new Home Manager release introduces backwards

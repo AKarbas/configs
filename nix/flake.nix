@@ -124,14 +124,21 @@
       };
 
       # Standalone home-manager for foreign-distro (non-NixOS) Linux hosts.
-      homeConfigurations.amin-linux = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-        };
-        extraSpecialArgs = homeSpecialArgs "x86_64-linux";
-        modules = homeModules ++ [ ./common/home/linux-foreign.nix ];
-      };
+      homeConfigurations = nixpkgs.lib.listToAttrs (
+        map (
+          system:
+          nixpkgs.lib.nameValuePair "amin-${system}" (
+            home-manager.lib.homeManagerConfiguration {
+              pkgs = import nixpkgs {
+                inherit system;
+                config.allowUnfree = true;
+              };
+              extraSpecialArgs = homeSpecialArgs system;
+              modules = homeModules ++ [ ./common/home/linux-foreign.nix ];
+            }
+          )
+        ) linuxSystems
+      );
 
       nixosConfigurations.UNiXOS = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
