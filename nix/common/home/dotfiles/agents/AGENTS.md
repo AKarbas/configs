@@ -265,9 +265,13 @@ per event, none while idle, nothing to re-arm.
 4. On wake-up do the full check, act, then arm the next wait for the next
    decision point. Never the `Monitor` tool (30-minute cap, every expiry is a
    turn), never a cron for watching.
-5. A wait that must outlive the session runs as a transient unit and delivers
-   through agent-deck: `systemd-run --user --quiet bash -c 'out=$(waitfor.sh
-   -- <command>) && agent-deck session send <session> "$out" --no-wait'`.
+5. A wait that must outlive the session runs in a background Rex tab and types
+   its result into your pane: `rex run --focus=false --label wait -- bash -c
+   'out=$(~/.config/agents/waitfor.sh -- <command>) && rex send -b "$1" "$out"
+   && rex send-key -b "$1" enter' _ "$REX_BLOCK"`. Outside Rex, it runs as a
+   transient unit and delivers through agent-deck: `systemd-run --user --quiet
+   bash -c 'out=$(waitfor.sh -- <command>) && agent-deck session send <session>
+   "$out" --no-wait'`.
 6. A cron only for a wall-clock task, such as a daily report, hourly at most.
 
 ## PR state: one command, read `needs=`
@@ -366,7 +370,7 @@ create a workspace per commit, per topic or per build.
 A new workspace needs one of two reasons: a build must run while you keep
 editing, or your files overlap an uncommitted foreign diff at `@` (a file in
 `jj status` you did not write). Then reuse an idle one first:
-`~/.config/agents/jwidle.sh` lists workspaces with no tmux session in them
+`~/.config/agents/jwidle.sh` lists workspaces with no tmux or Rex pane in them
 and their `@` state. Only when none is idle:
 `jj workspace add --name <slug> -r main@origin ~/.jj-workspaces/<repo>-<slug>`,
 and say so in your next message. Name the workspace to delete once its PR

@@ -593,6 +593,9 @@ in
       ".config/rift/config.toml" = lib.mkIf pkgs.stdenv.isDarwin {
         source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/personal/configs/nix/common/home/dotfiles/rift/config.toml";
       };
+      ".config/rex/init.lua" = lib.mkIf pkgs.stdenv.isDarwin {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/personal/configs/nix/common/home/dotfiles/rex/init.lua";
+      };
       ".agent-deck.env" = lib.mkIf pkgs.stdenv.isLinux {
         text = ''
           export PLANNOTATOR_PORT=${plannotatorPort}
