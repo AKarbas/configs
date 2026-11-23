@@ -18,7 +18,7 @@ main() {
 
 hook() {
   local event session reason
-  is_pane_claude "$PPID" || return 0
+  is_pane_claude "${CLAUDE_PID:-}" || return 0
   IFS=$'\t' read -r event session reason < <(jq -r '[.hook_event_name, .session_id, .reason // ""] | @tsv')
   case $event in
     SessionStart)
