@@ -391,10 +391,6 @@ in
           "ctrl+alt+k=goto_split:up"
           "ctrl+alt+l=goto_split:right"
           "global:cmd+;=toggle_quick_terminal"
-          "super+ctrl+h=resize_split:left,10"
-          "super+ctrl+j=resize_split:down,10"
-          "super+ctrl+k=resize_split:up,10"
-          "super+ctrl+l=resize_split:right,10"
           "super+u=toggle_background_opacity"
         ];
         macos-non-native-fullscreen = "visible-menu";
