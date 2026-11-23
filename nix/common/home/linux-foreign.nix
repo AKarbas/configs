@@ -29,8 +29,8 @@ in
   home.packages = [ pkgs.nerd-fonts.fira-code ];
 
   # systemd stops user@<uid>.service after the last logout unless the user
-  # lingers, killing anything started under it via systemd-run --user (e.g.
-  # agent-deck's tmux servers). Plain tmux sits in the login scope and is
+  # lingers, killing anything started under it, such as rex.service and its
+  # panes. Plain tmux sits in the login scope and is
   # unaffected either way. Hosts without systemd have nothing to linger.
   home.activation.enableLinger = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     _loginctl=/usr/bin/loginctl

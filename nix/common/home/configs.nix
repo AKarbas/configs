@@ -7,9 +7,9 @@
 let
   # The Linux hosts have no browser. Plannotator must print its URL on a
   # fixed port, and the Mac tunnels that port (darwin/modules/system.nix).
-  # Agents start from three environments, so PLANNOTATOR_PORT and
-  # PLANNOTATOR_REMOTE are set three times: the login shell, agent-deck
-  # (~/.agent-deck.env) and Claude Desktop (settings.json env).
+  # Agents start from two environments, so PLANNOTATOR_PORT and
+  # PLANNOTATOR_REMOTE are set twice: the login shell and Claude Desktop
+  # (settings.json env).
   plannotatorPort = "19432";
 in
 {
@@ -41,36 +41,6 @@ in
     ''
   );
 
-  # Pinned for the first install only: agent-deck updates itself after that.
-  home.activation.installAgentDeck =
-    let
-      version = "v1.16.36";
-      installer = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/asheshgoplani/agent-deck/${version}/install.sh";
-        hash = "sha256-EwuaTiNR6/uDIlfJ55Ny4BK7K8EDPJ9huuIcuaxQuMM=";
-      };
-    in
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      _target="$HOME/.local/bin/agent-deck"
-      _upstreamInstallDirs="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/home/linuxbrew/.linuxbrew/bin:$HOME/go/bin"
-      if [ ! -e "$_target" ] && [ ! -L "$_target" ] \
-        && ! PATH="$_upstreamInstallDirs:$PATH" command -v agent-deck > /dev/null; then
-        PATH="${
-          lib.makeBinPath (
-            with pkgs;
-            [
-              curl
-              gawk
-              gnutar
-              gzip
-              tmux
-            ]
-          )
-        }:$PATH" \
-          $DRY_RUN_CMD ${pkgs.bash}/bin/bash ${installer} --non-interactive --version ${version} || true
-      fi
-    '';
-
   # Pinned for the first install only: the app updates itself after that.
   home.activation.installRexApp = lib.mkIf pkgs.stdenv.isDarwin (
     let
@@ -96,54 +66,46 @@ in
     ''
   );
 
-  # agent-deck rewrites its config.toml, so set keys instead of owning the file.
-  home.activation.configureAgentDeck = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-    ''
-      _cfg="$HOME/.config/agent-deck/config.toml"
-      _toml=${pkgs.toml-cli}/bin/toml
-      if [ -f "$_cfg" ] && [ "$($_toml get -r "$_cfg" tmux.window_style_override 2>/dev/null)" != "default" ]; then
-        $_toml set "$_cfg" tmux.window_style_override default > "$_cfg.tmp"
-        run mv "$_cfg.tmp" "$_cfg"
-      fi
-    ''
-    + lib.optionalString pkgs.stdenv.isLinux ''
-      # toml-cli sets strings only.
-      if [ -f "$_cfg" ] && ! $_toml get -r "$_cfg" shell.env_files 2>/dev/null | grep -q agent-deck.env; then
-        if grep -q '^\[shell\]' "$_cfg"; then
-          sed '/^\[shell\]/a env_files = ["~/.agent-deck.env"]' "$_cfg" > "$_cfg.tmp"
-        else
-          { cat "$_cfg"; printf '\n[shell]\nenv_files = ["~/.agent-deck.env"]\n'; } > "$_cfg.tmp"
-        fi
-        if $_toml get -r "$_cfg.tmp" shell.env_files > /dev/null 2>&1; then
-          run mv "$_cfg.tmp" "$_cfg"
-        else
-          echo "agent-deck config: could not add shell.env_files, left as is" >&2
-          rm -f "$_cfg.tmp"
-        fi
-      fi
-    ''
-  );
-
-  home.activation.mergeClaudeSettings = lib.mkIf pkgs.stdenv.isLinux (
+  home.activation.mergeClaudeSettings =
+    let
+      rexResumeHook = [
+        {
+          hooks = [
+            {
+              type = "command";
+              command = "${config.home.homeDirectory}/.config/agents/rexresume.sh hook";
+            }
+          ];
+        }
+      ];
+      add = {
+        hooks = {
+          SessionStart = rexResumeHook;
+          SessionEnd = rexResumeHook;
+        };
+      }
+      // lib.optionalAttrs pkgs.stdenv.isLinux {
+        env = {
+          PLANNOTATOR_PORT = plannotatorPort;
+          PLANNOTATOR_REMOTE = "1";
+        };
+      };
+    in
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       _settings="$HOME/.claude/settings.json"
       _jq=${pkgs.jq}/bin/jq
       [ -f "$_settings" ] || { mkdir -p "$HOME/.claude"; echo '{}' > "$_settings"; }
-      $_jq --argjson add '${
-        builtins.toJSON {
-          env = {
-            PLANNOTATOR_PORT = plannotatorPort;
-            PLANNOTATOR_REMOTE = "1";
-          };
-        }
-      }' '. * $add' "$_settings" > "$_settings.tmp"
+      $_jq --argjson add '${builtins.toJSON add}' '
+        def append_once($items): (. // []) - $items + $items;
+        . * ($add | del(.hooks))
+        | reduce ($add.hooks | to_entries[]) as $h (.; .hooks[$h.key] |= append_once($h.value))
+      ' "$_settings" > "$_settings.tmp"
       if $_jq . "$_settings" | cmp -s - "$_settings.tmp"; then
         rm "$_settings.tmp"
       else
         run mv "$_settings.tmp" "$_settings"
       fi
-    ''
-  );
+    '';
 
   home.activation.installPlannotatorPlugin = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     _claude="$HOME/.local/bin/claude"
@@ -520,6 +482,9 @@ in
           source ${./scripts}/jj-workspaces.zsh
           source ${./scripts}/pr.zsh
         ''
+        (lib.mkAfter ''
+          [[ -z $REX_BLOCK ]] || ~/.config/agents/rexresume.sh resume
+        '')
       ];
       oh-my-zsh = {
         enable = true;
@@ -592,12 +557,6 @@ in
       ".config/rex/init.lua" = lib.mkIf pkgs.stdenv.isDarwin {
         source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/personal/configs/nix/common/home/dotfiles/rex/init.lua";
       };
-      ".agent-deck.env" = lib.mkIf pkgs.stdenv.isLinux {
-        text = ''
-          export PLANNOTATOR_PORT=${plannotatorPort}
-          export PLANNOTATOR_REMOTE=1
-        '';
-      };
       # Read-only (nix-store) symlink. Edit the source files in the repo
       # under nix/common/home/dotfiles/agents/ and run `make` to propagate.
       ".config/agents".source = ./dotfiles/agents;
@@ -605,12 +564,7 @@ in
         url = "https://raw.githubusercontent.com/bazelbuild/bazel/9.1.1/scripts/zsh_completion/_bazel";
         hash = "sha256-QJTchK3S8jgjvDQRhq32uEh/vV1BZL1S2YiRxBUR66Q=";
       };
-      # Read-only, so the agent-deck installer cannot append its block —
-      # its content (marked by the version comment below) is inlined and
-      # future agent-deck config-version bumps get merged by hand.
       ".tmux.conf".text = ''
-        # agent-deck-tmux-config-version: 4 (inlined; see comment in configs.nix)
-
         # --- terminal ---
         set  -g default-terminal "tmux-256color"
         set -ag terminal-overrides ",xterm*:Tc:smcup@:rmcup@"

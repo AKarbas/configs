@@ -268,10 +268,7 @@ per event, none while idle, nothing to re-arm.
 5. A wait that must outlive the session runs in a background Rex tab and types
    its result into your pane: `rex run --focus=false --label wait -- bash -c
    'out=$(~/.config/agents/waitfor.sh -- <command>) && rex send -b "$1" "$out"
-   && rex send-key -b "$1" enter' _ "$REX_BLOCK"`. Outside Rex, it runs as a
-   transient unit and delivers through agent-deck: `systemd-run --user --quiet
-   bash -c 'out=$(waitfor.sh -- <command>) && agent-deck session send <session>
-   "$out" --no-wait'`.
+   && rex send-key -b "$1" enter' _ "$REX_BLOCK"`.
 6. A cron only for a wall-clock task, such as a daily report, hourly at most.
 
 ## PR state: one command, read `needs=`

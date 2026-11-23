@@ -7,4 +7,4 @@ interval=120
 dir=${XDG_CACHE_HOME:-$HOME/.cache}/prwatch
 mkdir -p "$dir"
 here=$(dirname "$0")
-exec "$here/waitfor.sh" -i "$interval" -A -s "$dir/${AGENTDECK_INSTANCE_ID:-${REX_BLOCK:-${CLAUDE_CODE_SESSION_ID:-default}}}-$(IFS=-; echo "${*:-all}")" -- "$here/prstate.sh" -w "$@"
+exec "$here/waitfor.sh" -i "$interval" -A -s "$dir/${REX_BLOCK:-${CLAUDE_CODE_SESSION_ID:-default}}-$(IFS=-; echo "${*:-all}")" -- "$here/prstate.sh" -w "$@"
