@@ -253,7 +253,8 @@ per event, none while idle, nothing to re-arm.
    would change what you do next (review decision, CI settled and its result,
    a new review thread, merged). Leave out what flips on its own: pending
    counts, cancelled duplicate runs, mergeability, deploy runs you are not
-   waiting for.
+   waiting for. Ready-made, in `~/.config/agents/`: `prstate.sh -w`,
+   `deploystate.sh`. Their headers say what they print.
 2. Run `~/.config/agents/waitfor.sh [-i SEC] -- <command>` with
    `run_in_background`. It polls, prints `CHANGED:` and `GONE:` lines on the
    first difference, and exits. `-u` exits on the first non-empty output
@@ -268,6 +269,26 @@ per event, none while idle, nothing to re-arm.
    through agent-deck: `systemd-run --user --quiet bash -c 'out=$(waitfor.sh
    -- <command>) && agent-deck session send <session> "$out" --no-wait'`.
 6. A cron only for a wall-clock task, such as a daily report, hourly at most.
+
+## PR state: one command, read `needs=`
+
+Run `~/.config/agents/prwatch.sh [PR...]` inside the checkout with
+`run_in_background` (default: all my open PRs). It blocks until a settled
+fact changes, prints it, exits. On wake run `prstate.sh -v PR` and act on
+its facts, not on `gh pr view` or the checks API. Its header defines each
+key.
+
+- `needs=nothing` means it can merge. Anything else names the blocker.
+- Compare `head=` with your pushed commit before you say "pushed" or ask
+  for a merge. Someone else can queue or merge a stale head.
+- Never assume a branch rule. `rules=` is read live. A push removes an
+  approval only when `rules=` lists `dismiss-on-push`. A comment, a bot
+  review or a CI rerun never does. `review=recomputing` is not a dismissal.
+- `ci=` already excludes superseded runs. Do not re-derive CI from the
+  checks API.
+- A `THREAD` under a `COMMENTED` review can be a note, not a change
+  request. Read the `REVIEW` line above it. `[outdated]` marks a thread on
+  an older head.
 
 ## Use better tools when available
 
@@ -316,7 +337,9 @@ Read-only operations on non-tip commits are fine: `jj show`, `jj diff`,
 Not acceptable without explicit permission per invocation: `jj edit`,
 `jj new`, `jj abandon`, `jj undo`, `jj restore`, `jj squash`, `jj split`,
 `jj rebase`, `jj describe` — anything that moves `@` or restructures
-history.
+history. When I ask you to describe a change, use
+`~/.config/agents/jjdesc.sh CHANGE < body`. It keeps the `Pull Request:`
+trailer that `jj describe` would drop.
 
 Reason: I run parallel agent threads against the same repo. I also want
 strict control of commit messages and contents. If `@` moves into an older
@@ -332,6 +355,22 @@ existing diffs in the area you work on.
 To land a change on a commit that is not an ancestor of the tip: if the
 target files at `@` have the same shape as in the target commit, the same
 rules apply. Otherwise HALT and tell me where to run `jj new`.
+
+## One solo workspace per session
+
+Your workspace is the one you started in (`jj workspace root`). Do all your
+work at its `@`. Commits that touch disjoint files sit side by side there, as
+heads under the merge `@`. Commits that touch the same files stack. Never
+create a workspace per commit, per topic or per build.
+
+A new workspace needs one of two reasons: a build must run while you keep
+editing, or your files overlap an uncommitted foreign diff at `@` (a file in
+`jj status` you did not write). Then reuse an idle one first:
+`~/.config/agents/jwidle.sh` lists workspaces with no tmux session in them
+and their `@` state. Only when none is idle:
+`jj workspace add --name <slug> -r main@origin ~/.jj-workspaces/<repo>-<slug>`,
+and say so in your next message. Name the workspace to delete once its PR
+merges. I delete with `jwdel <slug>`.
 
 ---
 
